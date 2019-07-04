@@ -18,15 +18,15 @@ namespace Utils
 
 	namespace EnumUtils
 	{
-		std::string roleString(Entity::Role role)
+		std::string roleString(BookManager::Entity::Role role)
 		{
 			switch (role)
 			{
-				case Entity::Role::Author:
+				case BookManager::Entity::Role::Author:
 					return "Author";
-				case Entity::Role::Illustrator:
+				case BookManager::Entity::Role::Illustrator:
 					return "Illustrator";
-				case Entity::Role::Undefined:
+				case BookManager::Entity::Role::Undefined:
 				default:
 					return "Undefined";
 			}

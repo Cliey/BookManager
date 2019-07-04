@@ -1,11 +1,13 @@
 #pragma once
-
-namespace Entity
+namespace BookManager
 {
-	enum class Role
+	namespace Entity
 	{
-		Author,
-		Illustrator,
-		Undefined
-	};
-} // namespace Person
+		enum class Role
+		{
+			Author,
+			Illustrator,
+			Undefined
+		};
+	} // namespace Entity
+} // namespace BookManager

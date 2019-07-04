@@ -6,36 +6,57 @@
 #include <optional>
 #include "BookStatus.h"
 
-class Person;
-class Category;
+
+
 class Publisher;
+class SubCategory;
 
 namespace BookManager
 {
+	namespace Category
+	{
+		class Category;
+	} // namespace Category
+	namespace Entity
+	{
+		class Person;
+	} // namespace Entity
 	namespace Book
 	{
-		class Book
+		namespace Abstraction
 		{
-		public:
-			Book(std::string title, std::vector<std::shared_ptr<Person>> author) : title{title}, author{author} {}
+			class Book
+			{
+			public:
+				Book(std::string title, std::shared_ptr<Entity::Person> author_) : title{ title } {
+					author.push_back(author_);
+				}
+				Book(std::string title, std::vector<std::shared_ptr<Entity::Person>> author) : title{ title }, author{ author } {}
+				virtual ~Book() = 0;
+				/* getter and setter */
+				std::string getTitle() { return this->title; }
+				std::vector<std::shared_ptr<Entity::Person>> getAuthor() { return this->author; }
 
-			/* getter and setter */
-		private:
-			std::string title;
-			std::vector<std::shared_ptr<Person>> author;
-			std::shared_ptr<Category> category;
-			std::shared_ptr<Publisher> editor;
-			std::optional<std::time_t> published;
-			std::optional<std::time_t> purchasedDate;
-			std::optional<float> price;
+			private:
+				std::string title;
+				std::vector<std::shared_ptr<Entity::Person>> author;
 
-			BookStatus status{ BookStatus::Listed };
-			bool isRead{ false };
-			std::optional<std::time_t> startReadingDate;
-			std::optional<std::time_t> endReadingDate;
-			int rate{ 0 };
-			
+				std::shared_ptr<Category::Category> category;
+				std::vector<std::weak_ptr<SubCategory>> subCategory;
 
-		};
+				std::shared_ptr<Publisher> publisher;
+				std::optional<std::time_t> published;
+				std::optional<std::time_t> purchasedDate;
+				std::optional<float> price;
+
+				BookStatus status{ BookStatus::Listed };
+				bool isRead{ false };
+				std::optional<std::time_t> startReadingDate;
+				std::optional<std::time_t> endReadingDate;
+				int rate{ 0 };
+
+
+			};
+		} // namespace Abstraction
 	} // namespace Book
 } // namespace BookManager

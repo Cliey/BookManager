@@ -1,0 +1,7 @@
+Todo : 
+
+	- Reorganisation des dossier (Book, Category etc.)
+	- Créer Manager (load BDD, gestion Option...)
+	- Book Factory
+		- BookCreationResponsibility
+			- Maillons

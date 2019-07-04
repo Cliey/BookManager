@@ -4,11 +4,12 @@ namespace BookManager
 {
 	namespace Book
 	{
-		enum class BookStatus
+		enum class BookType
 		{
-			Listed,
-			HaveIt,
-			WantIt
+			ArtBook,
+			Comics,
+			Manga,
+			Novel
 		};
 	} // namespace Book
 } // namespace BookManager
