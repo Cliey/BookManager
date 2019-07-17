@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "Role.h"
 #include "BookStatus.h"
+#include "BookType.h"
 
 namespace Utils
 {
@@ -46,6 +47,24 @@ namespace Utils
 					return "Undefined";
 			}
 		}
+
+		std::string bookTypeString(BookManager::Book::BookType type)
+		{
+			switch (type)
+			{
+			case BookManager::Book::BookType::ArtBook:
+				return "ArtBook";
+			case BookManager::Book::BookType::Comics:
+				return "Comics";
+			case BookManager::Book::BookType::Manga:
+				return "Manga";
+			case BookManager::Book::BookType::Novel:
+				return "Novel";
+			default:
+				return "Undefined";
+			}
+		}
+
 	} // namespace EnumUtils
 } // namespace Utils
 

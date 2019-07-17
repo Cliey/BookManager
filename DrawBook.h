@@ -11,6 +11,7 @@ namespace BookManager
 			class DrawBook : public Book
 			{
 			public:
+				DrawBook() = default;
 				DrawBook(std::string title, std::shared_ptr<Entity::Person> author_) : Book(title, author_) {}
 				DrawBook(std::string title, std::vector<std::shared_ptr<Entity::Person>> author) : Book(title, author) {}
 				virtual ~DrawBook() = 0;

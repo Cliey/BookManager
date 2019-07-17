@@ -28,6 +28,7 @@ namespace BookManager
 			class Book
 			{
 			public:
+				Book() = default;
 				Book(std::string title, std::shared_ptr<Entity::Person> author_) : title{ title } {
 					author.push_back(author_);
 				}

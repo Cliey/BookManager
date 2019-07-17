@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include "BookFactory.h"
+#include "BookType.h"
 #include "Book.h"
 #include "Person.h"
 #include "Role.h"
@@ -55,6 +57,13 @@ void test()
 		auto author = book->getAuthor().at(0);
 		std::cout << "Book = " << book->getTitle() << ", written by " << author->getLastName() << ", " << author->getFirstName() << std::endl;
 	}
+
+	std::cout << "Type of book : " << std::endl;
+	for (const BookManager::Book::BookType type : BookManager::Book::BookFactory::getTypes())
+	{
+		std::cout << Utils::EnumUtils::bookTypeString(type) << std::endl;
+	}
+
 
 }
 int main()

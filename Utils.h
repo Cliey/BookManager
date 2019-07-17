@@ -11,6 +11,7 @@ namespace BookManager
 	namespace Book
 	{
 		enum class BookStatus;
+		enum class BookType;
 	} // namespace Book
 } // namespace BookManager
 
@@ -25,5 +26,6 @@ namespace Utils
 	{
 		std::string roleString(BookManager::Entity::Role);
 		std::string bookStatusString(BookManager::Book::BookStatus);
+		std::string bookTypeString(BookManager::Book::BookType);
 	} // namespace EnumUtils
 } // namespace Utils
