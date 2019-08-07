@@ -1,9 +1,9 @@
 # Nous voulons un cmake "récent" pour utiliser les dernières fonctionnalités
 cmake_minimum_required(VERSION 3.0)
-set(CMAKE_CXX_COMPILER C:/cygwin64/bin/)
-SET (CMAKE_C_COMPILER_WORKS 1)
-SET (CMAKE_CXX_COMPILER_WORKS 1)
-#set(CMAKE_C_COMPILER C:/cygwin64/bin/)
+set(CMAKE_CXX_COMPILER /cygdrive/c/cygwin64/bin/g++.exe --std=c++1z)
+#set(CMAKE_CXX_COMPILER C:/cygwin64/bin/g++.exe --std=c++1z)
+#set(CMAKE_C_COMPILER_WORKS 1)
+#set(CMAKE_CXX_COMPILER_WORKS 1)
 
 # Notre projet est étiqueté hello
 project(BookManager)

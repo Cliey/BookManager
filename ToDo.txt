@@ -1,8 +1,9 @@
-Todo : 
-	- CMakeList
-	- Regler pb compîlation, book type
-	- Reorganisation des dossier (Book, Category etc.)
-	- Creer Manager (load BDD, gestion Option...)
-	- Book Factory
-		- BookCreationResponsibility
-			- Maillons
+- Regler pb compilation, book type
+- Reorganisation des dossier (Book, Category etc.)
+- Creer Manager (load BDD, gestion Option...)
+
+Archive:
+- CMakeList @done
+- Book Factory @done
+	- BookCreationResponsibility @done
+		- Maillons @done
