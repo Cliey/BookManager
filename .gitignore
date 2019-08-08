@@ -1,0 +1,6 @@
+# Ignore buil directory and .vscode folder.
+build
+.vscode
+
+# Ignore .oa files
+.[oa]

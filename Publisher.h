@@ -12,7 +12,7 @@ public:
 	std::string const getName() const { return this->name; }
 
 	void setName(std::string name) { this->name = Utils::StringUtils::lowerCaseExceptFirstLetter(name); }
-	
+
 	bool operator<(const Publisher& rhs)
 	{
 		if((this->name).compare(rhs.name) < 0)

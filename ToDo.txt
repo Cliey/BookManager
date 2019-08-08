@@ -1,4 +1,4 @@
-- Regler pb compilation, book type
+- Regler pb compilation, book type @done
 - Reorganisation des dossier (Book, Category etc.)
 - Creer Manager (load BDD, gestion Option...)
 

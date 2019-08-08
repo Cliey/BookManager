@@ -1,4 +1,4 @@
-#include "MaillonCreationBookArtBook.h"
+#include "Artbook.h"
 
-using namespace BookManager::Book::Utils;
+using namespace BookManager::Book;
 MaillonCreationBookArtBook::MaillonRegister MaillonCreationBookArtBook::maillonRegister;

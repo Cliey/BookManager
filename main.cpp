@@ -1,9 +1,9 @@
+#include "BookFactory.h"
 #include <iostream>
 #include <string>
 #include <memory>
-#include "BookFactory.h"
-#include "BookType.h"
 #include "Book.h"
+#include "BookType.h"
 #include "Person.h"
 #include "Role.h"
 #include "Publisher.h"
@@ -59,9 +59,9 @@ void test()
 	}
 
 	std::cout << "Type of book : " << std::endl;
-	for (const BookManager::Book::BookType type : BookManager::Book::BookFactory::getTypes())
+	for (const BookManager::Book::BookType& type : BookManager::Book::BookFactory::getTypes())
 	{
-		std::cout << Utils::EnumUtils::bookTypeString(type) << std::endl;
+		std::cout << "- " << Utils::EnumUtils::bookTypeString(type) << std::endl;
 	}
 
 
@@ -69,7 +69,7 @@ void test()
 int main()
 {
 	std::cout << "Hello World" << std::endl;
-	
+
 	test();
 	/*
 	Publisher p1{ "abc" }, p2{ "abe" }, p3{ "abb" };

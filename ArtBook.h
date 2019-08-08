@@ -1,5 +1,7 @@
 #pragma once
+#include "BookFactory.h"
 #include "Book.h"
+#include "BookCreationResponsibility.h"
 
 
 namespace BookManager
@@ -18,5 +20,33 @@ namespace BookManager
 
 
 		};
+
+		class MaillonCreationBookArtBook final : public Utils::BookCreationResponsibility
+			{
+			private:
+				class MaillonRegister {
+				public:
+					MaillonRegister() {
+						BookManager::Book::BookFactory::append(std::make_unique<MaillonCreationBookArtBook>());
+					}
+				};
+
+				static MaillonRegister maillonRegister;
+
+			public:
+				template <typename ...Ts>
+				MaillonCreationBookArtBook(Ts&& ...args)
+					: BookCreationResponsibility(std::forward<Ts>(args)...) {}
+
+				BookType getContext() const override {
+					return BookType::ArtBook;
+				}
+
+			protected:
+				std::shared_ptr<Abstraction::Book> createBook(const BookType& context) final {
+					return std::make_shared<Book::Artbook>();
+				}
+
+			};
 	} // namespace Book
 } // namespace BookManager

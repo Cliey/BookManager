@@ -1,32 +1,28 @@
-# Nous voulons un cmake "récent" pour utiliser les dernières fonctionnalités
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_CXX_COMPILER /cygdrive/c/cygwin64/bin/g++.exe --std=c++1z)
-#set(CMAKE_CXX_COMPILER C:/cygwin64/bin/g++.exe --std=c++1z)
 #set(CMAKE_C_COMPILER_WORKS 1)
 #set(CMAKE_CXX_COMPILER_WORKS 1)
 
-# Notre projet est étiqueté hello
+# Project Name
 project(BookManager)
 
-# Crée des variables avec les fichiers à compiler
 set(SRCS
-	Book.cpp
 	BookCreationResponbility.cpp
-	BookFactory.cpp
 	MaillonCreationBookArtBook.cpp
-	DrawBook.cpp
-	main.cpp
 	MaillonCreationBookComics.cpp
 	MaillonCreationBookManga.cpp
 	MaillonCreationBookNovel.cpp
+	Book.cpp
+	DrawBook.cpp
 	Utils.cpp
+	main.cpp
+	BookFactory.cpp
     )
-    
+
 set(HEADERS
+	BookCreationResponsibility.h
     ArtBook.h
 	Book.h
-	BookCreationResponsibility.h
-	BookFactory.h
 	BookStatus.h
 	BookType.h
 	Category.h
@@ -43,7 +39,8 @@ set(HEADERS
 	Publisher.h
 	Role.h
 	Utils.h
+	BookFactory.h
     )
-	
-# On indique que l'on veut un exécutable "hello" compilé à partir des fichiers décrits par les variables SRCS et HEADERS
+
+# Exectuable name is Bookmmanager, compiled from files stored in SRCS and HEADERS
 add_executable(BookManager ${SRCS} ${HEADERS})

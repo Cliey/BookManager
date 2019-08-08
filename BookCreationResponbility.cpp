@@ -1,4 +1,5 @@
 #include <memory>
+#include <iostream>
 #include "BookCreationResponsibility.h"
 
 namespace BookManager
@@ -11,7 +12,7 @@ namespace BookManager
 			{
 			}
 
-			BookCreationResponsibility::BookCreationResponsibility(std::unique_ptr<BookCreationResponsibility>&& next) 
+			BookCreationResponsibility::BookCreationResponsibility(std::unique_ptr<BookCreationResponsibility>&& next)
 				: next(std::move(next))
 			{
 			}
@@ -19,11 +20,20 @@ namespace BookManager
 			std::shared_ptr<Abstraction::Book> BookCreationResponsibility::handle(const BookType& context)
 			{
 				if (this->canHandle(context))
+				{
+					std::cout << "OK" << std::endl;
 					return this->createBook(context);
+				}
 				else if (this->next != nullptr)
-					return this->next->createBook(context);
+				{
+					std::cout << "Next" << std::endl;
+					return this->next->handle(context);
+				}
 				else
+				{
+					std::cout << "Empty" << std::endl;
 					return std::shared_ptr<Abstraction::Book>();
+				}
 			}
 
 			void BookCreationResponsibility::append(std::unique_ptr<Utils::BookCreationResponsibility>&& maillon)

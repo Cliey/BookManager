@@ -11,33 +11,33 @@ namespace BookManager
 	{
 		namespace Utils
 		{
-			class MaillonCreationBookArtBook final : public BookCreationResponsibility
-			{
-			private:
-				class MaillonRegister {
-				public:
-					MaillonRegister() {
-						BookManager::Book::BookFactory::append(std::make_unique<MaillonCreationBookArtBook>());
-					}
-				};
+			// class MaillonCreationBookArtBook final : public BookCreationResponsibility
+			// {
+			// private:
+			// 	class MaillonRegister {
+			// 	public:
+			// 		MaillonRegister() {
+			// 			BookManager::Book::BookFactory::append(std::make_unique<MaillonCreationBookArtBook>());
+			// 		}
+			// 	};
 
-				static MaillonRegister maillonRegister;
+			// 	static MaillonRegister maillonRegister;
 
-			public:
-				template <typename ...Ts>
-				MaillonCreationBookArtBook(Ts&& ...args)
-					: BookCreationResponsibility(std::forward<Ts>(args)...) {}
+			// public:
+			// 	template <typename ...Ts>
+			// 	MaillonCreationBookArtBook(Ts&& ...args)
+			// 		: BookCreationResponsibility(std::forward<Ts>(args)...) {}
 
-				BookType getContext() const override {
-					return BookType::ArtBook;
-				}
+			// 	BookType getContext() const override {
+			// 		return BookType::ArtBook;
+			// 	}
 
-			protected:
-				virtual std::shared_ptr<Abstraction::Book> createBook(const BookType& context) override final {
-					return std::make_shared<Book::Artbook>();
-				}
+			// protected:
+			// 	virtual std::shared_ptr<Abstraction::Book> createBook(const BookType& context) override final {
+			// 		return std::make_shared<Book::Artbook>();
+			// 	}
 
-			};
+			// };
 		} // namespace Utils
 	} // namespace Book
 } // namespace BookManager#pragma once

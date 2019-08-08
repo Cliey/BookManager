@@ -46,7 +46,7 @@ namespace BookManager
 					return true;
 				return false;
 			}
-	
+
 		private:
 			std::string getFullName()
 			{

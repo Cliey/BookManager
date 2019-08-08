@@ -1,4 +1,4 @@
-#include "MaillonCreationBookComics.h"
+#include "Comics.h"
 
-using namespace BookManager::Book::Utils;
+using namespace BookManager::Book;
 MaillonCreationBookComics::MaillonRegister MaillonCreationBookComics::maillonRegister;

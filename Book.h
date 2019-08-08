@@ -34,6 +34,7 @@ namespace BookManager
 				}
 				Book(std::string title, std::vector<std::shared_ptr<Entity::Person>> author) : title{ title }, author{ author } {}
 				virtual ~Book() = 0;
+
 				/* getter and setter */
 				std::string getTitle() { return this->title; }
 				std::vector<std::shared_ptr<Entity::Person>> getAuthor() { return this->author; }
