@@ -1,6 +1,7 @@
 #include <memory>
 #include <iostream>
-#include "BookCreationResponsibility.h"
+#include "BookCreationResponsibility.hpp"
+#include "../Utils/Utils.hpp"
 
 namespace BookManager
 {
@@ -21,7 +22,7 @@ namespace BookManager
 			{
 				if (this->canHandle(context))
 				{
-					std::cout << "OK" << std::endl;
+					std::cout << "OK " << ::Utils::EnumUtils::bookTypeString(context) << std::endl;
 					return this->createBook(context);
 				}
 				else if (this->next != nullptr)

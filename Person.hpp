@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include "Utils.h"
-#include "Role.h"
+#include "Utils/Utils.hpp"
+#include "Role.hpp"
 
 namespace BookManager
 {

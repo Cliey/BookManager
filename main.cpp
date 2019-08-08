@@ -1,21 +1,24 @@
-#include "BookFactory.h"
 #include <iostream>
 #include <string>
 #include <memory>
-#include "Book.h"
-#include "BookType.h"
-#include "Person.h"
-#include "Role.h"
-#include "Publisher.h"
-#include "Utils.h"
-#include "Novel.h"
-#include "Category.h"
-#include "ArtBook.h"
-#include "Comics.h"
-#include "Manga.h"
+#include "Person.hpp"
+#include "Role.hpp"
+#include "Publisher.hpp"
+#include "Category.hpp"
+#include "Book/ArtBook.hpp"
+#include "Book/Comics.hpp"
+#include "Book/Manga.hpp"
+#include "Book/Novel.hpp"
+#include "Book/Abstract/Book.hpp"
+#include "Book/Enum/BookType.hpp"
+#include "Book/Factory/BookFactory.hpp"
+#include "Managers/Manager.hpp"
+#include "Utils/Utils.hpp"
 
 void test()
 {
+	BookManager::Manager::Manager Manager;
+	Manager.startApp();
 	std::string a{ "Aello" };
 	std::string b{ "Hello" };
 	std::cout << "compare Hello & World : " << a.compare(b) << std::endl;
@@ -64,8 +67,9 @@ void test()
 		std::cout << "- " << Utils::EnumUtils::bookTypeString(type) << std::endl;
 	}
 
-
+	std::shared_ptr<BookManager::Book::Abstraction::Book> newNovel = BookManager::Book::BookFactory::create(BookManager::Book::BookType::Comics);
 }
+
 int main()
 {
 	std::cout << "Hello World" << std::endl;

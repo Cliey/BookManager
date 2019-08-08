@@ -1,8 +1,8 @@
-#include  "Utils.h"
+#include  "Utils.hpp"
 #include <algorithm>
-#include "Role.h"
-#include "BookStatus.h"
-#include "BookType.h"
+#include "../Role.hpp"
+#include "../Book/Enum/BookStatus.hpp"
+#include "../Book/Enum/BookType.hpp"
 
 namespace Utils
 {

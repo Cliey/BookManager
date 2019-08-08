@@ -2,9 +2,9 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "BookCreationResponsibility.h"
-#include "Book.h"
-#include "BookType.h"
+#include "../../MaillonCreation/BookCreationResponsibility.hpp"
+#include "../Abstract/Book.hpp"
+#include "../Enum/BookType.hpp"
 
 namespace BookManager
 {
@@ -23,6 +23,7 @@ namespace BookManager
 			BookFactory() = delete;
 			static void append(std::unique_ptr<Utils::BookCreationResponsibility>&& maillon)
 			{
+				std::cout << "hello" << std::endl;
 				contexts->push_back(maillon->getContext());
 				if (firstItem == nullptr)
 				{

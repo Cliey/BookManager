@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "BookType.h"
-#include "Book.h"
+#include "../Book/Enum/BookType.hpp"
+#include "../Book/Abstract/Book.hpp"
 
 namespace BookManager
 {
