@@ -11,4 +11,4 @@ set(HEADERS
     )
 
 add_library(utils ${SRCS} ${HEADERS})
-target_link_libraries(utils book_enum)
+target_link_libraries(utils book_enum entity_enum)

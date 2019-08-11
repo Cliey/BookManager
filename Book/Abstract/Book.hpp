@@ -8,7 +8,6 @@
 
 
 
-class Publisher;
 class SubCategory;
 
 namespace BookManager
@@ -20,6 +19,7 @@ namespace BookManager
 	namespace Entity
 	{
 		class Person;
+		class Publisher;
 	} // namespace Entity
 	namespace Book
 	{
@@ -46,7 +46,7 @@ namespace BookManager
 				std::shared_ptr<Category::Category> category;
 				std::vector<std::weak_ptr<SubCategory>> subCategory;
 
-				std::shared_ptr<Publisher> publisher;
+				std::shared_ptr<Entity::Publisher> publisher;
 				std::optional<std::time_t> published;
 				std::optional<std::time_t> purchasedDate;
 				std::optional<float> price;

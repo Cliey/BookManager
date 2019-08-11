@@ -16,4 +16,4 @@ set(HEADERS
 
 add_library(maillon_creation ${SRCS} ${HEADERS})
 target_link_libraries(maillon_creation book book_factory)
-# target_include_directories(maillon_creation PUBLIC .)
+target_include_directories(maillon_creation PUBLIC .)

@@ -1,6 +1,7 @@
 #include "Manager.hpp"
 #include <memory>
-#include "../MaillonCreation/BookCreationResponsibility.hpp"
+// #include "MaillonCreation/BookCreationResponsibility.hpp"
+#include "BookCreationResponsibility.hpp"
 #include "../MaillonCreation/MaillonCreationBookArtBook.hpp"
 #include "../MaillonCreation/MaillonCreationBookNovel.hpp"
 #include "../MaillonCreation/MaillonCreationBookComics.hpp"

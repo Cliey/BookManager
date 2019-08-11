@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <memory>
-#include "Person.hpp"
-#include "Role.hpp"
-#include "Publisher.hpp"
 #include "Category.hpp"
+#include "Entity/Person.hpp"
+#include "Entity/Enum/Role.hpp"
+#include "Entity/Publisher.hpp"
 #include "Book/ArtBook.hpp"
 #include "Book/Comics.hpp"
 #include "Book/Manga.hpp"
@@ -22,7 +22,7 @@ void test()
 	std::string a{ "Aello" };
 	std::string b{ "Hello" };
 	std::cout << "compare Hello & World : " << a.compare(b) << std::endl;
-	Publisher p{ "haRaps" }, p2{ "haraps" };
+	BookManager::Entity::Publisher p{ "haRaps" }, p2{ "haraps" };
 	std::cout << "publisher = " << p2.getName() << std::endl;
 	std::cout << "p1==p2 = " << std::boolalpha << (p == p2) << std::endl;
 	p2.setName("j'ai lu");
