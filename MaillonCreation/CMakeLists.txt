@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(maillon_creation CXX)
+set(LIB_NAME maillon_creation)
+project(${LIB_NAME} CXX)
 
 set(SRCS
 	BookCreationResponsibility.cpp
@@ -14,6 +15,6 @@ set(HEADERS
     MaillonCreationBookNovel.hpp
     )
 
-add_library(maillon_creation ${SRCS} ${HEADERS})
-target_link_libraries(maillon_creation book book_factory)
-target_include_directories(maillon_creation PUBLIC .)
+add_library(${LIB_NAME} ${SRCS} ${HEADERS})
+target_link_libraries(${LIB_NAME} book book_factory)
+target_include_directories(${LIB_NAME} PUBLIC .)

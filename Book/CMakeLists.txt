@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(book CXX)
+
+set(LIB_NAME book)
+
+project(${LIB_NAME})
+
 add_subdirectory(Abstract)
 add_subdirectory(Factory)
 add_subdirectory(Enum)
@@ -17,6 +21,6 @@ set(HEADERS
     Novel.hpp
     )
 
-add_library(book ${SRCS} ${HEADERS})
-target_link_libraries(book book_abstract)
-# target_include_directories(book PUBLIC .)
+add_library(${LIB_NAME} ${SRCS} ${HEADERS})
+target_link_libraries(${LIB_NAME} book_abstract)
+# target_include_directories(${LIB_NAME} PUBLIC .)

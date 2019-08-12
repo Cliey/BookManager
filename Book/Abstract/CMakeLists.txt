@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(book_abstract CXX)
+set(LIB_NAME book_abstract)
+
+project(${LIB_NAME})
 
 set(SRCS
     Book.cpp
@@ -12,6 +14,6 @@ set(HEADERS
     DrawBook.hpp
     )
 
-add_library(book_abstract ${SRCS} ${HEADERS})
-target_link_libraries(book_abstract book_enum)
+add_library(${LIB_NAME} ${SRCS} ${HEADERS})
+target_link_libraries(${LIB_NAME} book_enum)
 # target_include_directories(book_abstract PUBLIC .)

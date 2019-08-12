@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(entity_enum CXX)
+set(LIB_NAME entity_enum)
+project(${LIB_NAME} CXX)
 
 set(HEADERS
     Role.hpp
     )
 
-add_library(entity_enum ${HEADERS})
-set_target_properties(entity_enum PROPERTIES LINKER_LANGUAGE CXX)
+add_library(${LIB_NAME} ${HEADERS})
+set_target_properties(${LIB_NAME} PROPERTIES LINKER_LANGUAGE CXX)

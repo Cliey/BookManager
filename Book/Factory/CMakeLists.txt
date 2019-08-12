@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(book_factory CXX)
+set(LIB_NAME book_factory)
+
+project(${LIB_NAME})
 
 set(SRCS
     BookFactory.cpp
@@ -10,6 +12,6 @@ set(HEADERS
     BookFactory.hpp
     )
 
-add_library(book_factory ${SRCS} ${HEADERS})
-target_link_libraries(book_factory book_abstract)
-# target_include_directories(book_factory PUBLIC .)
+add_library(${LIB_NAME} ${SRCS} ${HEADERS})
+target_link_libraries(${LIB_NAME} book_abstract)
+# target_include_directories(${LIB_NAME} PUBLIC .)

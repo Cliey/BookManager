@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(entity)
+set(LIB_NAME entity)
+
+project(${LIB_NAME})
+
 add_subdirectory(Enum)
 
 set(HEADERS
@@ -8,6 +11,6 @@ set(HEADERS
     Publisher.hpp
     )
 
-add_library(entity ${HEADERS})
-set_target_properties(entity PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(entity utils)
+add_library(${LIB_NAME} ${HEADERS})
+set_target_properties(${LIB_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+target_link_libraries(${LIB_NAME} utils)

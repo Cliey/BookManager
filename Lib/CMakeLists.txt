@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(LIB_NAME utils)
+set(LIB_NAME lib)
 project(${LIB_NAME} CXX)
 
+# add_subdirectory(json)
+
 set(SRCS
-    Utils.cpp
+	dummy.cpp
     )
 
 set(HEADERS
-    Utils.hpp
+    json.hpp
     )
 
 add_library(${LIB_NAME} ${SRCS} ${HEADERS})
-target_link_libraries(${LIB_NAME} book_enum entity_enum)
+target_include_directories(${LIB_NAME} PUBLIC .)
+
+

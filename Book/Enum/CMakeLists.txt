@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(book_enum CXX)
+set(LIB_NAME book_enum)
+
+project(${LIB_NAME})
 
 set(HEADERS
     BookStatus.hpp
     BookType.hpp)
 
-add_library(book_enum ${HEADERS})
-set_target_properties(book_enum PROPERTIES LINKER_LANGUAGE CXX)
+add_library(${LIB_NAME} ${HEADERS})
+set_target_properties(${LIB_NAME} PROPERTIES LINKER_LANGUAGE CXX)

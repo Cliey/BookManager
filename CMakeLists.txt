@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_CXX_COMPILER /cygdrive/c/cygwin64/bin/g++.exe --std=c++1z)
-#set(CMAKE_C_COMPILER_WORKS 1)
-#set(CMAKE_CXX_COMPILER_WORKS 1)
+
+
 
 # Project Name
 project(BookManager CXX)
@@ -11,6 +11,8 @@ add_subdirectory(Entity)
 add_subdirectory(MaillonCreation)
 add_subdirectory(Managers)
 add_subdirectory(Utils)
+add_subdirectory(Lib)
+
 
 set(SRCS
 	main.cpp
