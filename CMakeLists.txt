@@ -13,7 +13,6 @@ add_subdirectory(Managers)
 add_subdirectory(Utils)
 add_subdirectory(Lib)
 
-
 set(SRCS
 	main.cpp
     )
@@ -24,4 +23,12 @@ set(HEADERS
 
 # Exectuable name is BookManager, compiled from files stored in SRCS and HEADERS
 add_executable(BookManager ${SRCS} ${HEADERS})
-target_link_libraries(BookManager book book_factory maillon_creation managers utils entity)
+target_link_libraries(BookManager
+    PRIVATE
+        book::types
+        book::factory
+        entity::types
+        maillon_creation
+        managers
+        utils
+    )

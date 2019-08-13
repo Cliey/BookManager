@@ -2,18 +2,18 @@
 #include <string>
 #include <memory>
 #include "Category.hpp"
-#include "Entity/Person.hpp"
-#include "Entity/Enum/Role.hpp"
-#include "Entity/Publisher.hpp"
-#include "Book/ArtBook.hpp"
-#include "Book/Comics.hpp"
-#include "Book/Manga.hpp"
-#include "Book/Novel.hpp"
-#include "Book/Abstract/Book.hpp"
-#include "Book/Enum/BookType.hpp"
-#include "Book/Factory/BookFactory.hpp"
+#include "BookAbstract/Book.hpp"
+#include "BookEnum/BookType.hpp"
+#include "BookFactory/BookFactory.hpp"
+#include "BookTypes/ArtBook.hpp"
+#include "BookTypes/Comics.hpp"
+#include "BookTypes/Manga.hpp"
+#include "BookTypes/Novel.hpp"
+#include "EntityTypes/Person.hpp"
+#include "EntityTypes/Publisher.hpp"
+#include "EntityEnum/Role.hpp"
 #include "Managers/Manager.hpp"
-#include "Utils/Utils.hpp"
+#include "Utils/EnumUtils.hpp"
 
 void test()
 {

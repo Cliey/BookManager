@@ -10,10 +10,13 @@ set(SRCS
     )
 
 set(HEADERS
-    json.hpp
+    include/json/json.hpp
     )
 
-add_library(${LIB_NAME} ${SRCS} ${HEADERS})
-target_include_directories(${LIB_NAME} PUBLIC .)
+add_library(${LIB_NAME} ${SRCS})
+target_include_directories(${LIB_NAME}
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}/include
+    )
 
 

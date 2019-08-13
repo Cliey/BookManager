@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "Utils/Utils.hpp"
+#include "Utils/StringUtils.hpp"
 
 class SubCategory;
 namespace BookManager

@@ -1,0 +1,1 @@
+#include "BookTypes/Novel.hpp"
