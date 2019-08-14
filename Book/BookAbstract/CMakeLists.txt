@@ -25,4 +25,6 @@ target_link_libraries(${LIB_NAME}
 target_include_directories(book_abstract
     PUBLIC
         ${PROJECT_SOURCE_DIR}/include
+    PRIVATE
+        src
     )

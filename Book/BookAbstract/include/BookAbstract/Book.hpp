@@ -38,6 +38,7 @@ namespace BookManager
 				/* getter and setter */
 				std::string getTitle() { return this->title; }
 				std::vector<std::shared_ptr<Entity::Person>> getAuthor() { return this->author; }
+				void setTitle(std::string title) { this->title = title; }
 
 			private:
 				std::string title;

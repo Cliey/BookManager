@@ -5,11 +5,13 @@ project(${LIB_NAME} CXX)
 
 
 set(SRCS
-	src/Manager.cpp
+	src/GeneralManager.cpp
+	src/OptionManager.cpp
     )
 
 set(HEADERS
-	include/Manager/Manager.hpp
+	include/Manager/GeneralManager.hpp
+	include/Manager/OptionManager.hpp
     )
 
 add_library(${LIB_NAME} ${SRCS})
@@ -21,4 +23,7 @@ target_link_libraries(${LIB_NAME}
     )
 target_include_directories(managers
     PUBLIC
-        ${PROJECT_SOURCE_DIR}/include)
+        ${PROJECT_SOURCE_DIR}/include
+    PRIVATE
+        src
+    )
