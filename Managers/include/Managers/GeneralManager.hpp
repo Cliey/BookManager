@@ -6,22 +6,22 @@ namespace BookManager
     namespace Manager
     {
 
-        class OptionManager;
+        class SettingsManager;
 
         class GeneralManager
         {
         public:
             GeneralManager() = default;
             void startApp();
-            void saveOption();
+            void saveSettings();
         private:
             void registerHandlerFactory();
-            void loadOption();
-            void setDefaultOption();
+            void loadSettings();
+            void setDefaultSettings();
             void loadDatabase();
 
-            // nlohmann::json optionJson;
-            OptionManager* optionManager;
+            // nlohmann::json SettingsJson;
+            SettingsManager* SettingsManager;
         };
     } // namespace Manager
 } // namespace BookManager

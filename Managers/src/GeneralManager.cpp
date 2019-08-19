@@ -1,5 +1,5 @@
 #include "Managers/GeneralManager.hpp"
-#include "Managers/OptionManager.hpp"
+#include "Managers/SettingsManager.hpp"
 #include <memory>
 #include <fstream>
 #include <iomanip>
@@ -17,7 +17,7 @@ namespace BookManager
         void GeneralManager::startApp()
         {
             registerHandlerFactory();
-            optionManager = OptionManager::getOptionManager();
+            SettingsManager = SettingsManager::getSettingsManager();
             loadDatabase();
         }
 

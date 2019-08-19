@@ -6,12 +6,12 @@ project(${LIB_NAME} CXX)
 
 set(SRCS
 	src/GeneralManager.cpp
-	src/OptionManager.cpp
+	src/SettingsManager.cpp
     )
 
 set(HEADERS
 	include/Manager/GeneralManager.hpp
-	include/Manager/OptionManager.hpp
+	include/Manager/SettingsManager.hpp
     )
 
 add_library(${LIB_NAME} ${SRCS})
