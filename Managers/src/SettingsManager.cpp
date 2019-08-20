@@ -40,54 +40,8 @@ namespace BookManager
             }
 
             std::cout << "Settings loaded : " << std::endl;
-            // std::cout << std::setw(4) << settingsJson << std::endl;
-            // std::string champ{"Book"};
-            // std::cout << std::setw(4) << settingsJson[champ.c_str()] << std::endl;
+            std::cout << std::setw(4) << settingsJson << std::endl;
             saveSettings();
-
-            // std::cout << std::setw(4) << settingsJson << std::endl;
-
-            // std::cout << "XX - BookBool = " <<  getSettings<bool>(settingsJson, "Book") << std::endl; Marche pas
-            std::cout << "XX1 - showCover = " << std::boolalpha << getSettings<bool>(settingsJson, "Book", "showCover") << std::endl;
-            // std::cout << "XX - Book = " << getSettings<bool>(settingsJson, "Book") << std::endl;
-            std::cout << "XX2 - Book = " << getSettings<nlohmann::json>(settingsJson, "Book") << std::endl;
-            auto BookJson = getSettings<nlohmann::json>(settingsJson, "Book");
-            std::cout << "XX3 - showCover from Bookjson = " << getSettings<bool>(BookJson, "showCover") << std::endl;
-            try {
-                std::cout << "XX4 - showCover from Bookjson string = " << getSettings<std::string>(BookJson, "showCover") << std::endl;
-            }
-            catch(std::exception& e)
-            {
-                std::cout <<"error catch : " << e.what() << std::endl;
-            }
-
-            try {
-                std::cout << "XX5 - showCover from Bookjson nlohmann::json = " << getSettings<nlohmann::json>(BookJson, "showCover") << std::endl;
-            }
-            catch(std::exception& e)
-            {
-                std::cout <<"error catch : " << e.what() << std::endl;
-            }
-            std::cout << "XX6 - Book in book = " << getSettings<nlohmann::json>(settingsJson, "Book", "Book") << std::endl;
-            settingsJson["Book"]["sort"] = sorting::price_desc;
-            std::cout << "XX7 - sort string ? = " <<  settingsJson["Book"]["sort"].is_string() << std::endl;
-            std::cout << "XX8 - sort structured ? = " <<  settingsJson["Book"]["sort"].is_structured() << std::endl;
-
-            try {
-                std::cout << "XX9 - Book bool = " << getSettings<bool>(settingsJson, "Book") << std::endl;
-            }
-            catch(std::exception& e)
-            {
-                std::cout <<"error catch : " << e.what() << std::endl;
-            }
-            // settingsJson["Book"]["showCover"] = false;
-            // for (nlohmann::json::iterator it = settingsJson["Book"].begin(); it != settingsJson["Book"].end(); ++it)
-            // {
-            //     std::cout << *it << '\n';
-            // }
-            // for (auto& element : settingsJson["Book"].items()) {
-            //     std::cout << element.key() << " -> " << element.value() << '\n';
-            // }
         }
 
         template<>
@@ -99,7 +53,7 @@ namespace BookManager
                 if(!foundValue->is_structured())
                 {
                     std::stringstream errorStr;
-                    errorStr << "Error Field [\"" << field << "\"] exist but the return type (nlohmann::json) is not good!" << std::endl;
+                    errorStr << "Error Field [\"" << field << "\"] exist but the return type (nlohmann::json) is not good!";
                     throw std::overflow_error(errorStr.str());
                 }
 

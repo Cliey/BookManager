@@ -1,6 +1,7 @@
 # Ignore buil directory and .vscode folder.
 build
 .vscode
+Note.txt
 
 # Ignore .oa files
 .[oa]

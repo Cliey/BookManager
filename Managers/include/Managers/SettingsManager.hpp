@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include "json/json.hpp"
+#include <sstream>
+#include <nlohmann_json/json.hpp>
 
 namespace BookManager
 {
@@ -24,15 +25,17 @@ namespace BookManager
         public:
             static SettingsManager *getSettingsManager();
             void saveSettings();
-            template<typename T>
-            T getSettings(nlohmann::json&, char const*);
-            template<typename T, typename U = char const*, typename... Args>
-            T getSettings(nlohmann::json&, U, Args...);
+            template<typename T, typename... Args>
+            T getOneSetting(char const*, Args...);
             void printSettings();
         private:
             SettingsManager();
             void loadSettings();
             void setDefaultSettings();
+            template<typename T>
+            T getSettings(nlohmann::json&, char const*);
+            template<typename T, typename U = char const*, typename... Args>
+            T getSettings(nlohmann::json&, U, Args...);
             bool isSettingsExist(std::string);
             bool isSettingsExist(nlohmann::json&, nlohmann::json::iterator&);
 
@@ -48,14 +51,9 @@ namespace BookManager
             {
                 if(foundValue->is_structured())
                 {
-                    // std::stringstream errorStr;
-                    // errorStr << "Error Field [\"" << field << "\"] exist but the return type (nlohmann::json) is not good!" << std::endl;
-                    // throw std::overflow_error(errorStr.str());
-                    // std::stringstream errorStr;
-                    // errorStr << "Error Field exist but the return type ("<< typeid(T).name() << ") is not good, field [\"" << field << "\"] is a structure!" << std::endl;
-                    // throw std::overflow_error(errorStr.str());
-                    std::cout << "Error Field exist but the return type ("<< typeid(T).name() << ") is not good, field [\"" << field << "\"] is a structure!" << std::endl;
-                    return T();
+                    std::stringstream errorStr;
+                    errorStr << "Error Field [\"" << field << "\"] exist but the return type ("<< typeid(T).name() << ") is not good, field [\"" << field << "\"] is a structure!";
+                    throw std::overflow_error(errorStr.str());
                 }
 
                 try {
@@ -89,6 +87,12 @@ namespace BookManager
             }
             std::cout << "ERROR Field doesn't exist!" << std::endl;
             return T();
+        }
+
+        template<typename T, typename... Args>
+        T SettingsManager::getOneSetting(char const* firstField, Args... args)
+        {
+            return getSettings<T>(settingsJson, firstField, args...);
         }
     } // namespace Manager
 } // namespace BookManager

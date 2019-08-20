@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.0)
 set(LIB_NAME managers)
 project(${LIB_NAME} CXX)
 
+add_subdirectory(ut)
+
 
 set(SRCS
 	src/GeneralManager.cpp
@@ -26,4 +28,5 @@ target_include_directories(managers
         ${PROJECT_SOURCE_DIR}/include
     PRIVATE
         src
+        ut
     )
