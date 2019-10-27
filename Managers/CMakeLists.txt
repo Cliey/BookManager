@@ -22,6 +22,7 @@ target_link_libraries(${LIB_NAME}
         book::factory
         maillon_creation
         lib
+        utils
     )
 target_include_directories(managers
     PUBLIC

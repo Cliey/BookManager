@@ -54,7 +54,7 @@ namespace BookManager
                 {
                     std::stringstream errorStr;
                     errorStr << "Error Field [\"" << field << "\"] exist but the return type (nlohmann::json) is not good!";
-                    throw std::overflow_error(errorStr.str());
+                    throw Utils::Exceptions::E_TypeError(errorStr.str());
                 }
 
                 try {
@@ -62,8 +62,6 @@ namespace BookManager
                 }
                 catch(const std::exception& e)
                 {
-                    // Propagate the exception
-                    // std::cout <<"Error catch : " << e.what() << std::endl;
                     throw;
                 }
             }

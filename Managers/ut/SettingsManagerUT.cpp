@@ -1,4 +1,5 @@
 #include "../include/Managers/SettingsManager.hpp"
+#include "Utils/Exceptions.hpp"
 #include <gtest/gtest.h>
 
 using namespace BookManager::Manager;
@@ -64,28 +65,27 @@ TEST_F(SettingsManagerTest, testGetOneSettingWithJsonStruct_DefaultSettings)
 TEST_F(SettingsManagerTest, testGetOneSettingWithStringOnBool_Exception_DefaultSettings)
 {
     std::cout << "To modify, with Exception Handler" << std::endl;
-    EXPECT_THROW(sut->getOneSetting<std::string>("Book", "showCover"), std::exception);
-
-    try {
-        sut->getOneSetting<std::string>("Book", "showCover");
-    }
-    catch(std::exception& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
+    EXPECT_THROW(sut->getOneSetting<std::string>("Book", "showCover"), nlohmann::json::type_error);
+    // try {
+    //     sut->getOneSetting<std::string>("Book", "showCover");
+    // }
+    // catch(nlohmann::json::type_error& e)
+    // {
+    //     std::cout <<"error catch : " << e.what() << std::endl;
+    // }
 }
 
 TEST_F(SettingsManagerTest, testGetOneSettingWithJsonObjectOnBool_Exception_DefaultSettings)
 {
     std::cout << "To modify, with Exception Handler" << std::endl;
-    EXPECT_THROW(sut->getOneSetting<nlohmann::json>("Book", "showCover"), std::overflow_error);
-    try {
-        sut->getOneSetting<nlohmann::json>("Book", "showCover");
-    }
-    catch(std::exception& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
+    EXPECT_THROW(sut->getOneSetting<nlohmann::json>("Book", "showCover"), Utils::Exceptions::E_TypeError);
+    // try {
+    //     sut->getOneSetting<nlohmann::json>("Book", "showCover");
+    // }
+    // catch(Utils::Exceptions::E_TypeError& e)
+    // {
+    //     std::cout <<"error catch : " << e.what() << std::endl;
+    // }
 }
 
 TEST_F(SettingsManagerTest, testTypeTestOnFields)
@@ -99,11 +99,11 @@ TEST_F(SettingsManagerTest, testGetOneSettingWithBoolOnJsonObject_Exception_Defa
 {
     std::cout << "To modify, with Exception Handler" << std::endl;
     EXPECT_THROW(sut->getOneSetting<bool>("Book"), std::exception);
-    try {
-        sut->getOneSetting<bool>("Book");
-    }
-    catch(std::exception& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
+    // try {
+    //     sut->getOneSetting<bool>("Book");
+    // }
+    // catch(std::exception& e)
+    // {
+    //     std::cout <<"error catch : " << e.what() << std::endl;
+    // }
 }

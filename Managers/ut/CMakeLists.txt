@@ -12,6 +12,7 @@ add_executable(${LIB_NAME}_UT SettingsManagerUT.cpp)
 target_link_libraries(${LIB_NAME}_UT
     gtest_main
     managers
+    utils
 )
 
 add_test(${LIB_NAME}_UT ${LIB_NAME}_UT)

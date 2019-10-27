@@ -10,6 +10,7 @@ set(SRCS
 
 set(HEADERS
     include/Utils/EnumUtils.hpp
+    include/Utils/Exceptions.hpp
     include/Utils/StringUtils.hpp
     )
 
