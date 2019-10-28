@@ -1,4 +1,4 @@
-#include "../include/Managers/SettingsManager.hpp"
+#include "Managers/SettingsManager.hpp"
 #include "Utils/Exceptions.hpp"
 #include <gtest/gtest.h>
 

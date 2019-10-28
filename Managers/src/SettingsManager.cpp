@@ -21,6 +21,7 @@ namespace BookManager
         {
             loadSettings();
         }
+
         void SettingsManager::loadSettings()
         {
             nlohmann::json Settings;

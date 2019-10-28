@@ -18,9 +18,7 @@ add_subdirectory(3rd_party/google-test)
 enable_testing()
 
 # SQLiteCpp
-# add SQLite3 C++ wrapper arround sqlite3 library (and sqlite3 itself provided for ease of use)
-# NOTE: here you can set CMake variables to avoid building Example, as well as cpplint, cppcheck...
-# NOTE: or set them in the cmake commande line (see for instance provided build.bat/build.sh scripts)
+# Deactivate cppcheck and cpplint for SQLite
 set(SQLITECPP_RUN_CPPCHECK OFF CACHE BOOL "" FORCE)
 set(SQLITECPP_RUN_CPPLINT OFF CACHE BOOL "" FORCE)
 
