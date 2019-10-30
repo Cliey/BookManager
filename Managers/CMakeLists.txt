@@ -8,13 +8,13 @@ add_subdirectory(ut)
 
 set(SRCS
 	src/GeneralManager.cpp
-	src/DataBasemanager.cpp
+	src/DatabaseManager.cpp
 	src/SettingsManager.cpp
     )
 
 set(HEADERS
 	include/Manager/GeneralManager.hpp
-	include/Manager/DataBasemanager.hpp
+	include/Manager/DatabaseManager.hpp
 	include/Manager/SettingsManager.hpp
     )
 
@@ -29,10 +29,10 @@ target_link_libraries(${LIB_NAME}
         SQLiteCpp
         sqlite3
     )
+
 target_include_directories(managers
     PUBLIC
         ${PROJECT_SOURCE_DIR}/include
     PRIVATE
         src
-        ut
     )

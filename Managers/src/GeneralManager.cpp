@@ -1,4 +1,5 @@
 #include "Managers/GeneralManager.hpp"
+#include "Managers/DatabaseManager.hpp"
 #include "Managers/SettingsManager.hpp"
 #include <memory>
 #include <fstream>
@@ -17,7 +18,8 @@ namespace BookManager
         void GeneralManager::startApp()
         {
             registerHandlerFactory();
-            SettingsManager = SettingsManager::getSettingsManager();
+            settingsManager = SettingsManager::getSettingsManager();
+            SettingsManager::getSettingsManager();
             loadDatabase();
         }
 
@@ -33,6 +35,7 @@ namespace BookManager
         void GeneralManager::loadDatabase()
         {
             std::cout << "Load Database...." << std::endl;
+            databaseManager = DatabaseManager::getDbManager();
         }
     } // namespace Manager
 } // namespace BookManager

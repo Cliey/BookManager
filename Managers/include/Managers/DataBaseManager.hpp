@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <SQLiteCpp/SQLiteCpp.h>
 
 namespace BookManager
@@ -6,17 +7,15 @@ namespace BookManager
     namespace Manager
     {
 
-        class DataBaseManager
+        class DatabaseManager
         {
         public:
-            static DataBaseManager* getDbManager();
+            static std::shared_ptr<DatabaseManager> getDbManager();
 
         private:
-            DataBaseManager();
+            DatabaseManager();
             void loadDatabase();
             void createDatabase();
-
-            static DataBaseManager* instance;
         };
 
     } // namespace Manager

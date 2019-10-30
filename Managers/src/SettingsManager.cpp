@@ -6,13 +6,14 @@ namespace BookManager
 {
     namespace Manager
     {
-        SettingsManager* SettingsManager::instance = nullptr;
 
-        SettingsManager* SettingsManager::getSettingsManager()
+        std::shared_ptr<SettingsManager> SettingsManager::getSettingsManager()
         {
+            static std::shared_ptr<SettingsManager> instance = nullptr;
+
             if(!instance)
             {
-                instance = new SettingsManager;
+                instance.reset(new SettingsManager());
             }
             return instance;
         }

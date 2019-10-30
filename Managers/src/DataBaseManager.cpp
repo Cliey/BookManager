@@ -1,29 +1,31 @@
-#include "Managers/DataBaseManager.hpp"
+#include "Managers/DatabaseManager.hpp"
+#include <iostream>
 
 namespace BookManager
 {
     namespace Manager
     {
-        DataBaseManager* DataBaseManager::instance = nullptr;
-
-        DataBaseManager* DataBaseManager::getDbManager()
+        std::shared_ptr<DatabaseManager> DatabaseManager::getDbManager()
         {
+            static std::shared_ptr<DatabaseManager> instance = nullptr;
+
             if(!instance)
             {
-                instance = new DataBaseManager;
+                instance.reset(new DatabaseManager);
             }
             return instance;
         }
 
-        DataBaseManager::DataBaseManager()
+        DatabaseManager::DatabaseManager()
         {
             // loadDatabase();
+            std::cout << "DataBase Loading....." << std::endl;
         }
 
-        void DataBaseManager::loadDatabase()
+        void DatabaseManager::loadDatabase()
         {}
 
-        void DataBaseManager::createDatabase()
+        void DatabaseManager::createDatabase()
         {}
 
     } // namespace Manager

@@ -1,5 +1,5 @@
 #pragma once
-#include <nlohmann_json/json.hpp>
+#include <memory>
 
 namespace BookManager
 {
@@ -7,6 +7,7 @@ namespace BookManager
     {
 
         class SettingsManager;
+        class DatabaseManager;
 
         class GeneralManager
         {
@@ -21,7 +22,8 @@ namespace BookManager
             void loadDatabase();
 
             // nlohmann::json SettingsJson;
-            SettingsManager* SettingsManager;
+            std::shared_ptr<SettingsManager> settingsManager;
+            std::shared_ptr<DatabaseManager> databaseManager;
         };
     } // namespace Manager
 } // namespace BookManager

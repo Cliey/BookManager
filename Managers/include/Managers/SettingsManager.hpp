@@ -1,6 +1,7 @@
 #pragma once
 #include "Utils/Exceptions.hpp"
 #include <string>
+#include <memory>
 #include <iostream>
 #include <sstream>
 #include <nlohmann_json/json.hpp>
@@ -24,23 +25,28 @@ namespace BookManager
         class SettingsManager
         {
         public:
-            static SettingsManager *getSettingsManager();
+            static std::shared_ptr<SettingsManager> getSettingsManager();
+
             void saveSettings();
             template<typename T, typename... Args>
             T getOneSetting(char const*, Args...);
             void printSettings();
+
+            SettingsManager(const SettingsManager&) = delete;
+            SettingsManager& operator=(const SettingsManager&) = delete;
         private:
             SettingsManager();
+
             void loadSettings();
             void setDefaultSettings();
             template<typename T>
             T getSettings(nlohmann::json&, char const*);
             template<typename T, typename U = char const*, typename... Args>
             T getSettings(nlohmann::json&, U, Args...);
+
             bool isSettingsExist(std::string);
             bool isSettingsExist(nlohmann::json&, nlohmann::json::iterator&);
 
-            static SettingsManager *instance;
             nlohmann::json settingsJson;
         };
 

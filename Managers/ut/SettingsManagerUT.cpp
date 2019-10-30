@@ -42,7 +42,7 @@ public:
         sut = SettingsManager::getSettingsManager();
     }
 
-    SettingsManager* sut;
+    std::shared_ptr<SettingsManager> sut;
     nlohmann::json defaultSettings;
 };
 
