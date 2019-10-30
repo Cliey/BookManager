@@ -19,7 +19,6 @@ namespace BookManager
         {
             registerHandlerFactory();
             settingsManager = SettingsManager::getSettingsManager();
-            SettingsManager::getSettingsManager();
             loadDatabase();
         }
 
