@@ -7,7 +7,7 @@ set(SRCS
 	SettingsManagerUT.cpp
     )
 
-add_executable(${LIB_NAME}_UT SettingsManagerUT.cpp)
+add_executable(${LIB_NAME}_UT ${SRCS})
 
 target_link_libraries(${LIB_NAME}_UT
     PUBLIC
@@ -15,5 +15,3 @@ target_link_libraries(${LIB_NAME}_UT
         managers
         utils
 )
-
-add_test(${LIB_NAME}_UT ${LIB_NAME}_UT)

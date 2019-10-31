@@ -3,7 +3,7 @@
 #include <string>
 #include <sstream>
 
-#define EXCEPTION(name_, id_) class E_##name_ : public Utils::Exceptions::Exception { \
+#define ADD_EXCEPTION(name_, id_) class E_##name_ : public Utils::Exceptions::Exception { \
     public: \
         E_##name_(const std::string str) : Exception(id_, #name_, str){} \
     } \
@@ -35,6 +35,7 @@ namespace Utils
                 const std::string exceptionStr;
         };
 
-        EXCEPTION(TypeError, 1);
+        ADD_EXCEPTION(TypeError, 1);
+        ADD_EXCEPTION(FieldNotFound, 2);
     }
 }

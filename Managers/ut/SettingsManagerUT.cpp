@@ -46,12 +46,12 @@ public:
     nlohmann::json defaultSettings;
 };
 
-TEST_F(SettingsManagerTest, testGetOneSettingWithBool_DefaultSettings)
+TEST_F(SettingsManagerTest, testGetValueOneSettingWithBool_DefaultSettings)
 {
-    EXPECT_TRUE(sut->getOneSetting<bool>("Book", "showCover"));
+    EXPECT_TRUE(sut->getValueOneSetting<bool>("Book", "showCover"));
 }
 
-TEST_F(SettingsManagerTest, testGetOneSettingWithJsonStruct_DefaultSettings)
+TEST_F(SettingsManagerTest, testGetValueOneSettingWithJsonStruct_DefaultSettings)
 {
     auto expectedOutput = R"(
             {
@@ -59,51 +59,92 @@ TEST_F(SettingsManagerTest, testGetOneSettingWithJsonStruct_DefaultSettings)
                 "showCover": true
             }
             )"_json;
-    EXPECT_EQ(sut->getOneSetting<nlohmann::json>("Book"), expectedOutput);
+    EXPECT_EQ(sut->getValueOneSetting<nlohmann::json>("Book"), expectedOutput);
 }
 
-TEST_F(SettingsManagerTest, testGetOneSettingWithStringOnBool_Exception_DefaultSettings)
+TEST_F(SettingsManagerTest, testGetValueOneSettingWithStringOnBool_Exception_DefaultSettings)
 {
-    std::cout << "To modify, with Exception Handler" << std::endl;
-    EXPECT_THROW(sut->getOneSetting<std::string>("Book", "showCover"), nlohmann::json::type_error);
-    // try {
-    //     sut->getOneSetting<std::string>("Book", "showCover");
-    // }
-    // catch(nlohmann::json::type_error& e)
-    // {
-    //     std::cout <<"error catch : " << e.what() << std::endl;
-    // }
+    EXPECT_THROW(sut->getValueOneSetting<std::string>("Book", "showCover"), nlohmann::json::type_error);
+    try {
+        sut->getValueOneSetting<std::string>("Book", "showCover");
+    }
+    catch(nlohmann::json::type_error& e)
+    {
+        std::cout <<"error catch : " << e.what() << std::endl;
+    }
 }
 
-TEST_F(SettingsManagerTest, testGetOneSettingWithJsonObjectOnBool_Exception_DefaultSettings)
+TEST_F(SettingsManagerTest, testGetValueOneSettingWithJsonObjectOnBool_Exception_DefaultSettings)
 {
-    std::cout << "To modify, with Exception Handler" << std::endl;
-    EXPECT_THROW(sut->getOneSetting<nlohmann::json>("Book", "showCover"), Utils::Exceptions::E_TypeError);
-    // try {
-    //     sut->getOneSetting<nlohmann::json>("Book", "showCover");
-    // }
-    // catch(Utils::Exceptions::E_TypeError& e)
-    // {
-    //     std::cout <<"error catch : " << e.what() << std::endl;
-    // }
+    EXPECT_THROW(sut->getValueOneSetting<nlohmann::json>("Book", "showCover"), Utils::Exceptions::E_TypeError);
+    try {
+        auto out = sut->getValueOneSetting<nlohmann::json>("Book", "showCover");
+        std::cout << "out = " << out.is_object();
+    }
+    catch(Utils::Exceptions::E_TypeError& e)
+    {
+        std::cout <<"error catch : " << e.what() << std::endl;
+    }
 }
 
 TEST_F(SettingsManagerTest, testTypeTestOnFields)
 {
-    auto bookJson = sut->getOneSetting<nlohmann::json>("Book");
+    auto bookJson = sut->getValueOneSetting<nlohmann::json>("Book");
     EXPECT_TRUE(bookJson["sort"].is_string());
     EXPECT_FALSE(bookJson["sort"].is_structured());
 }
 
-TEST_F(SettingsManagerTest, testGetOneSettingWithBoolOnJsonObject_Exception_DefaultSettings)
+TEST_F(SettingsManagerTest, testGetValueOneSettingWithBoolOnJsonObject_Exception_DefaultSettings)
 {
-    std::cout << "To modify, with Exception Handler" << std::endl;
-    EXPECT_THROW(sut->getOneSetting<bool>("Book"), std::exception);
-    // try {
-    //     sut->getOneSetting<bool>("Book");
-    // }
-    // catch(std::exception& e)
-    // {
-    //     std::cout <<"error catch : " << e.what() << std::endl;
-    // }
+    EXPECT_THROW(sut->getValueOneSetting<bool>("Book"), Utils::Exceptions::E_TypeError);
+    try {
+        sut->getValueOneSetting<bool>("Book");
+    }
+    catch(std::exception& e)
+    {
+        std::cout <<"error catch : " << e.what() << std::endl;
+    }
+}
+
+TEST_F(SettingsManagerTest, testGetValueOneSetting_FieldDoesntExist_FirstLayer)
+{
+    EXPECT_THROW(sut->getValueOneSetting<bool>("Cat", "dog"), Utils::Exceptions::E_FieldNotFound);
+    try {
+        sut->getValueOneSetting<bool>("Cat", "dog");
+    }
+    catch(Utils::Exceptions::E_FieldNotFound& e)
+    {
+        std::cout <<"error catch : " << e.what() << std::endl;
+    }
+}
+
+TEST_F(SettingsManagerTest, testGetValueOneSetting_FieldDoesntExist_SecondLayer)
+{
+    EXPECT_THROW(sut->getValueOneSetting<bool>("Book", "dog"), Utils::Exceptions::E_FieldNotFound);
+    try {
+        sut->getValueOneSetting<bool>("Book", "dog");
+    }
+    catch(Utils::Exceptions::E_FieldNotFound& e)
+    {
+        std::cout <<"error catch : " << e.what() << std::endl;
+    }
+}
+
+TEST_F(SettingsManagerTest, testGetValueOneSetting_FieldDoesntExist_Json)
+{
+    EXPECT_THROW(sut->getValueOneSetting<nlohmann::json>("Child"), Utils::Exceptions::E_FieldNotFound);
+    try {
+        sut->getValueOneSetting<nlohmann::json>("Child");
+    }
+    catch(Utils::Exceptions::E_FieldNotFound& e)
+    {
+        std::cout <<"error catch : " << e.what() << std::endl;
+    }
+}
+
+TEST_F(SettingsManagerTest, testGetValue_ChangeValue)
+{
+    EXPECT_TRUE(sut->getValueOneSetting<bool>("Book", "showCover"));
+    sut->setSettingTo<bool>(false, "Book", "showCover");
+    EXPECT_FALSE(sut->getValueOneSetting<bool>("Book", "showCover"));
 }

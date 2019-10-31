@@ -46,31 +46,6 @@ namespace BookManager
             saveSettings();
         }
 
-        template<>
-        nlohmann::json SettingsManager::getSettings(nlohmann::json& json, char const* field)
-        {
-            if (auto foundValue = json.find(field);
-                isSettingsExist(json, foundValue))
-            {
-                if(!foundValue->is_structured())
-                {
-                    std::stringstream errorStr;
-                    errorStr << "Error Field [\"" << field << "\"] exist but the return type (nlohmann::json) is not good!";
-                    throw Utils::Exceptions::E_TypeError(errorStr.str());
-                }
-
-                try {
-                    return *foundValue;
-                }
-                catch(const std::exception& e)
-                {
-                    throw;
-                }
-            }
-            std::cout << "ERROR Field doesn't exist!" << std::endl;
-            return nlohmann::json();
-        }
-
         void SettingsManager::saveSettings()
         {
             std::ofstream file("./data/Settings.json");

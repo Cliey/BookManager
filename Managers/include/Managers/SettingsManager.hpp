@@ -28,9 +28,15 @@ namespace BookManager
             static std::shared_ptr<SettingsManager> getSettingsManager();
 
             void saveSettings();
-            template<typename T, typename... Args>
-            T getOneSetting(char const*, Args...);
             void printSettings();
+
+            template<typename T, typename... Args>
+                T getValueOneSetting(char const*, Args...);
+            template<typename... Args>
+                nlohmann::json getValueOneSetting(char const*, Args...);
+
+            template<typename T, typename... Args>
+                void setSettingTo(T, char const*, Args...);
 
             SettingsManager(const SettingsManager&) = delete;
             SettingsManager& operator=(const SettingsManager&) = delete;
@@ -39,10 +45,11 @@ namespace BookManager
 
             void loadSettings();
             void setDefaultSettings();
+
             template<typename T>
-            T getSettings(nlohmann::json&, char const*);
+                nlohmann::json::iterator getSettings(nlohmann::json&, char const*);
             template<typename T, typename U = char const*, typename... Args>
-            T getSettings(nlohmann::json&, U, Args...);
+                nlohmann::json::iterator getSettings(nlohmann::json&, U, Args...);
 
             bool isSettingsExist(std::string);
             bool isSettingsExist(nlohmann::json&, nlohmann::json::iterator&);
@@ -51,35 +58,33 @@ namespace BookManager
         };
 
         template<typename T>
-        T SettingsManager::getSettings(nlohmann::json& json, char const* field)
+        nlohmann::json::iterator SettingsManager::getSettings(nlohmann::json& json, char const* field)
         {
             if (auto foundValue = json.find(field);
                 isSettingsExist(json, foundValue))
             {
-                if(foundValue->is_structured())
+                if(foundValue->is_object() && (typeid(T) != typeid(foundValue.value())))
                 {
                     std::stringstream errorStr;
-                    errorStr << "Error Field [\"" << field << "\"] exist but the return type ("<< typeid(T).name() << ") is not good, field [\"" << field << "\"] is a structure!";
+                    errorStr << "Field [\"" << field << "\"] exist but the return type ("<< typeid(T).name() << ") is not good, field [\"" << field << "\"] is a structure!";
                     throw Utils::Exceptions::E_TypeError(errorStr.str());
                 }
 
                 try {
-                    return *foundValue;
+                    return foundValue;
                 }
-                catch(const std::exception& e)
+                catch(const nlohmann::json::exception& e)
                 {
                     throw;
                 }
             }
-            std::cout << "ERROR Field doesn't exist!" << std::endl;
-            return T();
+            std::stringstream errorStr;
+            errorStr << "Field [\"" << field << "\"] doesn't exist!";
+            throw Utils::Exceptions::E_FieldNotFound(errorStr.str());
         }
 
-        template<>
-            nlohmann::json SettingsManager::getSettings(nlohmann::json& json, char const* field);
-
         template<typename T, typename U, typename... Args>
-        T SettingsManager::getSettings(nlohmann::json& json, U firstField, Args... args)
+        nlohmann::json::iterator SettingsManager::getSettings(nlohmann::json& json, U firstField, Args... args)
         {
             if (auto foundValue = json.find(firstField);
                 isSettingsExist(json, foundValue))
@@ -88,16 +93,39 @@ namespace BookManager
                 {
                     return getSettings<T>(json[firstField], args...);
                 }
-                return *foundValue;
+                return foundValue;
             }
-            std::cout << "ERROR Field doesn't exist!" << std::endl;
-            return T();
+            std::stringstream errorStr;
+            errorStr << "Field [\"" << firstField << "\"] doesn't exist!";
+            throw Utils::Exceptions::E_FieldNotFound(errorStr.str());
         }
 
         template<typename T, typename... Args>
-        T SettingsManager::getOneSetting(char const* firstField, Args... args)
+        T SettingsManager::getValueOneSetting(char const* firstField, Args... args)
         {
-            return getSettings<T>(settingsJson, firstField, args...);
+            try
+            {
+                auto desiredSetting = getSettings<T>(settingsJson, firstField, args...);
+                return desiredSetting.value();
+            }
+            catch(const std::exception& e)
+            {
+                throw;
+            }
+        }
+
+        template<typename T, typename... Args>
+            void SettingsManager::setSettingTo(T newValue, char const* firstField, Args... args)
+        {
+            try
+            {
+                auto settingtoModify = getSettings<T>(settingsJson, firstField, args...);
+                *settingtoModify = newValue;
+            }
+            catch(const std::exception& e)
+            {
+                throw;
+            }
         }
     } // namespace Manager
 } // namespace BookManager

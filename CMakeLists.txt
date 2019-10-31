@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.0)
+
 set(CMAKE_CXX_COMPILER /cygdrive/c/cygwin64/bin/g++.exe --std=gnu++1z)
 
+# Activate Coverage when buidling
+option(BM_COVERAGE "Activate Coverage compilation" OFF)
+if (BM_COVERAGE)
+    message ("Compile with Coverage option")
+    find_program( GCOV_PATH gcov )
+    set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+endif ()
 
 
 # Project Name
@@ -21,7 +30,6 @@ enable_testing()
 # Deactivate cppcheck and cpplint for SQLite
 set(SQLITECPP_RUN_CPPCHECK OFF CACHE BOOL "" FORCE)
 set(SQLITECPP_RUN_CPPLINT OFF CACHE BOOL "" FORCE)
-
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/SQLiteCpp)
 
 set(SRCS
@@ -43,3 +51,6 @@ target_link_libraries(BookManager
         managers
         utils
     )
+
+# UTs
+add_test(NAME managers_UT COMMAND managers_UT)
