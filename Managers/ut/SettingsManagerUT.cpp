@@ -1,10 +1,11 @@
 #include "Managers/SettingsManager.hpp"
+#include "Utils/EnumUtils.hpp"
 #include "Utils/Exceptions.hpp"
 #include <gtest/gtest.h>
 
 using namespace BookManager::Manager;
 
-class SettingsManagerTest : public ::testing::Test
+class NewSettingsManagerTest : public ::testing::Test
 {
     /* Default settings : 
         "Book": {
@@ -37,7 +38,7 @@ class SettingsManagerTest : public ::testing::Test
             file << std::se
             */
 public:
-    SettingsManagerTest()
+    NewSettingsManagerTest()
     {
         sut = SettingsManager::getSettingsManager();
     }
@@ -46,105 +47,26 @@ public:
     nlohmann::json defaultSettings;
 };
 
-TEST_F(SettingsManagerTest, testGetValueOneSettingWithBool_DefaultSettings)
+TEST_F(NewSettingsManagerTest, testDefaultValue)
 {
-    EXPECT_TRUE(sut->getValueOneSetting<bool>("Book", "showCover"));
+    EXPECT_TRUE(sut->getBookSettings().showCover);
+    EXPECT_EQ(sut->getBookSettings().sort, Enum::SortingEnumBook::title_asc);
+    EXPECT_EQ(sut->getCategorySettings().sort, Enum::SortingEnumCategory::name_asc);
+    EXPECT_EQ(sut->getPersonSettings().sort, Enum::SortingEnumPerson::name_asc);
 }
 
-TEST_F(SettingsManagerTest, testGetValueOneSettingWithJsonStruct_DefaultSettings)
+TEST_F(NewSettingsManagerTest, testSetNewValue)
 {
-    auto expectedOutput = R"(
-            {
-                "sort": "name_asc",
-                "showCover": true
-            }
-            )"_json;
-    EXPECT_EQ(sut->getValueOneSetting<nlohmann::json>("Book"), expectedOutput);
-}
+    BookSettings newValueBookSetting{false, Enum::SortingEnumBook::dateAdded_desc};
+    sut->setBookSettings(newValueBookSetting);
+    EXPECT_FALSE(sut->getBookSettings().showCover);
+    EXPECT_EQ(sut->getBookSettings().sort, Enum::SortingEnumBook::dateAdded_desc);
 
-TEST_F(SettingsManagerTest, testGetValueOneSettingWithStringOnBool_Exception_DefaultSettings)
-{
-    EXPECT_THROW(sut->getValueOneSetting<std::string>("Book", "showCover"), nlohmann::json::type_error);
-    try {
-        sut->getValueOneSetting<std::string>("Book", "showCover");
-    }
-    catch(nlohmann::json::type_error& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
-}
+    CategorySettings newValueCategorySetting{Enum::SortingEnumCategory::name_desc};
+    sut->setCategorySettings(newValueCategorySetting);
+    EXPECT_EQ(sut->getCategorySettings().sort, Enum::SortingEnumCategory::name_desc);
 
-TEST_F(SettingsManagerTest, testGetValueOneSettingWithJsonObjectOnBool_Exception_DefaultSettings)
-{
-    EXPECT_THROW(sut->getValueOneSetting<nlohmann::json>("Book", "showCover"), Utils::Exceptions::E_TypeError);
-    try {
-        auto out = sut->getValueOneSetting<nlohmann::json>("Book", "showCover");
-        std::cout << "out = " << out.is_object();
-    }
-    catch(Utils::Exceptions::E_TypeError& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
-}
-
-TEST_F(SettingsManagerTest, testTypeTestOnFields)
-{
-    auto bookJson = sut->getValueOneSetting<nlohmann::json>("Book");
-    EXPECT_TRUE(bookJson["sort"].is_string());
-    EXPECT_FALSE(bookJson["sort"].is_structured());
-}
-
-TEST_F(SettingsManagerTest, testGetValueOneSettingWithBoolOnJsonObject_Exception_DefaultSettings)
-{
-    EXPECT_THROW(sut->getValueOneSetting<bool>("Book"), Utils::Exceptions::E_TypeError);
-    try {
-        sut->getValueOneSetting<bool>("Book");
-    }
-    catch(std::exception& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
-}
-
-TEST_F(SettingsManagerTest, testGetValueOneSetting_FieldDoesntExist_FirstLayer)
-{
-    EXPECT_THROW(sut->getValueOneSetting<bool>("Cat", "dog"), Utils::Exceptions::E_FieldNotFound);
-    try {
-        sut->getValueOneSetting<bool>("Cat", "dog");
-    }
-    catch(Utils::Exceptions::E_FieldNotFound& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
-}
-
-TEST_F(SettingsManagerTest, testGetValueOneSetting_FieldDoesntExist_SecondLayer)
-{
-    EXPECT_THROW(sut->getValueOneSetting<bool>("Book", "dog"), Utils::Exceptions::E_FieldNotFound);
-    try {
-        sut->getValueOneSetting<bool>("Book", "dog");
-    }
-    catch(Utils::Exceptions::E_FieldNotFound& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
-}
-
-TEST_F(SettingsManagerTest, testGetValueOneSetting_FieldDoesntExist_Json)
-{
-    EXPECT_THROW(sut->getValueOneSetting<nlohmann::json>("Child"), Utils::Exceptions::E_FieldNotFound);
-    try {
-        sut->getValueOneSetting<nlohmann::json>("Child");
-    }
-    catch(Utils::Exceptions::E_FieldNotFound& e)
-    {
-        std::cout <<"error catch : " << e.what() << std::endl;
-    }
-}
-
-TEST_F(SettingsManagerTest, testGetValue_ChangeValue)
-{
-    EXPECT_TRUE(sut->getValueOneSetting<bool>("Book", "showCover"));
-    sut->setSettingTo<bool>(false, "Book", "showCover");
-    EXPECT_FALSE(sut->getValueOneSetting<bool>("Book", "showCover"));
+    PersonSettings newValuePersonSetting{Enum::SortingEnumPerson::name_desc};
+    sut->setPersonSettings(newValuePersonSetting);
+    EXPECT_EQ(sut->getPersonSettings().sort, Enum::SortingEnumPerson::name_desc);
 }

@@ -18,7 +18,16 @@ namespace BookManager
         void GeneralManager::startApp()
         {
             registerHandlerFactory();
-            settingsManager = SettingsManager::getSettingsManager();
+
+            try
+            {
+                settingsManager = SettingsManager::getSettingsManager();
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+
             loadDatabase();
         }
 

@@ -10,12 +10,15 @@ set(SRCS
 	src/GeneralManager.cpp
 	src/DatabaseManager.cpp
 	src/SettingsManager.cpp
+	src/Utils/SettingsTypes.cpp
     )
 
 set(HEADERS
 	include/Manager/GeneralManager.hpp
 	include/Manager/DatabaseManager.hpp
 	include/Manager/SettingsManager.hpp
+	include/Manager/Utils/SortingEnum.hpp
+	include/Manager/Utils/SettingsTypes.hpp
     )
 
 add_library(${LIB_NAME} ${SRCS})

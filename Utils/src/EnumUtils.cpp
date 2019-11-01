@@ -2,6 +2,7 @@
 #include "BookEnum/BookStatus.hpp"
 #include "BookEnum/BookType.hpp"
 #include "EntityEnum/Role.hpp"
+#include "Managers/Utils/SortingEnum.hpp"
 
 namespace Utils
 {
@@ -9,13 +10,14 @@ namespace Utils
 	{
 		std::string roleString(BookManager::Entity::Role role)
 		{
+			using namespace BookManager::Entity;
 			switch (role)
 			{
-				case BookManager::Entity::Role::Author:
+				case Role::Author:
 					return "Author";
-				case BookManager::Entity::Role::Illustrator:
+				case Role::Illustrator:
 					return "Illustrator";
-				case BookManager::Entity::Role::Undefined:
+				case Role::Undefined:
 				default:
 					return "Undefined";
 			}
@@ -23,13 +25,14 @@ namespace Utils
 
 		std::string bookStatusString(BookManager::Book::BookStatus status)
 		{
+			using namespace BookManager::Book;
 			switch (status)
 			{
-				case BookManager::Book::BookStatus::HaveIt:
+				case BookStatus::HaveIt:
 					return "HaveIt";
-				case BookManager::Book::BookStatus::Listed:
+				case BookStatus::Listed:
 					return "Listed";
-				case BookManager::Book::BookStatus::WantIt:
+				case BookStatus::WantIt:
 					return "WantIt";
 				default:
 					return "Undefined";
@@ -38,19 +41,52 @@ namespace Utils
 
 		std::string bookTypeString(BookManager::Book::BookType type)
 		{
+			using namespace BookManager::Book;
 			switch (type)
 			{
-			case BookManager::Book::BookType::ArtBook:
+			case BookType::ArtBook:
 				return "ArtBook";
-			case BookManager::Book::BookType::Comics:
+			case BookType::Comics:
 				return "Comics";
-			case BookManager::Book::BookType::Manga:
+			case BookType::Manga:
 				return "Manga";
-			case BookManager::Book::BookType::Novel:
+			case BookType::Novel:
 				return "Novel";
 			default:
 				return "Undefined";
 			}
+		}
+
+		std::string sortingEnumBookString(BookManager::Manager::Enum::SortingEnumBook sort)
+		{
+			using namespace BookManager::Manager::Enum;
+			switch(sort)
+			{
+				case SortingEnumBook::authorName_desc :
+					return "authorName_desc";
+				case SortingEnumBook::authorName_asc :
+					return "authorName_asc";
+                case SortingEnumBook::price_desc :
+					return "price_desc";
+				case SortingEnumBook::price_asc :
+					return "price_asc";
+                case SortingEnumBook::title_desc :
+					return "title_desc";
+				case SortingEnumBook::title_asc :
+					return "title_asc";
+                case SortingEnumBook::dateAdded_desc :
+					return "dateAdded_desc";
+				case SortingEnumBook::dateAdded_asc :
+					return "dateAdded_asc";
+                case SortingEnumBook::datePublished_desc :
+					return "datePublished_desc";
+				case SortingEnumBook::datePublished_asc :
+					return "datePublished_asc";
+				case SortingEnumBook::undefined :
+				default:
+					return "Undefined";
+			}
+
 		}
 	} // namespace EnumUtils
 } // namespace Utils

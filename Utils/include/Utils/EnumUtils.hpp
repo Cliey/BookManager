@@ -13,6 +13,14 @@ namespace BookManager
 		enum class BookStatus;
 		enum class BookType;
 	} // namespace Book
+
+	namespace Manager
+	{
+		namespace Enum
+		{
+			enum class SortingEnumBook : uint8_t;
+		} // namespace Enum
+	} // namespace Managers
 } // namespace BookManager
 
 namespace Utils
@@ -22,5 +30,6 @@ namespace Utils
 		std::string roleString(BookManager::Entity::Role);
 		std::string bookStatusString(BookManager::Book::BookStatus);
 		std::string bookTypeString(BookManager::Book::BookType);
+		std::string sortingEnumBookString(BookManager::Manager::Enum::SortingEnumBook);
 	} // namespace EnumUtils
 } // namespace Utils
