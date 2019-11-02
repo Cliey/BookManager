@@ -25,6 +25,7 @@ namespace BookManager
             }
             catch(const std::exception& e)
             {
+                std::cout << "XXX -hello" << std::endl;
                 std::cerr << e.what() << '\n';
             }
 

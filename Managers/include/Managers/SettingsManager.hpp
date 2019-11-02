@@ -35,12 +35,12 @@ namespace BookManager
             SettingsManager();
             void loadSettings();
             void setDefaultSettings();
+            void printSetting();
 
             GeneralSettings generalSettings;
             BookSettings bookSettings;
             CategorySettings categorySettings;
             PersonSettings personSettings;
         };
-
     } // namespace Manager
 } // namespace BookManager

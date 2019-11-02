@@ -1,6 +1,7 @@
 #include "Managers/SettingsManager.hpp"
 #include "Utils/EnumUtils.hpp"
 #include "Utils/Exceptions.hpp"
+#include "Utils/Loggers.hpp"
 #include <nlohmann_json/json.hpp>
 #include <fstream>
 #include <iomanip>
@@ -33,26 +34,26 @@ namespace BookManager
             if(file.is_open())
             {
                 nlohmann::json settings;
-                file >> settings;
                 try
                 {
-                    generalSettings = settings["General"];
-                    bookSettings = settings["Book"];
-                    categorySettings = settings["Category"];
-                    personSettings = settings["Person"];
+                    file >> settings;
                 }
-                catch(const nlohmann::json::exception& e)
+                catch(const std::exception& e)
                 {
                     file.close();
-                    std::cout << "Error in the Setting file, setting default Value" << std::endl;
-                    // Ask if we want to reset all Settings or just the field that caused the problem
-                    // setDefaultSettings();
+                    std::cout <<"An error in the Setting File occured, do you want to reset Settings?" << '\n';
+                    setDefaultSettings();
                     return;
                 }
-
-                std::cout << "Settings loaded : " << std::endl;
-                std::cout << std::setw(4) << settings << std::endl;
                 file.close();
+
+                generalSettings = settings["General"];
+                bookSettings = settings["Book"];
+                categorySettings = settings["Category"];
+                personSettings = settings["Person"];
+                saveSettings();
+
+                printSetting();
             }
             else
             {
@@ -88,6 +89,16 @@ namespace BookManager
 
             file << std::setw(4) << defaultSettings << std::endl;
             file.close();
+        }
+
+        void SettingsManager::printSetting()
+        {
+            nlohmann::json settings;
+            settings["General"] = generalSettings;
+            settings["Book"] = bookSettings;
+            settings["Category"] = categorySettings;
+            settings["Person"] = personSettings;
+            std::cout << std::setw(4) << settings << std::endl;
         }
     } // namespace Manager
 } // namespace BookManager

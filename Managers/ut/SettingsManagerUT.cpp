@@ -7,7 +7,7 @@ using namespace BookManager::Manager;
 
 class NewSettingsManagerTest : public ::testing::Test
 {
-    /* Default settings : 
+    /* Default settings :
         "Book": {
             "sort": "name_asc",
             "showCover": true
