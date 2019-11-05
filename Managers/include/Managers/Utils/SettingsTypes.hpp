@@ -1,10 +1,9 @@
 #pragma once
 #include "SortingEnum.hpp"
 #include <nlohmann_json/json.hpp>
-#include "Utils/Exceptions.hpp"
-#include "Utils/Loggers.hpp"
-#include <sstream>
-#include <iostream>
+#include "Utils/Log.hpp"
+
+#define AUTHORIZED_OBJECT_PER_PAGE std::vector<unsigned char>{20, 50, 100}
 
 namespace BookManager
 {
@@ -12,8 +11,18 @@ namespace BookManager
     {
         struct GeneralSettings
         {
+            unsigned char objectsPerPage{20}; // Can take value 20, 50 or 100
             static const char* name() { return "General Settings"; }
         };
+            template<typename T>
+            bool verifyT(std::vector<T> authorizedValue, T objectToCheck)
+            {
+                 if(std::find(authorizedValue.begin(), authorizedValue.end(), objectToCheck) == authorizedValue.end())
+                {
+                    return false;
+                }
+                return true;
+            }
 
             void to_json(nlohmann::json&, const GeneralSettings&);
             void from_json(const nlohmann::json&, GeneralSettings&);
@@ -48,6 +57,7 @@ namespace BookManager
             void to_json(nlohmann::json&, const PersonSettings&);
             void from_json(const nlohmann::json&, PersonSettings&);
 
+
         template <typename T>
         void try_catch_from_json(const nlohmann::json& j, const char* field, T& settingField, const T& defaultValue, std::string& err)
         {
@@ -57,12 +67,31 @@ namespace BookManager
             catch(const std::exception& e)
             {
                 err += std::string(field) + ' ';
-                std::stringstream errorStr;
-                errorStr << e.what() << " - Field \"" << field << "\" has been reset. t = " << typeid(T).name(); // Log_Error
-                std::cout << errorStr.str() << std::endl;
+                settingField = defaultValue;
+                LOG_ERROR("{} - Field \"{}\" has been reset.", e.what(), field);
+            }
+        }
+
+        template <typename T>
+        void try_catch_from_json_withRangedParam(const nlohmann::json& j, const char* field, T& settingField, const T& defaultValue, std::vector<T> authorizedValue, std::string& err)
+        {
+            try {
+                j.at(field).get_to(settingField);
+            }
+            catch(const std::exception& e)
+            {
+                err += std::string(field) + ' ';
+                settingField = defaultValue;
+                LOG_ERROR("{} - Field \"{}\" has been reset.", e.what(), field);
+            }
+
+            if(!verifyT(authorizedValue, settingField))
+            {
+                LOG_WINDOW("The value {} for \"{}\" is not authorized, the value will be set at it's default value ({})", settingField, field, defaultValue);
                 settingField = defaultValue;
             }
         }
+
         template <typename T>
         void throwError(std::string err) // To rename "getError"
         {
@@ -71,9 +100,7 @@ namespace BookManager
             {
                 if(err[i] == ' ') count++;
             }
-            std::stringstream errorStr;
-            errorStr << "Following (" << count << ") Fields of " << T::name() << " have been reset : " << err ; // Pop Up when loading setting
-            std::cout << errorStr.str() << std::endl;
+            LOG_WINDOW("Following ({}) Fields of {} have been reset : {}", count, T::name(), err.c_str());
         }
     } // namespace Manager
 } // namespace BookManager

@@ -58,8 +58,10 @@ target_link_libraries(BookManager
         maillon_creation
         managers
         utils
-        fmt
     )
 
 # UTs
 add_test(NAME managers_UT COMMAND managers_UT)
+add_test(NAME loggers_UT COMMAND loggers_UT)
+
+unset(BM_COVERAGE)

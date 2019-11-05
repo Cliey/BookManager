@@ -5,7 +5,7 @@
 
 using namespace BookManager::Manager;
 
-class NewSettingsManagerTest : public ::testing::Test
+class SettingsManagerTest : public ::testing::Test
 {
     /* Default settings :
         "Book": {
@@ -38,7 +38,7 @@ class NewSettingsManagerTest : public ::testing::Test
             file << std::se
             */
 public:
-    NewSettingsManagerTest()
+    SettingsManagerTest()
     {
         sut = SettingsManager::getSettingsManager();
     }
@@ -47,7 +47,7 @@ public:
     nlohmann::json defaultSettings;
 };
 
-TEST_F(NewSettingsManagerTest, testDefaultValue)
+TEST_F(SettingsManagerTest, testDefaultValue)
 {
     EXPECT_TRUE(sut->getBookSettings().showCover);
     EXPECT_EQ(sut->getBookSettings().sort, Enum::SortingEnumBook::title_asc);
@@ -55,7 +55,7 @@ TEST_F(NewSettingsManagerTest, testDefaultValue)
     EXPECT_EQ(sut->getPersonSettings().sort, Enum::SortingEnumPerson::name_asc);
 }
 
-TEST_F(NewSettingsManagerTest, testSetNewValue)
+TEST_F(SettingsManagerTest, testSetNewValue)
 {
     BookSettings newValueBookSetting{false, Enum::SortingEnumBook::dateAdded_desc};
     sut->setBookSettings(newValueBookSetting);

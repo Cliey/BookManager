@@ -51,6 +51,7 @@ namespace BookManager
                 bookSettings = settings["Book"];
                 categorySettings = settings["Category"];
                 personSettings = settings["Person"];
+
                 saveSettings();
 
                 printSetting();

@@ -7,10 +7,23 @@ namespace BookManager
     {
         void to_json(nlohmann::json& j, const GeneralSettings& generalSettings)
         {
+            j = nlohmann::json{
+                    {"objectsPerPage", generalSettings.objectsPerPage},
+                };
         }
 
         void from_json(const nlohmann::json& j, GeneralSettings& generalSettings)
         {
+            std::string err;
+            GeneralSettings defaultSetting{};
+
+            try_catch_from_json_withRangedParam(j, "objectsPerPage", generalSettings.objectsPerPage, defaultSetting.objectsPerPage, AUTHORIZED_OBJECT_PER_PAGE, err);
+
+
+            if(err.size() > 0)
+            {
+                throwError<GeneralSettings>(err);
+            }
         }
 
         void to_json(nlohmann::json& j, const BookSettings& bookSetting)
