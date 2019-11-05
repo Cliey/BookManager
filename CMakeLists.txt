@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(CMAKE_CXX_COMPILER /cygdrive/c/cygwin64/bin/g++.exe --std=gnu++1z)
+set(CMAKE_CXX_COMPILER /cygdrive/c/cygwin64/bin/g++.exe)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 # Activate Coverage when buidling
 option(BM_COVERAGE "Activate Coverage compilation" OFF)
@@ -23,7 +27,7 @@ add_subdirectory(Utils)
 add_subdirectory(Lib)
 
 # Google Test
-add_subdirectory(3rd_party/google-test)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/google-test)
 enable_testing()
 
 # SQLiteCpp
@@ -31,6 +35,10 @@ enable_testing()
 set(SQLITECPP_RUN_CPPCHECK OFF CACHE BOOL "" FORCE)
 set(SQLITECPP_RUN_CPPLINT OFF CACHE BOOL "" FORCE)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/SQLiteCpp)
+
+# Fmtlib
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/fmtlib)
+
 
 set(SRCS
 	main.cpp
@@ -50,6 +58,7 @@ target_link_libraries(BookManager
         maillon_creation
         managers
         utils
+        fmt
     )
 
 # UTs
