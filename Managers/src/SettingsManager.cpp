@@ -2,7 +2,7 @@
 #include "Utils/EnumUtils.hpp"
 #include "Utils/Exceptions.hpp"
 #include "Utils/Loggers.hpp"
-#include <nlohmann_json/json.hpp>
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iomanip>
 #include <iostream>

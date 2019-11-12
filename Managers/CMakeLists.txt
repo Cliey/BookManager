@@ -26,8 +26,8 @@ target_link_libraries(${LIB_NAME}
     PUBLIC
         book::factory
         maillon_creation
-        lib
         utils
+        nlohmann_json::nlohmann_json
     PRIVATE
         SQLiteCpp
         sqlite3

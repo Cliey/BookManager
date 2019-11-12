@@ -24,7 +24,6 @@ add_subdirectory(Entity)
 add_subdirectory(MaillonCreation)
 add_subdirectory(Managers)
 add_subdirectory(Utils)
-add_subdirectory(Lib)
 
 # Google Test
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/google-test)
@@ -39,6 +38,9 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/SQLiteCpp)
 # Fmtlib
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/fmtlib)
 
+# Nlohmann Json
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd_party/nlohmann_json)
 
 set(SRCS
 	main.cpp

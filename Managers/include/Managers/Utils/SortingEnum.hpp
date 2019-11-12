@@ -1,5 +1,5 @@
 #pragma once
-#include <nlohmann_json/json.hpp>
+#include <nlohmann/json.hpp>
 
 namespace BookManager
 {

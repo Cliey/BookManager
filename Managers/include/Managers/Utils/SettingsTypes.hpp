@@ -1,8 +1,8 @@
 #pragma once
-#include "SortingEnum.hpp"
-#include <nlohmann_json/json.hpp>
-#include "Utils/Log.hpp"
 #include <algorithm>
+#include <nlohmann/json.hpp>
+#include "SortingEnum.hpp"
+#include "Utils/Log.hpp"
 
 #define AUTHORIZED_OBJECT_PER_PAGE std::vector<unsigned char>{20, 50, 100}
 
