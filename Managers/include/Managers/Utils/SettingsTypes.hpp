@@ -15,15 +15,6 @@ namespace BookManager
             unsigned char objectsPerPage{20}; // Can take value 20, 50 or 100
             static const char* name() { return "General Settings"; }
         };
-            template<typename T>
-            bool verifyT(std::vector<T> authorizedValue, T objectToCheck)
-            {
-                 if(std::find(authorizedValue.begin(), authorizedValue.end(), objectToCheck) == authorizedValue.end())
-                {
-                    return false;
-                }
-                return true;
-            }
 
             void to_json(nlohmann::json&, const GeneralSettings&);
             void from_json(const nlohmann::json&, GeneralSettings&);
@@ -74,6 +65,16 @@ namespace BookManager
                 return true;
             }
             return false;
+        }
+
+        template<typename T>
+        bool verifyT(std::vector<T> authorizedValue, T objectToCheck)
+        {
+            if(std::find(authorizedValue.begin(), authorizedValue.end(), objectToCheck) == authorizedValue.end())
+            {
+                return false;
+            }
+            return true;
         }
 
         template <typename T>

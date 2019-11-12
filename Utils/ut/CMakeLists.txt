@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(LIB_NAME Utils)
+set(LIB_NAME utils)
 project(${LIB_NAME}_UT CXX)
 
 set(SRCS

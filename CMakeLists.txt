@@ -64,6 +64,6 @@ target_link_libraries(BookManager
 
 # UTs
 add_test(NAME managers_UT COMMAND managers_UT)
-add_test(NAME loggers_UT COMMAND loggers_UT)
+add_test(NAME utils_UT COMMAND utils_UT)
 
 unset(BM_COVERAGE)
