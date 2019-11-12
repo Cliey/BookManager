@@ -18,7 +18,7 @@ namespace BookManager
             };
 
             NLOHMANN_JSON_SERIALIZE_ENUM( SortingEnumBook, {
-                {SortingEnumBook::undefined, nullptr},
+                {SortingEnumBook::undefined, "title_asc"},
                 {SortingEnumBook::authorName_desc, "authorName_desc"},
                 {SortingEnumBook::authorName_asc, "authorName_asc"},
                 {SortingEnumBook::price_desc, "price_desc"},
@@ -38,7 +38,7 @@ namespace BookManager
             };
 
             NLOHMANN_JSON_SERIALIZE_ENUM( SortingEnumCategory, {
-                {SortingEnumCategory::undefined, nullptr},
+                {SortingEnumCategory::undefined, "name_asc"},
                 {SortingEnumCategory::name_desc, "name_desc"},
                 {SortingEnumCategory::name_asc, "name_asc"},
             })
@@ -51,7 +51,7 @@ namespace BookManager
             };
 
             NLOHMANN_JSON_SERIALIZE_ENUM( SortingEnumPerson, {
-                {SortingEnumPerson::undefined, nullptr},
+                {SortingEnumPerson::undefined, "name_asc"},
                 {SortingEnumPerson::name_desc, "name_desc"},
                 {SortingEnumPerson::name_asc, "name_asc"},
                 {SortingEnumPerson::numberBook_desc, "numberBook_desc"},

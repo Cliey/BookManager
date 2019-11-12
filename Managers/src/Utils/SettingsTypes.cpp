@@ -22,7 +22,7 @@ namespace BookManager
 
             if(err.size() > 0)
             {
-                throwError<GeneralSettings>(err);
+                getError<GeneralSettings>(err);
             }
         }
 
@@ -45,7 +45,7 @@ namespace BookManager
 
             if(err.size() > 0)
             {
-                throwError<BookSettings>(err);
+                getError<BookSettings>(err);
             }
         }
 
@@ -62,7 +62,7 @@ namespace BookManager
 
             if(err.size() > 0)
             {
-                throwError<CategorySettings>(err);
+                getError<CategorySettings>(err);
             }
         }
 
@@ -83,7 +83,7 @@ namespace BookManager
 
             if(err.size() > 0)
             {
-                throwError<PersonSettings>(err);
+                getError<PersonSettings>(err);
             }
         }
     } // namespace Manager

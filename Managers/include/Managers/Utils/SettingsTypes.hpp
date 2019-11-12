@@ -2,6 +2,7 @@
 #include "SortingEnum.hpp"
 #include <nlohmann_json/json.hpp>
 #include "Utils/Log.hpp"
+#include <algorithm>
 
 #define AUTHORIZED_OBJECT_PER_PAGE std::vector<unsigned char>{20, 50, 100}
 
@@ -59,8 +60,9 @@ namespace BookManager
 
 
         template <typename T>
-        void try_catch_from_json(const nlohmann::json& j, const char* field, T& settingField, const T& defaultValue, std::string& err)
+        bool try_catch_from_json(const nlohmann::json& j, const char* field, T& settingField, const T& defaultValue, std::string& err)
         {
+            /* Return true if an error is catch */
             try {
                 j.at(field).get_to(settingField);
             }
@@ -69,38 +71,37 @@ namespace BookManager
                 err += std::string(field) + ' ';
                 settingField = defaultValue;
                 LOG_ERROR("{} - Field \"{}\" has been reset.", e.what(), field);
+                return true;
             }
+            return false;
         }
 
         template <typename T>
         void try_catch_from_json_withRangedParam(const nlohmann::json& j, const char* field, T& settingField, const T& defaultValue, std::vector<T> authorizedValue, std::string& err)
         {
-            try {
-                j.at(field).get_to(settingField);
-            }
-            catch(const std::exception& e)
-            {
-                err += std::string(field) + ' ';
-                settingField = defaultValue;
-                LOG_ERROR("{} - Field \"{}\" has been reset.", e.what(), field);
-            }
+            if(try_catch_from_json(j, field, settingField, defaultValue, err))
+                return;
 
             if(!verifyT(authorizedValue, settingField))
             {
+                err += std::string(field) + ' ';
                 LOG_WINDOW("The value {} for \"{}\" is not authorized, the value will be set at it's default value ({})", settingField, field, defaultValue);
                 settingField = defaultValue;
             }
         }
 
         template <typename T>
-        void throwError(std::string err) // To rename "getError"
+        void getError(std::string err)
         {
-            int count = 0;
-            for(int i=0; i < err.size(); i++)
+            int count = count_if(err.begin(), err.end(), [](char c){ return c == ' '; });
+            if(count > 1)
             {
-                if(err[i] == ' ') count++;
+                LOG_WINDOW("Following ({}) fields of {} have been reset : {}", count, T::name(), err.c_str());
             }
-            LOG_WINDOW("Following ({}) Fields of {} have been reset : {}", count, T::name(), err.c_str());
+            else
+            {
+                LOG_WINDOW("Following ({}) field of {} has been reset : {}", count, T::name(), err.c_str());
+            }
         }
     } // namespace Manager
 } // namespace BookManager
