@@ -10,6 +10,7 @@
 #include "MaillonCreation/MaillonCreationBookComics.hpp"
 #include "MaillonCreation/MaillonCreationBookManga.hpp"
 #include "BookFactory/BookFactory.hpp"
+#include "Utils/Log.hpp"
 
 namespace BookManager
 {
@@ -43,7 +44,7 @@ namespace BookManager
 
         void GeneralManager::loadDatabase()
         {
-            std::cout << "Load Database...." << std::endl;
+            LOG_INFO("Load Database....");
             databaseManager = DatabaseManager::getDbManager();
         }
     } // namespace Manager

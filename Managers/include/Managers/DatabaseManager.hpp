@@ -11,10 +11,15 @@ namespace BookManager
         {
         public:
             static std::shared_ptr<DatabaseManager> getDbManager();
-
+            // Add Book
+            // Add Author
+            // Add Publisher
+            // Add BookSerie
         private:
             DatabaseManager();
-            void loadDatabase();
+            void loadDatabase(SQLite::Database& database);
+            // void deserializeAuthorTable();
+            // void deserializeBookTable();
             void createDatabase();
         };
 

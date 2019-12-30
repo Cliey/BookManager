@@ -5,9 +5,9 @@ namespace BookManager
 	{
 		enum class Role
 		{
-			Author,
-			Illustrator,
-			Undefined
+			Author = 1,
+			Illustrator = 2,
+			Undefined = 0
 		};
 	} // namespace Entity
 } // namespace BookManager

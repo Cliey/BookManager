@@ -29,7 +29,7 @@ namespace BookManager
 
         void SettingsManager::loadSettings()
         {
-            std::cout << "Loading Settings..." << std::endl;
+            LOG_INFO("Loading Settings...");
             std::ifstream file("./data/Settings.json");
             if(file.is_open())
             {
@@ -41,7 +41,7 @@ namespace BookManager
                 catch(const std::exception& e)
                 {
                     file.close();
-                    std::cout <<"An error in the Setting File occured, do you want to reset Settings?" << '\n';
+                    LOG_WINDOW("An error in the Setting File occured, do you want to reset Settings? (If you don't reset it, you won't be able to launch the app)");
                     setDefaultSettings();
                     return;
                 }
@@ -59,7 +59,7 @@ namespace BookManager
             else
             {
                 file.close();
-                std::cout << "First Launch of the app, init default Settings" << std::endl;
+                LOG_INFO("First Launch of the app, init default Settings");
                 setDefaultSettings();
             }
         }
@@ -85,7 +85,7 @@ namespace BookManager
             defaultSettings["Category"] = CategorySettings{};
             defaultSettings["Person"] = PersonSettings{};
 
-            std::cout << "Settings loaded : " << std::endl;
+            LOG_INFO("Settings loaded : ");
             std::cout << std::setw(4) << defaultSettings << std::endl;
 
             file << std::setw(4) << defaultSettings << std::endl;
