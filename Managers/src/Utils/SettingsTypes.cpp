@@ -9,6 +9,7 @@ namespace BookManager
         {
             j = nlohmann::json{
                     {"objectsPerPage", generalSettings.objectsPerPage},
+                    {"hideEmptyType", generalSettings.hideEmptyType},
                 };
         }
 
@@ -18,6 +19,7 @@ namespace BookManager
             GeneralSettings defaultSetting{};
 
             try_catch_from_json_withRangedParam(j, "objectsPerPage", generalSettings.objectsPerPage, defaultSetting.objectsPerPage, AUTHORIZED_OBJECT_PER_PAGE, err);
+            try_catch_from_json(j, "hideEmptyType", generalSettings.hideEmptyType, defaultSetting.hideEmptyType, err);
 
 
             if(err.size() > 0)

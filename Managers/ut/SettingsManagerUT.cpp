@@ -38,7 +38,8 @@ class SettingsManagerTest : public ::testing::Test
                     "sort": "name_asc"
                 },
                 "General": {
-                    "objectsPerPage": 20
+                    "objectsPerPage": 20,
+                    "hideEmptyType": false
                 },
                 "Person": {
                     "showBooks": false,
@@ -74,6 +75,7 @@ TEST_F(SettingsManagerTest, testDefaultValue)
     EXPECT_FALSE(sut->getPersonSettings().showBooks);
 
     EXPECT_EQ(sut->getGeneralSettings().objectsPerPage, 20);
+    EXPECT_FALSE(sut->getGeneralSettings().hideEmptyType);
 }
 
 TEST_F(SettingsManagerTest, testSetNewValue)
@@ -94,9 +96,10 @@ TEST_F(SettingsManagerTest, testSetNewValue)
     EXPECT_TRUE(sut->getPersonSettings().showBooks);
 
 
-    GeneralSettings newValueGeneralSettings{30};
+    GeneralSettings newValueGeneralSettings{30, true};
     sut->setGeneralSettings(newValueGeneralSettings);
     EXPECT_EQ(sut->getGeneralSettings().objectsPerPage, 30);
+    EXPECT_TRUE(sut->getGeneralSettings().hideEmptyType);
 }
 
 

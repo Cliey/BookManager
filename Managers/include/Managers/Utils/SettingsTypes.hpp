@@ -13,6 +13,7 @@ namespace BookManager
         struct GeneralSettings
         {
             unsigned char objectsPerPage{20}; // Can take value 20, 50 or 100
+            bool hideEmptyType{false};
             static const char* name() { return "General Settings"; }
         };
 
