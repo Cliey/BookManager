@@ -6,9 +6,9 @@ namespace BookManager
 	{
 		enum class BookStatus
 		{
-			Listed,
-			HaveIt,
-			WantIt
+			Listed = 0,
+			HaveIt = 1,
+			WantIt = 2
 		};
 	} // namespace Book
 } // namespace BookManager

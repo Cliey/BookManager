@@ -6,10 +6,10 @@ namespace BookManager
 	{
 		enum class BookType
 		{
-			ArtBook,
-			Comics,
-			Manga,
-			Novel
+			ArtBook = 0,
+			Comics = 1,
+			Manga = 2,
+			Novel = 3
 		};
 	} // namespace Book
 } // namespace BookManager

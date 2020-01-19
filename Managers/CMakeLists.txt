@@ -28,6 +28,7 @@ target_link_libraries(${LIB_NAME}
         maillon_creation
         utils
         nlohmann_json::nlohmann_json
+        entity::types
     PRIVATE
         SQLiteCpp
         sqlite3

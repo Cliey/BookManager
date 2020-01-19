@@ -11,6 +11,8 @@ namespace BookManager
         {
         public:
             static std::shared_ptr<DatabaseManager> getDbManager();
+
+            void deserializePersonTable(SQLite::Database& database, int limit, int offset);
             // Add Book
             // Add Author
             // Add Publisher
@@ -18,8 +20,8 @@ namespace BookManager
         private:
             DatabaseManager();
             void loadDatabase(SQLite::Database& database);
-            // void deserializeAuthorTable();
-            // void deserializeBookTable();
+            // void deserializePersonTable(SQLite::Database& database, int limit, int offset);
+            // void deserializeBookTable(SQLite::Database& database, int limit, int offset);
             void createDatabase();
         };
 

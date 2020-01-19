@@ -2,7 +2,11 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <vector>
 #include "Utils/Log.hpp"
+#include "EntityTypes/Person.hpp"
+
+#include "Utils/EnumUtils.hpp"
 
 namespace BookManager
 {
@@ -45,6 +49,29 @@ namespace BookManager
 
         }
 
+        void DatabaseManager::deserializePersonTable(SQLite::Database& database, int limit, int offset)
+        {
+            std::vector<BookManager::Entity::Person> personVector;
+            SQLite::Statement query(database, "SELECT * FROM Persons LIMIT :limit OFFSET :offset");
+            query.bind(":limit", limit);
+            query.bind(":offset", offset);
+
+            while(query.executeStep())
+            {
+                int id = query.getColumn("id");
+                std::string firstName = query.getColumn("firstName");
+                std::string lastName = query.getColumn("lastName");
+                BookManager::Entity::Role role{query.getColumn("role").getInt()};
+                personVector.emplace_back(BookManager::Entity::Person{id, firstName, lastName, role});
+            }
+
+            for(auto person : personVector)
+            {
+                std::cout << "Person : (" << person.getId() << ") " << person.getFirstName() << " " << person.getLastName() << " in a(n) "
+                            << Utils::EnumUtils::roleString(person.getRole()) << std::endl;
+            }
+        }
+
         void DatabaseManager::createDatabase()
         {
             LOG_INFO("Creating Database...");
@@ -85,6 +112,7 @@ namespace BookManager
                 LOG_INFO("Creating Books Table...");
                 database.exec("CREATE TABLE Books(\
                                 id INT PRIMARY KEY NOT NULL,\
+                                /* type INT NOT NULL, -- or text ? */ \
                                 title TEXT NOT NULL,\
                                 /* author */\
                                 categoryId INT,\

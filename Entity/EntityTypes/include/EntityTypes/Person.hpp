@@ -11,24 +11,28 @@ namespace BookManager
 		{
 		public:
 
-			Person(std::string firstName_, std::string lastName_)
+			Person(int id_, std::string firstName_, std::string lastName_)
 			{
+				id = id_;
 				firstName = Utils::StringUtils::lowerCaseExceptFirstLetter(firstName_);
 				lastName = Utils::StringUtils::lowerCaseExceptFirstLetter(lastName_);
 				role = Role::Undefined;
 			}
 
-			Person(std::string firstName_, std::string lastName_, Role role_)
+			Person(int id_, std::string firstName_, std::string lastName_, Role role_)
 			{
+				id = id_;
 				firstName = Utils::StringUtils::lowerCaseExceptFirstLetter(firstName_);
 				lastName = Utils::StringUtils::lowerCaseExceptFirstLetter(lastName_);
 				role = role_;
 			}
 
+			const int getId() const { return this->id; }
 			const std::string getFirstName() const { return this->firstName; }
 			const std::string getLastName() const { return this->lastName; }
 			const Role getRole() const { return this->role; }
 
+			void setId(int id) { this->id = id; }
 			void setFirstName(std::string firstName) { this->firstName = Utils::StringUtils::lowerCaseExceptFirstLetter(firstName); }
 			void setLastName(std::string firstName) { this->lastName = Utils::StringUtils::lowerCaseExceptFirstLetter(lastName); }
 			void setRole(Role role) { this->role = role; }
@@ -56,6 +60,7 @@ namespace BookManager
 				return fullName;
 			}
 
+			int id;
 			std::string firstName;
 			std::string lastName;
 			Role role;

@@ -4,6 +4,7 @@ set(LIB_NAME managers)
 project(${LIB_NAME}_UT CXX)
 
 set(SRCS
+	DatabaseManagerUT.cpp
 	SettingsManagerUT.cpp
     )
 
@@ -14,4 +15,7 @@ target_link_libraries(${LIB_NAME}_UT
         gtest_main
         managers
         utils
+    PRIVATE
+        SQLiteCpp
+        sqlite3
 )
