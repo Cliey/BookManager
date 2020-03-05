@@ -9,7 +9,7 @@ namespace BookManager
 {
     namespace Manager
     {
-        std::vector<BookManager::Entity::Person> TableDeserializers::deserializePersonTable(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Entity::Person> TableDeserializers::deserializePersonTable(int limit, int offset)
         {
             std::vector<BookManager::Entity::Person> personVector;
             SQLite::Statement query(database, "SELECT * FROM Persons LIMIT :limit OFFSET :offset");
@@ -33,7 +33,7 @@ namespace BookManager
             return personVector;
         }
 
-        std::vector<BookManager::Entity::Publisher> TableDeserializers::deserializePublisherTable(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Entity::Publisher> TableDeserializers::deserializePublisherTable(int limit, int offset)
         {
             std::vector<BookManager::Entity::Publisher> publisherVector;
             SQLite::Statement query(database, "SELECT * FROM Publishers LIMIT :limit OFFSET :offset");
@@ -54,7 +54,7 @@ namespace BookManager
             return publisherVector;
         }
 
-        std::vector<BookManager::Category::Category> TableDeserializers::deserializeCategoryTable(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Category::Category> TableDeserializers::deserializeCategoryTable(int limit, int offset)
         {
             std::vector<BookManager::Category::Category> categoryVector;
             SQLite::Statement query(database, "SELECT * FROM Publishers LIMIT :limit OFFSET :offset");

@@ -18,9 +18,13 @@ namespace BookManager
         class TableDeserializers
         {
             public:
-                static std::vector<BookManager::Entity::Person> deserializePersonTable(SQLite::Database& database, int limit, int offset);
-                static std::vector<BookManager::Entity::Publisher> deserializePublisherTable(SQLite::Database& database, int limit, int offset);
-                static std::vector<BookManager::Category::Category> deserializeCategoryTable(SQLite::Database& database, int limit, int offset);
+                TableDeserializers(SQLite::Database& database) : database(std::move(database)) {}
+                std::vector<BookManager::Entity::Person> deserializePersonTable(int limit, int offset);
+                std::vector<BookManager::Entity::Publisher> deserializePublisherTable(int limit, int offset);
+                std::vector<BookManager::Category::Category> deserializeCategoryTable(int limit, int offset);
+
+            private:
+                SQLite::Database database;
         };
     } // namespace Manager
 } // namespace BookManager

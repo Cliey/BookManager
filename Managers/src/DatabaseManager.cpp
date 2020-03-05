@@ -32,6 +32,7 @@ namespace BookManager
             {
                 SQLite::Database database("./data/BookManager.db");
                 loadDatabase(database);
+                tableDeserializer = std::make_unique<TableDeserializers>(database);
             }
             catch(const std::exception& e)
             {
@@ -54,15 +55,15 @@ namespace BookManager
 
         std::vector<BookManager::Entity::Person> DatabaseManager::getPersonToShow(SQLite::Database& database, int limit, int offset)
         {
-            return TableDeserializers::deserializePersonTable(database, limit, offset);
+            return tableDeserializer->deserializePersonTable(limit, offset);
         }
         std::vector<BookManager::Entity::Publisher> DatabaseManager::getPublisherToShow(SQLite::Database& database, int limit, int offset)
         {
-            return TableDeserializers::deserializePublisherTable(database, limit, offset);
+            return tableDeserializer->deserializePublisherTable(limit, offset);
         }
         std::vector<BookManager::Category::Category> DatabaseManager::getCategoryToShow(SQLite::Database& database, int limit, int offset)
         {
-            return TableDeserializers::deserializeCategoryTable(database, limit, offset);
+            return tableDeserializer->deserializeCategoryTable(limit, offset);
         }
 
         void DatabaseManager::createDatabase()
@@ -151,6 +152,8 @@ namespace BookManager
                                 FOREIGN KEY(subCategoryId) REFERENCES SubCategory(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade)"); // OK
+
+                tableDeserializer = std::make_unique<TableDeserializers>(database);
             }
             catch(const std::exception& e)
             {

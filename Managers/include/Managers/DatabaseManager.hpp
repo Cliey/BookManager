@@ -19,6 +19,7 @@ namespace BookManager
     namespace Manager
     {
 
+        class TableDeserializers;
         class DatabaseManager
         {
         public:
@@ -36,6 +37,8 @@ namespace BookManager
             DatabaseManager();
             void loadDatabase(SQLite::Database& database);
             void createDatabase();
+
+            std::unique_ptr<TableDeserializers> tableDeserializer;
         };
 
     } // namespace Manager
