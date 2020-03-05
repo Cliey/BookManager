@@ -24,9 +24,10 @@ namespace BookManager
         public:
             static std::shared_ptr<DatabaseManager> getDbManager();
 
-            std::vector<BookManager::Entity::Person> deserializePersonTable(SQLite::Database& database, int limit, int offset);
-            std::vector<BookManager::Entity::Publisher> deserializePublisherTable(SQLite::Database& database, int limit, int offset);
-            std::vector<BookManager::Category::Category> deserializeCategoryTable(SQLite::Database& database, int limit, int offset);
+            std::vector<BookManager::Entity::Person> getPersonToShow(SQLite::Database& database, int limit, int offset);
+            std::vector<BookManager::Entity::Publisher> getPublisherToShow(SQLite::Database& database, int limit, int offset);
+            std::vector<BookManager::Category::Category> getCategoryToShow(SQLite::Database& database, int limit, int offset);
+
             // Add Book
             // Add Author
             // Add Publisher
@@ -34,8 +35,6 @@ namespace BookManager
         private:
             DatabaseManager();
             void loadDatabase(SQLite::Database& database);
-            // void deserializePersonTable(SQLite::Database& database, int limit, int offset);
-            // void deserializeBookTable(SQLite::Database& database, int limit, int offset);
             void createDatabase();
         };
 

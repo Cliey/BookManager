@@ -8,6 +8,7 @@
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
 #include "../../Category.hpp"
+#include "Managers/Utils/TableDeserializers.hpp"
 
 namespace BookManager
 {
@@ -45,75 +46,23 @@ namespace BookManager
             LOG_INFO("Loading Database...");
             // Load Perons
             // Load Publishers
+            // Load Category
             // Load BookSeries
             // Load Books
 
         }
 
-        std::vector<BookManager::Entity::Person> DatabaseManager::deserializePersonTable(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Entity::Person> DatabaseManager::getPersonToShow(SQLite::Database& database, int limit, int offset)
         {
-            std::vector<BookManager::Entity::Person> personVector;
-            SQLite::Statement query(database, "SELECT * FROM Persons LIMIT :limit OFFSET :offset");
-            query.bind(":limit", limit);
-            query.bind(":offset", offset);
-
-            while(query.executeStep())
-            {
-                int id = query.getColumn("id");
-                std::string firstName = query.getColumn("firstName");
-                std::string lastName = query.getColumn("lastName");
-                BookManager::Entity::Role role{query.getColumn("role").getInt()};
-                personVector.emplace_back(BookManager::Entity::Person{id, firstName, lastName, role});
-            }
-
-            for(auto person : personVector)
-            {
-                LOG_INFO("Person : ({}) {} {} is a(n) {}",
-                    person.getId(), person.getFirstName(), person.getLastName(), Utils::EnumUtils::roleString(person.getRole()));
-            }
-            return personVector;
+            return TableDeserializers::deserializePersonTable(database, limit, offset);
         }
-
-        std::vector<BookManager::Entity::Publisher> DatabaseManager::deserializePublisherTable(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Entity::Publisher> DatabaseManager::getPublisherToShow(SQLite::Database& database, int limit, int offset)
         {
-            std::vector<BookManager::Entity::Publisher> publisherVector;
-            SQLite::Statement query(database, "SELECT * FROM Publishers LIMIT :limit OFFSET :offset");
-            query.bind(":limit", limit);
-            query.bind(":offset", offset);
-
-            while(query.executeStep())
-            {
-                int id = query.getColumn("id");
-                std::string name = query.getColumn("name");
-                publisherVector.emplace_back(BookManager::Entity::Publisher{id, name});
-            }
-
-            for(auto publisher : publisherVector)
-            {
-                LOG_INFO("Publisher : ({}) {}", publisher.getId(), publisher.getName());
-            }
-            return publisherVector;
+            return TableDeserializers::deserializePublisherTable(database, limit, offset);
         }
-
-        std::vector<BookManager::Category::Category> DatabaseManager::deserializeCategoryTable(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Category::Category> DatabaseManager::getCategoryToShow(SQLite::Database& database, int limit, int offset)
         {
-            std::vector<BookManager::Category::Category> categoryVector;
-            SQLite::Statement query(database, "SELECT * FROM Publishers LIMIT :limit OFFSET :offset");
-            query.bind(":limit", limit);
-            query.bind(":offset", offset);
-
-            while(query.executeStep())
-            {
-                int id = query.getColumn("id");
-                std::string name = query.getColumn("name");
-                categoryVector.emplace_back(BookManager::Category::Category{id, name});
-            }
-
-            for(auto category : categoryVector)
-            {
-                LOG_INFO("Category : ({}) {}", category.getId(), category.getName());
-            }
-            return categoryVector;
+            return TableDeserializers::deserializeCategoryTable(database, limit, offset);
         }
 
         void DatabaseManager::createDatabase()

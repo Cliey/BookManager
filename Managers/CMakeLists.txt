@@ -11,6 +11,7 @@ set(SRCS
 	src/DatabaseManager.cpp
 	src/SettingsManager.cpp
 	src/Utils/SettingsTypes.cpp
+	src/Utils/TableDeserializers.cpp
     )
 
 set(HEADERS
@@ -19,6 +20,7 @@ set(HEADERS
 	include/Manager/SettingsManager.hpp
 	include/Manager/Utils/SortingEnum.hpp
 	include/Manager/Utils/SettingsTypes.hpp
+	include/Manager/Utils/TableDeserializers.hpp
     )
 
 add_library(${LIB_NAME} ${SRCS})

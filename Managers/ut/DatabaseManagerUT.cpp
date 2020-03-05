@@ -43,7 +43,7 @@ public:
     std::shared_ptr<DatabaseManager> sut;
 };
 
-TEST_F(DatabaseManagerTest, testDeserializePersonTableNoOffset)
+TEST_F(DatabaseManagerTest, testGetPersonToShowNoOffset)
 {
     std::vector<BookManager::Entity::Person> expectedDeserializedTable{
         {1, "Jacques", "Edouard", BookManager::Entity::Role::Author},
@@ -52,11 +52,11 @@ TEST_F(DatabaseManagerTest, testDeserializePersonTableNoOffset)
         {4, "Richard", "Bordo", BookManager::Entity::Role::Illustrator}};
     std::vector<BookManager::Entity::Person> deserializedTable;
     SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    deserializedTable = sut->deserializePersonTable(database, 4, 0);
+    deserializedTable = sut->getPersonToShow(database, 4, 0);
     expectPersonTable(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(DatabaseManagerTest, testDeserializePersonTableWithOffset)
+TEST_F(DatabaseManagerTest, testGetPersonToShowWithOffset)
 {
     std::vector<BookManager::Entity::Person> expectedDeserializedTable{
         {2, "Charles", "Henry", BookManager::Entity::Role::Illustrator},
@@ -64,19 +64,19 @@ TEST_F(DatabaseManagerTest, testDeserializePersonTableWithOffset)
         {4, "Richard", "Bordo", BookManager::Entity::Role::Illustrator}};
     std::vector<BookManager::Entity::Person> deserializedTable;
     SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    deserializedTable = sut->deserializePersonTable(database, 3, 1);
+    deserializedTable = sut->getPersonToShow(database, 3, 1);
     expectPersonTable(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(DatabaseManagerTest, testDeserializePersonTableWithOffsetTooLarge)
+TEST_F(DatabaseManagerTest, testGetPersonToShowWithOffsetTooLarge)
 {
     std::vector<BookManager::Entity::Person> deserializedTable;
     SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    deserializedTable = sut->deserializePersonTable(database, 10, 200);
+    deserializedTable = sut->getPersonToShow(database, 10, 200);
     EXPECT_TRUE(deserializedTable.empty());
 }
 
-TEST_F(DatabaseManagerTest, testDeserializePublisherTableNoOffset)
+TEST_F(DatabaseManagerTest, testGetPublisherToShowNoOffset)
 {
     std::vector<BookManager::Entity::Publisher> expectedDeserializedTable{
         {1, "12-25"},
@@ -84,25 +84,25 @@ TEST_F(DatabaseManagerTest, testDeserializePublisherTableNoOffset)
         {3, "Pocket"}};
     std::vector<BookManager::Entity::Publisher> deserializedTable;
     SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    deserializedTable = sut->deserializePublisherTable(database, 3, 0);
+    deserializedTable = sut->getPublisherToShow(database, 3, 0);
     expectPublisherTable(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(DatabaseManagerTest, testDeserializePublisherTableWithOffset)
+TEST_F(DatabaseManagerTest, testGetPublisherToShowWithOffset)
 {
     std::vector<BookManager::Entity::Publisher> expectedDeserializedTable{
         {2, "Mu"},
         {3, "Pocket"}};
     std::vector<BookManager::Entity::Publisher> deserializedTable;
     SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    deserializedTable = sut->deserializePublisherTable(database, 3, 1);
+    deserializedTable = sut->getPublisherToShow(database, 3, 1);
     expectPublisherTable(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(DatabaseManagerTest, testDeserializePublisherTableWithOffsetTooLarge)
+TEST_F(DatabaseManagerTest, testGetPublisherToShowWithOffsetTooLarge)
 {
     std::vector<BookManager::Entity::Publisher> deserializedTable;
     SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    deserializedTable = sut->deserializePublisherTable(database, 3, 200);
+    deserializedTable = sut->getPublisherToShow(database, 3, 200);
     EXPECT_TRUE(deserializedTable.empty());
 }
