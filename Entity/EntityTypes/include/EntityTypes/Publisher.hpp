@@ -9,11 +9,13 @@ namespace BookManager
 		class Publisher
 		{
 		public:
-			Publisher(std::string name_){
+			Publisher(int id_, std::string name_){
+				id = id_;
 				name = Utils::StringUtils::lowerCaseExceptFirstLetter(name_);
 			}
 
 			std::string const getName() const { return this->name; }
+			int const getId() const { return this->id; }
 
 			void setName(std::string name) { this->name = Utils::StringUtils::lowerCaseExceptFirstLetter(name); }
 
@@ -31,6 +33,7 @@ namespace BookManager
 				return false;
 			}
 		private:
+			int id;
 			std::string name;
 		};
 	} // namespace Entity
