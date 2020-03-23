@@ -5,6 +5,7 @@ set(LIB_NAME entity_types)
 project(${LIB_NAME} CXX)
 
 set(HEADERS
+    include/EntityTypes/BookSerie.hpp
     include/EntityTypes/Person.hpp
     include/EntityTypes/Publisher.hpp
     )

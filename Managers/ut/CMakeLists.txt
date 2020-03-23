@@ -13,6 +13,7 @@ add_executable(${LIB_NAME}_UT ${SRCS})
 target_link_libraries(${LIB_NAME}_UT
     PUBLIC
         gtest_main
+        maillon_creation
         managers
         utils
     PRIVATE

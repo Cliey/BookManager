@@ -36,7 +36,7 @@ namespace BookManager
 			}
 
 			static std::shared_ptr<Abstraction::Book> create(BookType type) {
-				 return firstItem->handle(type);
+				return firstItem->handle(type);
 			}
 
 			static const std::vector<BookType>& getTypes()

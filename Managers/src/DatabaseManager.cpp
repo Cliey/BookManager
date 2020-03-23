@@ -3,7 +3,9 @@
 #include <fstream>
 #include <cstdio>
 #include <vector>
+#include "BookAbstract/Book.hpp"
 #include "Utils/Log.hpp"
+#include "EntityTypes/BookSerie.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
@@ -25,14 +27,20 @@ namespace BookManager
             return instance;
         }
 
+        std::unique_ptr<TableDeserializers> DatabaseManager::createTableDeserializer(std::shared_ptr<SQLite::Database> database)
+        {
+            return std::make_unique<TableDeserializers>(database);
+        }
+
         DatabaseManager::DatabaseManager()
         {
             LOG_INFO("DataBase Loading.....");
             try
             {
-                SQLite::Database database("./data/BookManager.db");
-                loadDatabase(database);
-                tableDeserializer = std::make_unique<TableDeserializers>(database);
+                SQLite::Database db("./data/BookManager.db");
+                loadDatabase(db);
+                database = std::make_shared<SQLite::Database>(db.getFilename());
+                tableDeserializer = createTableDeserializer(database);
             }
             catch(const std::exception& e)
             {
@@ -53,17 +61,24 @@ namespace BookManager
 
         }
 
-        std::vector<BookManager::Entity::Person> DatabaseManager::getPersonToShow(SQLite::Database& database, int limit, int offset)
+        std::vector<BookManager::Entity::Person> DatabaseManager::getPersonVector(int limit, int offset)
         {
             return tableDeserializer->deserializePersonTable(limit, offset);
         }
-        std::vector<BookManager::Entity::Publisher> DatabaseManager::getPublisherToShow(SQLite::Database& database, int limit, int offset)
+
+        std::vector<BookManager::Entity::Publisher> DatabaseManager::getPublisherVector(int limit, int offset)
         {
             return tableDeserializer->deserializePublisherTable(limit, offset);
         }
-        std::vector<BookManager::Category::Category> DatabaseManager::getCategoryToShow(SQLite::Database& database, int limit, int offset)
+
+        std::vector<BookManager::Category::Category> DatabaseManager::getCategoryVector(int limit, int offset)
         {
             return tableDeserializer->deserializeCategoryTable(limit, offset);
+        }
+
+        std::vector<BookManager::Entity::BookSerie> DatabaseManager::getBookSerieVector(int limit, int offset)
+        {
+            return tableDeserializer->deserializeBookSerieTable(limit, offset);
         }
 
         void DatabaseManager::createDatabase()
@@ -71,45 +86,36 @@ namespace BookManager
             LOG_INFO("Creating Database...");
             try
             {
-                SQLite::Database database("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+                SQLite::Database db("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
                 LOG_INFO("Creating Publisher Table...");
-                database.exec("CREATE TABLE Publishers(\
+                db.exec("CREATE TABLE Publishers(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
                                 name TEXT NOT NULL)"); // OK
 
                 LOG_INFO("Creating Author Table...");
-                database.exec("CREATE TABLE Persons(\
+                db.exec("CREATE TABLE Persons(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
                                 firstName TEXT NOT NULL,\
                                 lastName TEXT NOT NULL,\
                                 role INTEGER NOT NULL)"); // OK
 
                 LOG_INFO("Creating BookSeries Table...");
-                database.exec("CREATE TABLE BookSeries(\
+                db.exec("CREATE TABLE BookSeries(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
                                 name TEXT NOT NULL)"); // add BookVector ? BookId Vector ?
 
                 LOG_INFO("Creating Category Table...");
-                database.exec("CREATE TABLE Category(\
+                db.exec("CREATE TABLE Category(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
                                 name TEXT NOT NULL)"); // OK
 
-                LOG_INFO("Creating SubCategory Table...");
-                database.exec("CREATE TABLE SubCategory(\
-                                id INTEGER PRIMARY KEY NOT NULL,\
-                                name TEXT NOT NULL,\
-                                categoryId INTEGER,\
-                                FOREIGN KEY(categoryId) REFERENCES Category(id)\
-                                    ON UPDATE cascade\
-                                    ON DELETE set null)"); // OK
-
                 LOG_INFO("Creating Books Table...");
-                database.exec("CREATE TABLE Books(\
+                db.exec("CREATE TABLE Books(\
                                 id INT PRIMARY KEY NOT NULL,\
-                                /* type INT NOT NULL, -- or text ? */ \
+                                type INT NOT NULL /*-- or text ? */, \
                                 title TEXT NOT NULL,\
                                 /* author */\
-                                categoryId INT,\
+                                mainCategoryId INT,\
                                 /* Subcategory */\
                                 publisherId INT,\
                                 bookSerieId INT,\
@@ -121,7 +127,7 @@ namespace BookManager
                                 startReadingDate TEXT /* (YYYY-MM-DD) */,\
                                 endReadingDate TEXT /* (YYYY-MM-DD) */,\
                                 rate INT DEFAULT NULL,\
-                                FOREIGN KEY(categoryId) REFERENCES Category(id)\
+                                FOREIGN KEY(mainCategoryId) REFERENCES Category(id)\
                                         ON UPDATE cascade\
                                         ON DELETE set null,\
                                 FOREIGN KEY(publisherId) REFERENCES Publishers(id)\
@@ -132,7 +138,7 @@ namespace BookManager
                                         ON DELETE set null)"); // Not finished
 
                 LOG_INFO("Creating Relational Table Books_Persons...");
-                database.exec("CREATE TABLE Books_Persons(\
+                db.exec("CREATE TABLE Books_Persons(\
                                 bookId INT NOT NULL,\
                                 personId INT NOT NULL,\
                                 FOREIGN KEY(bookId) REFERENCES Books(id)\
@@ -143,17 +149,18 @@ namespace BookManager
                                     ON DELETE cascade)"); // OK
 
                 LOG_INFO("Creating Relational Table Books_SubCategory...");
-                database.exec("CREATE TABLE Books_SubCategory(\
+                db.exec("CREATE TABLE Books_SubCategory(\
                                 bookId INT NOT NULL,\
                                 subCategoryId INT NOT NULL,\
                                 FOREIGN KEY(bookId) REFERENCES Books(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade,\
-                                FOREIGN KEY(subCategoryId) REFERENCES SubCategory(id)\
+                                FOREIGN KEY(subCategoryId) REFERENCES Category(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade)"); // OK
 
-                tableDeserializer = std::make_unique<TableDeserializers>(database);
+                database = std::make_shared<SQLite::Database>(db.getFilename());
+                tableDeserializer = createTableDeserializer(database);
             }
             catch(const std::exception& e)
             {

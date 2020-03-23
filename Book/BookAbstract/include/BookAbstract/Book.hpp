@@ -16,6 +16,7 @@ namespace BookManager
 	{
 		class Category;
 	} // namespace Category
+
 	namespace Entity
 	{
 		class Person;
@@ -40,17 +41,19 @@ namespace BookManager
 				std::vector<std::shared_ptr<Entity::Person>> getAuthor() { return this->author; }
 				void setTitle(std::string title) { this->title = title; }
 
-			private:
+			
+				int id;
 				std::string title;
 				std::vector<std::shared_ptr<Entity::Person>> author;
 
-				std::shared_ptr<Category::Category> category;
-				std::vector<std::weak_ptr<SubCategory>> subCategory;
+				std::shared_ptr<Category::Category> mainCategory;
+				std::vector<std::weak_ptr<Category::Category>> subCategory;
+				// std::vector<std::weak_ptr<std::string>> subCategory;
 
 				std::shared_ptr<Entity::Publisher> publisher;
 				std::optional<std::time_t> published;
 				std::optional<std::time_t> purchasedDate;
-				std::optional<float> price;
+				std::optional<double> price;
 
 				BookStatus status{ BookStatus::Listed };
 				bool isRead{ false };
