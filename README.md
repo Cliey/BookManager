@@ -7,4 +7,4 @@ A software to manage book collection.
 Working on Database Management.
 
 ## Future Improvement
-* Introduce a GUI
+* Add a GUI

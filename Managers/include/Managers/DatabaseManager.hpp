@@ -36,6 +36,7 @@ namespace BookManager
             std::vector<BookManager::Entity::Publisher> getPublisherVector(int limit, int offset);
             std::vector<BookManager::Category::Category> getCategoryVector(int limit, int offset);
             std::vector<BookManager::Entity::BookSerie> getBookSerieVector(int limit, int offset);
+            std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> getBookVector(int limit, int offset);
 
             void insertPerson(BookManager::Entity::Person);
             void insertPublisher(BookManager::Entity::Publisher);

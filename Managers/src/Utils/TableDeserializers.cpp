@@ -99,5 +99,186 @@ namespace BookManager
             return BookManager::Entity::Person{id, firstName, lastName, role};
         }
 
+        BookManager::Book::BookType TableDeserializers::getType(int type)
+        {
+            switch(type)
+            {
+                case 0:
+                    return BookManager::Book::BookType::ArtBook;
+                case 1:
+                    return BookManager::Book::BookType::Comics;
+                case 2:
+                    return BookManager::Book::BookType::Manga;
+                case 3:
+                    return BookManager::Book::BookType::Novel;
+            }
+        }
+
+        BookManager::Book::BookStatus TableDeserializers::getBookStatus(int status)
+        {
+            switch(status)
+            {
+                case 0:
+                    return BookManager::Book::BookStatus::Listed;
+                case 1:
+                    return BookManager::Book::BookStatus::HaveIt;
+                case 2:
+                    return BookManager::Book::BookStatus::WantIt;
+            }
+        }
+
+        std::string TableDeserializers::getElementOfDateAndEraseIt(std::string& date)
+        {
+            std::size_t posDash =  date.find("-");
+            std::string element = date.substr(0, posDash);
+            date.erase(0, posDash + 1);
+            return element;
+        }
+
+        std::time_t TableDeserializers::convertDate(std::string date)
+        {
+            std::string year = getElementOfDateAndEraseIt(date);
+            std::string month = getElementOfDateAndEraseIt(date);
+            std::string day = date;
+            std::tm returnDate{};
+            returnDate.tm_year = std::stoi(year) - 1900; // Year since 1900
+            returnDate.tm_mon = std::stoi(month) - 1; // 0 tu 11
+            returnDate.tm_mday = std::stoi(day);
+            return std::mktime(&returnDate);
+        }
+
+        void TableDeserializers::setOptionalFieldIfExist(std::optional<std::time_t>& fieldToInit, SQLite::Statement& query, std::string column)
+        {
+            if(query.isColumnNull(column.c_str()))
+                return;
+
+            auto field = query.getColumn(column.c_str());
+            fieldToInit = std::make_optional<std::time_t>(convertDate(field));
+        }
+
+        void TableDeserializers::setOptionalFieldIfExist(std::optional<double>& fieldToInit, SQLite::Statement& query, std::string column)
+        {
+            if(query.isColumnNull(column.c_str()))
+                return;
+
+            auto field = query.getColumn(column.c_str());
+            fieldToInit = std::make_optional<double>(field);
+        }
+
+        BookManager::Category::Category TableDeserializers::getCategoryFromId(int id)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM Category WHERE id=:id");
+            query.bind(":id", id);
+            query.executeStep();
+            return deserializeOneElementSimpleTableIdAndName<BookManager::Category::Category>(query);
+        }
+
+        BookManager::Entity::BookSerie TableDeserializers::getBookSerieFromId(int id)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM BookSeries WHERE id=:id");
+            query.bind(":id", id);
+            query.executeStep();
+            return deserializeOneElementSimpleTableIdAndName<BookManager::Entity::BookSerie>(query);
+        }
+
+        BookManager::Entity::Publisher TableDeserializers::getPublisherFromId(int id)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM Publishers WHERE id=:id");
+            query.bind(":id", id);
+            query.executeStep();
+            return deserializeOneElementSimpleTableIdAndName<BookManager::Entity::Publisher>(query);
+        }
+
+        std::vector<std::shared_ptr<BookManager::Category::Category>> TableDeserializers::getSubcategory(int bookId)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM Books_SubCategory WHERE bookId=:bookId");
+            query.bind(":bookId", bookId);
+            std::vector<std::shared_ptr<BookManager::Category::Category>> subCategory;
+            while(query.executeStep())
+            {
+                int categoryId = query.getColumn("subCategoryId");
+                subCategory.push_back(
+                    std::make_shared<BookManager::Category::Category>(getCategoryFromId(categoryId)));
+            }
+            return subCategory;
+        }
+
+        BookManager::Entity::Person TableDeserializers::getAuthorFromId(int id)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM Persons WHERE id=:id");
+            query.bind(":id", id);
+            query.executeStep();
+            return deserializeOnePerson(query);
+        }
+
+        std::vector<std::shared_ptr<BookManager::Entity::Person>> TableDeserializers::getAuthors(int bookId)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM Books_Persons WHERE bookId=:bookId");
+            query.bind(":bookId", bookId);
+            std::vector<std::shared_ptr<BookManager::Entity::Person>> authors;
+            while(query.executeStep())
+            {
+                int authorId = query.getColumn("personId");
+                authors.push_back(
+                    std::make_shared<BookManager::Entity::Person>(getAuthorFromId(authorId)));
+            }
+            return authors;
+        }
+
+        std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> TableDeserializers::deserializeBookTable(int limit, int offset)
+        {
+            std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> bookVector;
+            SQLite::Statement query(*database, "SELECT * FROM Books LIMIT :limit OFFSET :offset");
+            query.bind(":limit", limit);
+            query.bind(":offset", offset);
+
+            while(query.executeStep())
+            {
+                BookManager::Book::BookType type = getType(query.getColumn("type"));
+                std::shared_ptr<BookManager::Book::Abstraction::Book> newBook = BookManager::Book::BookFactory::create(type);
+                int bookId = query.getColumn("id");
+                newBook->id = bookId;
+
+                std::string title = query.getColumn("title");
+                newBook->title = title;
+                newBook->author = getAuthors(bookId);
+
+                int mainCategory = query.getColumn("mainCategoryId");
+                newBook->mainCategory = std::make_shared<BookManager::Category::Category>(getCategoryFromId(mainCategory));
+                newBook->subCategory = getSubcategory(bookId);
+
+                int publisher = query.getColumn("publisherId");
+                newBook->publisher = std::make_shared<BookManager::Entity::Publisher>(getPublisherFromId(mainCategory));
+
+                setOptionalFieldIfExist(newBook->published, query, "publishedDate");
+
+                if(!query.isColumnNull("bookSerieId"))
+                {
+                    int bookSerie = query.getColumn("bookSerieId");
+                    newBook->bookSerie = std::make_shared<BookManager::Entity::BookSerie>(getBookSerieFromId(bookSerie));
+                }
+
+                setOptionalFieldIfExist(newBook->purchasedDate, query, "purchasedDate");
+                setOptionalFieldIfExist(newBook->price, query, "price");
+                newBook->status = getBookStatus(query.getColumn("status"));
+                int isRead = query.getColumn("isRead");
+                newBook->isRead = static_cast<bool>(isRead);
+                setOptionalFieldIfExist(newBook->startReadingDate, query, "startReadingDate");
+                setOptionalFieldIfExist(newBook->endReadingDate, query, "endReadingDate");
+
+                if(!query.isColumnNull("rate"))
+                {
+                    newBook->rate = query.getColumn("rate");
+                }
+
+                bookVector.push_back(newBook);
+            }
+
+            for(auto& book : bookVector)
+            {
+                LOG_INFO("Book : ({}) {}", book->id, book->title);
+            }
+            return bookVector;
+        }
     } // namespace Manager
 } // namespace BookManager

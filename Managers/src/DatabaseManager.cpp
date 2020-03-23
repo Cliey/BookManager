@@ -81,6 +81,11 @@ namespace BookManager
             return tableDeserializer->deserializeBookSerieTable(limit, offset);
         }
 
+        std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> DatabaseManager::getBookVector(int limit, int offset)
+        {
+            return tableDeserializer->deserializeBookTable(limit, offset);
+        }
+
         void DatabaseManager::createDatabase()
         {
             LOG_INFO("Creating Database...");
@@ -122,7 +127,7 @@ namespace BookManager
                                 publishedDate TEXT NOT NULL /* (YYYY-MM-DD) */,\
                                 purchasedDate TEXT /* (YYYY-MM-DD) */,\
                                 price REAL CHECK(price > 0),\
-                                /* statut (integer? 1 a 3 check) */\
+                                status INT DEFAULT 0,\
                                 isRead BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INT DEFAULT 0 */,\
                                 startReadingDate TEXT /* (YYYY-MM-DD) */,\
                                 endReadingDate TEXT /* (YYYY-MM-DD) */,\
