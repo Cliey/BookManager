@@ -23,7 +23,7 @@ class DatabaseManagerTest : public ::testing::Test
 public:
     DatabaseManagerTest()
     {
-        static bool alreadyInit = false;
+        static bool alreadyInit = true;
         if(!alreadyInit)
         {
             initDbTest();
@@ -47,15 +47,15 @@ public:
 
         db.exec("CREATE TABLE Persons(\
                         id INTEGER PRIMARY KEY NOT NULL,\
-                        firstName TEXT NOT NULL,\
-                        lastName TEXT NOT NULL,\
+                        first_name TEXT NOT NULL,\
+                        last_name TEXT NOT NULL,\
                         role INTEGER NOT NULL)"); // OK
 
         db.exec("CREATE TABLE BookSeries(\
                         id INTEGER PRIMARY KEY NOT NULL,\
-                        name TEXT NOT NULL)"); // add BookVector ? BookId Vector ?
+                        name TEXT NOT NULL)");
 
-        db.exec("CREATE TABLE Category(\
+        db.exec("CREATE TABLE Categories(\
                         id INTEGER PRIMARY KEY NOT NULL,\
                         name TEXT NOT NULL)"); // OK
 
@@ -64,25 +64,25 @@ public:
                         type INT NOT NULL /*-- or text ? */, \
                         title TEXT NOT NULL,\
                         /* author */\
-                        mainCategoryId INT,\
+                        main_category INT,\
                         /* Subcategory */\
-                        publisherId INT,\
-                        bookSerieId INT,\
-                        publishedDate TEXT NOT NULL /* (YYYY-MM-DD) */,\
-                        purchasedDate TEXT /* (YYYY-MM-DD) */,\
+                        publisher INT,\
+                        book_serie INT,\
+                        published_date TEXT NOT NULL /* (YYYY-MM-DD) */,\
+                        purchased_date TEXT /* (YYYY-MM-DD) */,\
                         price REAL CHECK(price > 0),\
                         status INT DEFAULT 0,\
-                        isRead BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INT DEFAULT 0 */,\
-                        startReadingDate TEXT /* (YYYY-MM-DD) */,\
-                        endReadingDate TEXT /* (YYYY-MM-DD) */,\
+                        is_read BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INT DEFAULT 0 */,\
+                        start_reading_date TEXT /* (YYYY-MM-DD) */,\
+                        end_reading_date TEXT /* (YYYY-MM-DD) */,\
                         rate INT DEFAULT NULL,\
-                        FOREIGN KEY(mainCategoryId) REFERENCES Category(id)\
+                        FOREIGN KEY(main_category) REFERENCES Categories(id)\
                                 ON UPDATE cascade\
                                 ON DELETE set null,\
-                        FOREIGN KEY(publisherId) REFERENCES Publishers(id)\
+                        FOREIGN KEY(publisher) REFERENCES Publishers(id)\
                                 ON UPDATE cascade\
                                 ON DELETE set null,\
-                        FOREIGN KEY(bookSerieId) REFERENCES BookSeries(id)\
+                        FOREIGN KEY(book_serie) REFERENCES BookSeries(id)\
                                 ON UPDATE cascade\
                                 ON DELETE set null)"); // Not finished
 
@@ -96,19 +96,19 @@ public:
                             ON UPDATE cascade\
                             ON DELETE cascade)"); // OK
 
-        db.exec("CREATE TABLE Books_SubCategory(\
+        db.exec("CREATE TABLE Books_SubCategories(\
                         bookId INT NOT NULL,\
                         subCategoryId INT NOT NULL,\
                         FOREIGN KEY(bookId) REFERENCES Books(id)\
                             ON UPDATE cascade\
                             ON DELETE cascade,\
-                        FOREIGN KEY(subCategoryId) REFERENCES Category(id)\
+                        FOREIGN KEY(subCategoryId) REFERENCES Categories(id)\
                             ON UPDATE cascade\
                             ON DELETE cascade)"); // OK
-        db.exec("INSERT INTO Persons (\"id\", \"firstName\", \"lastName\", \"role\") VALUES ('1', 'Jacques', 'Edouard', '1')");
-        db.exec("INSERT INTO Persons (\"id\", \"firstName\", \"lastName\", \"role\") VALUES ('2', 'Charles', 'Henry', '2')");
-        db.exec("INSERT INTO Persons (\"id\", \"firstName\", \"lastName\", \"role\") VALUES ('3', 'Peter', 'Jackson', '1')");
-        db.exec("INSERT INTO Persons (\"id\", \"firstName\", \"lastName\", \"role\") VALUES ('4', 'Richard', 'Bordo', '2')");
+        db.exec("INSERT INTO Persons (\"id\", \"first_name\", \"last_name\", \"role\") VALUES ('1', 'Jacques', 'Edouard', '1')");
+        db.exec("INSERT INTO Persons (\"id\", \"first_name\", \"last_name\", \"role\") VALUES ('2', 'Charles', 'Henry', '2')");
+        db.exec("INSERT INTO Persons (\"id\", \"first_name\", \"last_name\", \"role\") VALUES ('3', 'Peter', 'Jackson', '1')");
+        db.exec("INSERT INTO Persons (\"id\", \"first_name\", \"last_name\", \"role\") VALUES ('4', 'Richard', 'Bordo', '2')");
 
         db.exec("INSERT INTO Publishers (\"id\", \"name\") VALUES ('1', '12-25')");
         db.exec("INSERT INTO Publishers (\"id\", \"name\") VALUES ('2', 'Mu')");
@@ -119,20 +119,20 @@ public:
         db.exec("INSERT INTO BookSeries (\"id\", \"name\") VALUES ('3', 'Star Wars')");
         db.exec("INSERT INTO BookSeries (\"id\", \"name\") VALUES ('4', 'Hunger Games')");
 
-        db.exec("INSERT INTO Category (\"id\", \"name\") VALUES ('1', 'Thriller')");
-        db.exec("INSERT INTO Category (\"id\", \"name\") VALUES ('2', 'Sci-Fi')");
-        db.exec("INSERT INTO Category (\"id\", \"name\") VALUES ('3', 'Fantasy')");
-        db.exec("INSERT INTO Category (\"id\", \"name\") VALUES ('4', 'Young Adult')");
+        db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('1', 'Thriller')");
+        db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('2', 'Sci-Fi')");
+        db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('3', 'Fantasy')");
+        db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('4', 'Young Adult')");
 
-        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"mainCategoryId\", \"publisherId\", \"publishedDate\", \"isRead\") VALUES ('1', '0', 'ArtBook Toy Story', '1', '1', '2017-02-04', '0')");
-        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"mainCategoryId\", \"publisherId\", \"bookSerieId\", \"publishedDate\", \"purchasedDate\", \"price\", \"status\", \"isRead\", \"startReadingDate\", \"endReadingDate\", \"rate\") VALUES ('2', '3', 'TestBook', '2', '2', '3', '2018-07-21', '2019-12-04', '3.7', '2', '1', '2020-01-04', '2020-02-07', '8')");
+        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"published_date\", \"is_read\") VALUES ('1', '0', 'ArtBook Toy Story', '1', '1', '2017-02-04', '0')");
+        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"purchased_date\", \"price\", \"status\", \"is_read\", \"start_reading_date\", \"end_reading_date\", \"rate\") VALUES ('2', '3', 'TestBook', '2', '2', '3', '2018-07-21', '2019-12-04', '3.7', '2', '1', '2020-01-04', '2020-02-07', '8')");
 
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('1', '1')");
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('2', '1')");
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('2', '3')");
 
-        db.exec("INSERT INTO Books_SubCategory (\"bookId\", \"subCategoryId\") VALUES ('2', '4')");
-        db.exec("INSERT INTO Books_SubCategory (\"bookId\", \"subCategoryId\") VALUES ('2', '3')");
+        db.exec("INSERT INTO Books_SubCategories (\"bookId\", \"subCategoryId\") VALUES ('2', '4')");
+        db.exec("INSERT INTO Books_SubCategories (\"bookId\", \"subCategoryId\") VALUES ('2', '3')");
     }
 
     void initBookFactoryMaillon()
@@ -197,7 +197,6 @@ public:
         authorsVector.push_back(authorJacquesEdouard);
         book->author = authorsVector;
         book->mainCategory = std::make_shared<BookManager::Category::Category>(1, "Thriller");
-        // book->subCategory = 1;
         book->publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
         book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
         book->isRead = false;

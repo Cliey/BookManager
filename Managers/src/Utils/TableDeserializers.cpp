@@ -55,7 +55,7 @@ namespace BookManager
         std::vector<BookManager::Category::Category> TableDeserializers::deserializeCategoryTable(int limit, int offset)
         {
             std::vector<BookManager::Category::Category> categoryVector;
-            SQLite::Statement query(*database, "SELECT * FROM Category LIMIT :limit OFFSET :offset");
+            SQLite::Statement query(*database, "SELECT * FROM Categories LIMIT :limit OFFSET :offset");
             query.bind(":limit", limit);
             query.bind(":offset", offset);
 
@@ -93,8 +93,8 @@ namespace BookManager
         BookManager::Entity::Person TableDeserializers::deserializeOnePerson(SQLite::Statement& query)
         {
             int id = query.getColumn("id");
-            std::string firstName = query.getColumn("firstName");
-            std::string lastName = query.getColumn("lastName");
+            std::string firstName = query.getColumn("first_name");
+            std::string lastName = query.getColumn("last_name");
             BookManager::Entity::Role role{query.getColumn("role").getInt()};
             return BookManager::Entity::Person{id, firstName, lastName, role};
         }
@@ -167,7 +167,7 @@ namespace BookManager
 
         BookManager::Category::Category TableDeserializers::getCategoryFromId(int id)
         {
-            SQLite::Statement query(*database, "SELECT * FROM Category WHERE id=:id");
+            SQLite::Statement query(*database, "SELECT * FROM Categories WHERE id=:id");
             query.bind(":id", id);
             query.executeStep();
             return deserializeOneElementSimpleTableIdAndName<BookManager::Category::Category>(query);
@@ -191,7 +191,7 @@ namespace BookManager
 
         std::vector<std::shared_ptr<BookManager::Category::Category>> TableDeserializers::getSubcategory(int bookId)
         {
-            SQLite::Statement query(*database, "SELECT * FROM Books_SubCategory WHERE bookId=:bookId");
+            SQLite::Statement query(*database, "SELECT * FROM Books_SubCategories WHERE bookId=:bookId");
             query.bind(":bookId", bookId);
             std::vector<std::shared_ptr<BookManager::Category::Category>> subCategory;
             while(query.executeStep())
@@ -243,28 +243,28 @@ namespace BookManager
                 newBook->title = title;
                 newBook->author = getAuthors(bookId);
 
-                int mainCategory = query.getColumn("mainCategoryId");
+                int mainCategory = query.getColumn("main_category");
                 newBook->mainCategory = std::make_shared<BookManager::Category::Category>(getCategoryFromId(mainCategory));
                 newBook->subCategory = getSubcategory(bookId);
 
-                int publisher = query.getColumn("publisherId");
+                int publisher = query.getColumn("publisher");
                 newBook->publisher = std::make_shared<BookManager::Entity::Publisher>(getPublisherFromId(mainCategory));
 
-                setOptionalFieldIfExist(newBook->published, query, "publishedDate");
+                setOptionalFieldIfExist(newBook->published, query, "published_date");
 
-                if(!query.isColumnNull("bookSerieId"))
+                if(!query.isColumnNull("book_serie"))
                 {
-                    int bookSerie = query.getColumn("bookSerieId");
+                    int bookSerie = query.getColumn("book_serie");
                     newBook->bookSerie = std::make_shared<BookManager::Entity::BookSerie>(getBookSerieFromId(bookSerie));
                 }
 
-                setOptionalFieldIfExist(newBook->purchasedDate, query, "purchasedDate");
+                setOptionalFieldIfExist(newBook->purchasedDate, query, "purchased_date");
                 setOptionalFieldIfExist(newBook->price, query, "price");
                 newBook->status = getBookStatus(query.getColumn("status"));
-                int isRead = query.getColumn("isRead");
+                int isRead = query.getColumn("is_read");
                 newBook->isRead = static_cast<bool>(isRead);
-                setOptionalFieldIfExist(newBook->startReadingDate, query, "startReadingDate");
-                setOptionalFieldIfExist(newBook->endReadingDate, query, "endReadingDate");
+                setOptionalFieldIfExist(newBook->startReadingDate, query, "start_reading_date");
+                setOptionalFieldIfExist(newBook->endReadingDate, query, "end_reading_date");
 
                 if(!query.isColumnNull("rate"))
                 {

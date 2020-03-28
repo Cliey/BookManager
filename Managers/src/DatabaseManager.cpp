@@ -100,8 +100,8 @@ namespace BookManager
                 LOG_INFO("Creating Author Table...");
                 db.exec("CREATE TABLE Persons(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
-                                firstName TEXT NOT NULL,\
-                                lastName TEXT NOT NULL,\
+                                first_name TEXT NOT NULL,\
+                                last_name TEXT NOT NULL,\
                                 role INTEGER NOT NULL)"); // OK
 
                 LOG_INFO("Creating BookSeries Table...");
@@ -110,7 +110,7 @@ namespace BookManager
                                 name TEXT NOT NULL)"); // add BookVector ? BookId Vector ?
 
                 LOG_INFO("Creating Category Table...");
-                db.exec("CREATE TABLE Category(\
+                db.exec("CREATE TABLE Categories(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
                                 name TEXT NOT NULL)"); // OK
 
@@ -120,25 +120,25 @@ namespace BookManager
                                 type INT NOT NULL /*-- or text ? */, \
                                 title TEXT NOT NULL,\
                                 /* author */\
-                                mainCategoryId INT,\
+                                main_category INT,\
                                 /* Subcategory */\
-                                publisherId INT,\
-                                bookSerieId INT,\
-                                publishedDate TEXT NOT NULL /* (YYYY-MM-DD) */,\
-                                purchasedDate TEXT /* (YYYY-MM-DD) */,\
+                                publisher INT,\
+                                book_serie INT,\
+                                published_date TEXT NOT NULL /* (YYYY-MM-DD) */,\
+                                purchased_date TEXT /* (YYYY-MM-DD) */,\
                                 price REAL CHECK(price > 0),\
                                 status INT DEFAULT 0,\
-                                isRead BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INT DEFAULT 0 */,\
-                                startReadingDate TEXT /* (YYYY-MM-DD) */,\
-                                endReadingDate TEXT /* (YYYY-MM-DD) */,\
+                                is_read BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INT DEFAULT 0 */,\
+                                start_reading_date TEXT /* (YYYY-MM-DD) */,\
+                                end_reading_date TEXT /* (YYYY-MM-DD) */,\
                                 rate INT DEFAULT NULL,\
-                                FOREIGN KEY(mainCategoryId) REFERENCES Category(id)\
+                                FOREIGN KEY(main_category) REFERENCES Categories(id)\
                                         ON UPDATE cascade\
                                         ON DELETE set null,\
-                                FOREIGN KEY(publisherId) REFERENCES Publishers(id)\
+                                FOREIGN KEY(publisher) REFERENCES Publishers(id)\
                                         ON UPDATE cascade\
                                         ON DELETE set null,\
-                                FOREIGN KEY(bookSerieId) REFERENCES BookSeries(id)\
+                                FOREIGN KEY(book_serie) REFERENCES BookSeries(id)\
                                         ON UPDATE cascade\
                                         ON DELETE set null)"); // Not finished
 
@@ -154,13 +154,13 @@ namespace BookManager
                                     ON DELETE cascade)"); // OK
 
                 LOG_INFO("Creating Relational Table Books_SubCategory...");
-                db.exec("CREATE TABLE Books_SubCategory(\
+                db.exec("CREATE TABLE Books_SubCategories(\
                                 bookId INT NOT NULL,\
                                 subCategoryId INT NOT NULL,\
                                 FOREIGN KEY(bookId) REFERENCES Books(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade,\
-                                FOREIGN KEY(subCategoryId) REFERENCES Category(id)\
+                                FOREIGN KEY(subCategoryId) REFERENCES Categories(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade)"); // OK
 
