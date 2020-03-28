@@ -5,6 +5,7 @@ project(${LIB_NAME}_UT CXX)
 
 set(SRCS
 	DatabaseManagerUT.cpp
+	DatabaseManagerBookUT.cpp
 	SettingsManagerUT.cpp
     )
 
