@@ -1,4 +1,5 @@
 #include "DatabaseManagerUT_Common.hpp"
+#include "Utils/TestUtils.hpp"
 
 class DatabaseManagerBookTest : public DatabaseManagerTestCommon
 {
@@ -62,7 +63,6 @@ public:
         EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
-            std::cout << "Book = " << i << std::endl;
             EXPECT_EQ(deserializedTable[i]->id, expectedDeserializedTable[i]->id);
             EXPECT_EQ(deserializedTable[i]->title, expectedDeserializedTable[i]->title);
             expectPersonTable(deserializedTable[i]->author, expectedDeserializedTable[i]->author);
@@ -71,13 +71,13 @@ public:
             expectOneIdAndName<BookManager::Entity::Publisher>(deserializedTable[i]->publisher, expectedDeserializedTable[i]->publisher);
             expectOneIdAndName<BookManager::Entity::BookSerie>(deserializedTable[i]->bookSerie, expectedDeserializedTable[i]->bookSerie);
 
-            checkOptionalField<std::time_t>(deserializedTable[i]->published, expectedDeserializedTable[i]->published);
-            checkOptionalField<std::time_t>(deserializedTable[i]->purchasedDate, expectedDeserializedTable[i]->purchasedDate);
-            checkOptionalField<double>(deserializedTable[i]->price, expectedDeserializedTable[i]->price);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->published, expectedDeserializedTable[i]->published);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->purchasedDate, expectedDeserializedTable[i]->purchasedDate);
+            CheckOptionalField::check<double>(deserializedTable[i]->price, expectedDeserializedTable[i]->price);
             EXPECT_EQ(deserializedTable[i]->status, expectedDeserializedTable[i]->status);
             EXPECT_EQ(deserializedTable[i]->isRead, expectedDeserializedTable[i]->isRead);
-            checkOptionalField<std::time_t>(deserializedTable[i]->startReadingDate, expectedDeserializedTable[i]->startReadingDate);
-            checkOptionalField<std::time_t>(deserializedTable[i]->endReadingDate, expectedDeserializedTable[i]->endReadingDate);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->startReadingDate, expectedDeserializedTable[i]->startReadingDate);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->endReadingDate, expectedDeserializedTable[i]->endReadingDate);
             EXPECT_EQ(deserializedTable[i]->rate, expectedDeserializedTable[i]->rate);
         }
     }
@@ -96,18 +96,7 @@ private:
     {
         return std::make_shared<BookManager::Entity::Person>(id, firstName, lastName, role);
     }
-
-    template <typename T>
-    void checkOptionalField(std::optional<T> optionalToCheck, std::optional<T> optionalExpected)
-    {
-        EXPECT_EQ(optionalToCheck.has_value(), optionalExpected.has_value());
-        if(optionalToCheck.has_value())
-        {
-            EXPECT_EQ(optionalToCheck.value(), optionalExpected.value());
-        }
-    }
 };
-
 
 TEST_F(DatabaseManagerBookTest, testGetBookVectorNoOffset)
 {

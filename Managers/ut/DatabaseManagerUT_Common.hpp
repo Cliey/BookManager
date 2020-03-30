@@ -22,15 +22,14 @@ using namespace BookManager::Book;
 class DatabaseManagerTestCommon : public ::testing::Test
 {
 public:
+
+    static void SetUpTestSuite()
+    {
+        initDbTest();
+    }
+
     DatabaseManagerTestCommon()
     {
-        static bool alreadyInit = true;
-        if(!alreadyInit)
-        {
-            initDbTest();
-            alreadyInit = true;
-        }
-
         sut = DatabaseManager::getDbManager();
     }
 
@@ -92,7 +91,7 @@ public:
     std::shared_ptr<DatabaseManager> sut;
 
 private:
-    void initDbTest()
+    static void initDbTest()
     {
         if( remove("./data/BookManager.db") != 0 )
             std::cout << "Error deleting file" << std::endl;
