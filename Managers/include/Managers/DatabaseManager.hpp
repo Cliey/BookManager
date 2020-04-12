@@ -27,6 +27,7 @@ namespace BookManager
     {
 
         class TableDeserializers;
+        class TableUpdater;
         class DatabaseManager
         {
         public:
@@ -37,6 +38,12 @@ namespace BookManager
             std::vector<BookManager::Category::Category> getCategoryVector(int limit, int offset);
             std::vector<BookManager::Entity::BookSerie> getBookSerieVector(int limit, int offset);
             std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> getBookVector(int limit, int offset);
+
+            bool updatePerson(BookManager::Entity::Person);
+            bool updatePublisher(BookManager::Entity::Publisher);
+            bool updateCategory(BookManager::Category::Category);
+            bool updateBookSerie(BookManager::Entity::BookSerie);
+            bool updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             void insertPerson(BookManager::Entity::Person);
             void insertPublisher(BookManager::Entity::Publisher);
@@ -54,9 +61,11 @@ namespace BookManager
             void loadDatabase(SQLite::Database& database);
             void createDatabase();
 
-            std::unique_ptr<TableDeserializers> createTableDeserializer(std::shared_ptr<SQLite::Database> database);
+            std::unique_ptr<TableDeserializers> createTableDeserializer(std::shared_ptr<SQLite::Database>);
+            std::unique_ptr<TableUpdater> createTableUpdater(std::shared_ptr<SQLite::Database>);
 
             std::unique_ptr<TableDeserializers> tableDeserializer;
+            std::unique_ptr<TableUpdater> tableUpdater;
             std::shared_ptr<SQLite::Database> database;
         };
 

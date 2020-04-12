@@ -11,6 +11,7 @@
 #include "Utils/EnumUtils.hpp"
 #include "../../Category.hpp"
 #include "Managers/Utils/TableDeserializers.hpp"
+#include "Managers/Utils/TableUpdater.hpp"
 
 namespace BookManager
 {
@@ -32,6 +33,11 @@ namespace BookManager
             return std::make_unique<TableDeserializers>(database);
         }
 
+        std::unique_ptr<TableUpdater> DatabaseManager::createTableUpdater(std::shared_ptr<SQLite::Database> database)
+        {
+            return std::make_unique<TableUpdater>(database);
+        }
+
         DatabaseManager::DatabaseManager()
         {
             LOG_INFO("DataBase Loading.....");
@@ -39,8 +45,9 @@ namespace BookManager
             {
                 SQLite::Database db("./data/BookManager.db");
                 loadDatabase(db);
-                database = std::make_shared<SQLite::Database>(db.getFilename());
+                database = std::make_shared<SQLite::Database>(db.getFilename(), SQLite::OPEN_READWRITE);
                 tableDeserializer = createTableDeserializer(database);
+                tableUpdater = createTableUpdater(database);
             }
             catch(const std::exception& e)
             {
@@ -85,6 +92,27 @@ namespace BookManager
         {
             return tableDeserializer->deserializeBookTable(limit, offset);
         }
+
+        bool DatabaseManager::updatePerson(BookManager::Entity::Person personToUpdate)
+        {
+            return tableUpdater->updatePerson(personToUpdate);
+        }
+
+        bool DatabaseManager::updatePublisher(BookManager::Entity::Publisher publisherToUpdate)
+        {
+            return tableUpdater->updatePublisher(publisherToUpdate);
+        }
+
+        bool DatabaseManager::updateCategory(BookManager::Category::Category categoryToUpdate)
+        {
+            return tableUpdater->updateCategory(categoryToUpdate);
+        }
+
+        bool DatabaseManager::updateBookSerie(BookManager::Entity::BookSerie bookSerieToUpdate)
+        {
+            return tableUpdater->updateBookSerie(bookSerieToUpdate);
+        }
+
 
         void DatabaseManager::createDatabase()
         {
