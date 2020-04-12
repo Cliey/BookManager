@@ -142,7 +142,7 @@ namespace BookManager
             std::string day = date;
             std::tm returnDate{};
             returnDate.tm_year = std::stoi(year) - 1900; // Year since 1900
-            returnDate.tm_mon = std::stoi(month) - 1; // 0 tu 11
+            returnDate.tm_mon = std::stoi(month) - 1; // 0 to 11
             returnDate.tm_mday = std::stoi(day);
             return std::mktime(&returnDate);
         }

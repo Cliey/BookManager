@@ -13,6 +13,8 @@ namespace BookManager
 			Artbook(std::string title, std::vector<std::shared_ptr<Entity::Person>> author) : Book(title, author) {}
 			~Artbook() = default;
 
+			BookManager::Book::BookType getType() override { return BookManager:: Book::BookType::ArtBook; }
+
 		private:
 
 

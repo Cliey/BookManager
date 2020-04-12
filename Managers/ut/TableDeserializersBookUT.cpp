@@ -24,7 +24,7 @@ public:
 
     std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTest2()
     {
-        std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
+        std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Novel>();
         book->id = 2;
         book->title = "TestBook";
         std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVec;
@@ -64,6 +64,7 @@ public:
         book->mainCategory = std::make_shared<BookManager::Category::Category>(1, "Thriller");
         book->publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
         book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
+
         book->isRead = false;
         return book;
     }
@@ -73,6 +74,7 @@ public:
         EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
+            EXPECT_EQ(deserializedTable[i]->getType(), expectedDeserializedTable[i]->getType());
             EXPECT_EQ(deserializedTable[i]->id, expectedDeserializedTable[i]->id);
             EXPECT_EQ(deserializedTable[i]->title, expectedDeserializedTable[i]->title);
             expectPersonTable(deserializedTable[i]->author, expectedDeserializedTable[i]->author);

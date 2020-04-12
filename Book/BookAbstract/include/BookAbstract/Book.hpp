@@ -5,6 +5,7 @@
 #include <ctime>
 #include <optional>
 #include "BookEnum/BookStatus.hpp"
+#include "BookEnum/BookType.hpp"
 
 
 
@@ -41,6 +42,8 @@ namespace BookManager
 				std::string getTitle() { return this->title; }
 				std::vector<std::shared_ptr<Entity::Person>> getAuthor() { return this->author; }
 				void setTitle(std::string title) { this->title = title; }
+
+				virtual BookManager:: Book::BookType getType() = 0;
 
 				int id; //const
 				std::string title;

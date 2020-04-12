@@ -13,6 +13,8 @@ namespace BookManager
 			Comics(std::string title, std::vector<std::shared_ptr<Entity::Person>> author) : DrawBook(title, author) {}
 			~Comics() = default;
 
+			BookManager::Book::BookType getType() override { return BookManager:: Book::BookType::Comics; }
+
 		private:
 
 
