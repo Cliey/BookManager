@@ -1,7 +1,17 @@
-#include "DatabaseManagerUT_Common.hpp"
+#include "TableDeserializersUT_Common.hpp"
 #include "Utils/TestUtils.hpp"
 
-class DatabaseManagerBookTest : public DatabaseManagerTestCommon
+#include "MaillonCreation/BookCreationResponsibility.hpp"
+#include "MaillonCreation/MaillonCreationBookArtBook.hpp"
+#include "MaillonCreation/MaillonCreationBookNovel.hpp"
+#include "MaillonCreation/MaillonCreationBookComics.hpp"
+#include "MaillonCreation/MaillonCreationBookManga.hpp"
+#include "BookFactory/BookFactory.hpp"
+
+using namespace BookManager::Manager;
+using namespace BookManager::Book;
+
+class TableDeserializersBookTest : public TableDeserializersCommon
 {
 public:
     void initBookFactoryMaillon()
@@ -98,7 +108,7 @@ private:
     }
 };
 
-TEST_F(DatabaseManagerBookTest, testGetBookVectorNoOffset)
+TEST_F(TableDeserializersBookTest, testGetBookVectorNoOffset)
 {
     initBookFactoryMaillon();
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> expectedDeserializedTable{};
@@ -110,11 +120,11 @@ TEST_F(DatabaseManagerBookTest, testGetBookVectorNoOffset)
     expectedDeserializedTable.push_back(bookTest2);
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
-    deserializedTable = sut->getBookVector(4, 0);
+    deserializedTable = sut->deserializeBookTable(4, 0);
     expectBookTable(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(DatabaseManagerBookTest, testGetBookVectorWithOffset)
+TEST_F(TableDeserializersBookTest, testGetBookVectorWithOffset)
 {
     initBookFactoryMaillon();
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> expectedDeserializedTable{};
@@ -123,13 +133,13 @@ TEST_F(DatabaseManagerBookTest, testGetBookVectorWithOffset)
     expectedDeserializedTable.push_back(bookTest);
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
-    deserializedTable = sut->getBookVector(2, 1);
+    deserializedTable = sut->deserializeBookTable(2, 1);
     expectBookTable(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(DatabaseManagerBookTest, testGetBookVectorWithOffsetTooLarge)
+TEST_F(TableDeserializersBookTest, testGetBookVectorWithOffsetTooLarge)
 {
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
-    deserializedTable = sut->getBookVector(3, 2000);
+    deserializedTable = sut->deserializeBookTable(3, 2000);
     EXPECT_TRUE(deserializedTable.empty());
 }

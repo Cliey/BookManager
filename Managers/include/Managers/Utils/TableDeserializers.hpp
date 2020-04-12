@@ -1,4 +1,4 @@
-
+#pragma once
 #include <vector>
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <memory>

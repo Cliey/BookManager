@@ -1,96 +1,11 @@
-#include "Managers/DatabaseManager.hpp"
-#include "BookAbstract/Book.hpp"
-#include "EntityTypes/BookSerie.hpp"
-#include "EntityTypes/Person.hpp"
-#include "EntityTypes/Publisher.hpp"
-
-#include "MaillonCreation/BookCreationResponsibility.hpp"
-#include "MaillonCreation/MaillonCreationBookArtBook.hpp"
-#include "MaillonCreation/MaillonCreationBookNovel.hpp"
-#include "MaillonCreation/MaillonCreationBookComics.hpp"
-#include "MaillonCreation/MaillonCreationBookManga.hpp"
-#include "BookFactory/BookFactory.hpp"
-#include "../../Category.hpp"
-#include <gtest/gtest.h>
-#include <vector>
+#pragma once
 #include <cstdio>
+#include <iostream>
+#include <SQLiteCpp/SQLiteCpp.h>
 
-using namespace BookManager::Manager;
-using namespace BookManager::Book;
-
-
-class DatabaseManagerTestCommon : public ::testing::Test
+class DatabaseManagerTestCommon
 {
 public:
-
-    static void SetUpTestSuite()
-    {
-        initDbTest();
-    }
-
-    DatabaseManagerTestCommon()
-    {
-        sut = DatabaseManager::getDbManager();
-    }
-
-    void expectPersonTable(std::vector<BookManager::Entity::Person> deserializedTable, std::vector<BookManager::Entity::Person> expectedDeserializedTable)
-    {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
-        for(int i = 0; i < deserializedTable.size(); i++)
-        {
-            expectPersonTableOneElement(deserializedTable[i], expectedDeserializedTable[i]);
-        }
-    }
-
-    void expectPersonTable(std::vector<std::shared_ptr<BookManager::Entity::Person>> deserializedTable, std::vector<std::shared_ptr<BookManager::Entity::Person>> expectedDeserializedTable)
-    {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
-        for(int i = 0; i < deserializedTable.size(); i++)
-        {
-            EXPECT_EQ(deserializedTable[i] == nullptr, expectedDeserializedTable[i] == nullptr);
-            if(deserializedTable[i])
-            {
-                expectPersonTableOneElement(*deserializedTable[i], *expectedDeserializedTable[i]);
-            }
-        }
-    }
-
-    template<class T> void expectIdAndName(std::vector<T> deserializedTable, std::vector<T> expectedDeserializedTable)
-    {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
-        for(int i = 0; i < deserializedTable.size(); i++)
-        {
-            expectOneIdAndName<T>(deserializedTable[i], expectedDeserializedTable[i]);
-        }
-    }
-
-    template<class T> void expectIdAndName(std::vector<std::shared_ptr<T>> deserializedTable, std::vector<std::shared_ptr<T>> expectedDeserializedTable)
-    {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
-        for(int i = 0; i < deserializedTable.size(); i++)
-        {
-            expectOneIdAndName<T>(deserializedTable[i], expectedDeserializedTable[i]);
-        }
-    }
-
-    template<class T> void expectOneIdAndName(T deserializedElement, T expectedDeserializedElement)
-    {
-        EXPECT_EQ(deserializedElement.getId(), expectedDeserializedElement.getId());
-        EXPECT_EQ(deserializedElement.getName(), expectedDeserializedElement.getName());
-    }
-
-    template<class T> void expectOneIdAndName(std::shared_ptr<T> deserializedElement, std::shared_ptr<T> expectedDeserializedElement)
-    {
-        EXPECT_EQ(deserializedElement == nullptr, expectedDeserializedElement == nullptr);
-        if(deserializedElement)
-        {
-            expectOneIdAndName(*deserializedElement, *expectedDeserializedElement);
-        }
-    }
-
-    std::shared_ptr<DatabaseManager> sut;
-
-private:
     static void initDbTest()
     {
         if( remove("./data/BookManager.db") != 0 )
@@ -193,11 +108,4 @@ private:
         db.exec("INSERT INTO Books_SubCategories (\"bookId\", \"subCategoryId\") VALUES ('2', '3')");
     }
 
-    void expectPersonTableOneElement(BookManager::Entity::Person deserializedElement, BookManager::Entity::Person expectedDeserializedElement)
-    {
-            EXPECT_EQ(deserializedElement.getId(), expectedDeserializedElement.getId());
-            EXPECT_EQ(deserializedElement.getFirstName(), expectedDeserializedElement.getFirstName());
-            EXPECT_EQ(deserializedElement.getLastName(), expectedDeserializedElement.getLastName());
-            EXPECT_EQ(deserializedElement.getRole(), expectedDeserializedElement.getRole());
-    }
 };

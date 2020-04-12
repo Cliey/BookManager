@@ -5,8 +5,10 @@ project(${LIB_NAME}_UT CXX)
 
 set(SRCS
 	DatabaseManagerUT.cpp
-	DatabaseManagerBookUT.cpp
 	SettingsManagerUT.cpp
+	TableDeserializersUT.cpp
+	TableDeserializersBookUT.cpp
+	TableUpdaterUT.cpp
     )
 
 add_executable(${LIB_NAME}_UT ${SRCS})

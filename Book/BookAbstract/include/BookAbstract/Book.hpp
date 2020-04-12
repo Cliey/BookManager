@@ -42,7 +42,7 @@ namespace BookManager
 				std::vector<std::shared_ptr<Entity::Person>> getAuthor() { return this->author; }
 				void setTitle(std::string title) { this->title = title; }
 
-				int id;
+				int id; //const
 				std::string title;
 				std::vector<std::shared_ptr<Entity::Person>> author;
 				std::shared_ptr<BookManager::Entity::BookSerie> bookSerie;
