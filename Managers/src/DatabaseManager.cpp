@@ -46,6 +46,7 @@ namespace BookManager
                 SQLite::Database db("./data/BookManager.db");
                 loadDatabase(db);
                 database = std::make_shared<SQLite::Database>(db.getFilename(), SQLite::OPEN_READWRITE);
+                database->exec("PRAGMA foreign_keys = ON");
                 tableDeserializer = createTableDeserializer(database);
                 tableUpdater = createTableUpdater(database);
             }
