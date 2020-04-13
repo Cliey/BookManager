@@ -114,6 +114,10 @@ namespace BookManager
             return tableUpdater->updateBookSerie(bookSerieToUpdate);
         }
 
+        bool DatabaseManager::updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToUpdate)
+        {
+            return tableUpdater->updateBook(bookToUpdate);
+        }
 
         void DatabaseManager::createDatabase()
         {

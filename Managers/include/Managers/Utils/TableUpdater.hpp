@@ -21,8 +21,6 @@ namespace BookManager
     }
     namespace Book
 	{
-        // enum class BookType;
-        // enum class BookStatus;
         namespace Abstraction
         {
             class Book;
