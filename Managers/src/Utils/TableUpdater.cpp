@@ -103,16 +103,16 @@ namespace BookManager
                 catch (const SQLite::Exception &e) {
                     if (e.getExtendedErrorCode() == SQLITE_CONSTRAINT_FOREIGNKEY)
                     {
-                        LOG_ERROR("Error occured while updating authors : The author \"{}, {}\" doesn't exist.",
+                        LOG_WINDOW("Error occured while updating authors : The author \"{}, {}\" doesn't exist.",
                             person->getLastName(), person->getFirstName())
                         throw;
                     }
-                    LOG_ERROR("Error occured while updating authors : {}", e.what())
+                    LOG_WINDOW("Error occured while updating authors : {}", e.what())
                     throw;
                 }
                 catch(const std::exception& e)
                 {
-                    LOG_ERROR("Error occured while updating authors : {}", e.what())
+                    LOG_WINDOW("Error occured while updating authors : {}", e.what())
                     throw;
                 }
             }
@@ -137,16 +137,16 @@ namespace BookManager
                 catch (const SQLite::Exception &e) {
                     if (e.getExtendedErrorCode() == SQLITE_CONSTRAINT_FOREIGNKEY)
                     {
-                        LOG_ERROR("Error occured while updating Subcategories : The Subcategory \"{}\" doesn't exist.",
+                        LOG_WINDOW("Error occured while updating Subcategories : The Subcategory \"{}\" doesn't exist.",
                             subCategorie->getName())
                         throw;
                     }
-                    LOG_ERROR("Error occured while updating Subcategories : {}", e.what());
+                    LOG_WINDOW("Error occured while updating Subcategories : {}", e.what());
                     throw;
                 }
                 catch(const std::exception& e)
                 {
-                    LOG_ERROR("Error occured while updating Subcategories : {}", e.what())
+                    LOG_WINDOW("Error occured while updating Subcategories : {}", e.what())
                     throw;
                 }
             }
@@ -185,12 +185,14 @@ namespace BookManager
 
             try
             {
+                // If error : lost BooksPerson & BooksSubCategories. Should undo modification : transaction ?
                 updateBooksPersonsTable(bookToUpdate->id, bookToUpdate->author);
                 updateBooksSubCategoriesTable(bookToUpdate->id, bookToUpdate->subCategory);
                 return query.exec() > 0;
             }
-            catch(...)
+            catch(const std::exception& e)
             {
+                LOG_ERROR("Error occured while adding Book : {}", e.what())
                 return false;
             }
         }

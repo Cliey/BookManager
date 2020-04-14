@@ -28,6 +28,19 @@ public:
         sut = std::make_shared<TableUpdater>(db);
     }
 
+    void updateBookWithException(std::shared_ptr<BookManager::Book::Abstraction::Book> book, std::string expectedLog)
+    {
+        testing::internal::CaptureStdout();
+
+        EXPECT_FALSE(sut->updateBook(book));
+
+        std::string output = testing::internal::GetCapturedStdout();
+        auto logFound = output.find(expectedLog);
+
+        std::cout << output << std::endl;
+        EXPECT_TRUE(logFound != std::string::npos);
+    }
+
     std::shared_ptr<TableUpdater> sut;
 };
 
@@ -49,7 +62,7 @@ TEST_F(TableUpdaterTest, testUpdatePersonError_IdDoesntExist)
 // Publisher
 TEST_F(TableUpdaterTest, testUpdatePublisherOnExistingPublisher)
 {
-    // Update Publisher with Id = 4
+    // Update Publisher with Id = 3
     BookManager::Entity::Publisher updatedPublisher{3, "Hachette"};
     EXPECT_TRUE(sut->updatePublisher(updatedPublisher));
 }
@@ -64,7 +77,7 @@ TEST_F(TableUpdaterTest, testUpdatePublisherError_IdDoesntExist)
 // Category
 TEST_F(TableUpdaterTest, testUpdateCategoryOnExistingCategory)
 {
-    // Update Category with Id = 4
+    // Update Category with Id = 3
     BookManager::Category::Category updatedCategory{3, "Etranger"};
     EXPECT_TRUE(sut->updateCategory(updatedCategory));
 }
@@ -80,7 +93,7 @@ TEST_F(TableUpdaterTest, testUpdateCategoryError_IdDoesntExist)
 // Book Series
 TEST_F(TableUpdaterTest, testUpdateBookSerieOnExistingBookSerie)
 {
-    // Update BookSerie with Id = 4
+    // Update BookSerie with Id = 3
     BookManager::Entity::BookSerie updatedBookSerie{3, "Cycle de l'epee"};
     EXPECT_TRUE(sut->updateBookSerie(updatedBookSerie));
 }
@@ -112,7 +125,9 @@ TEST_F(TableUpdaterTest, testUpdateBookError_ForeignKeyAuthor)
     std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
     book->id = 1;
     book->author = {std::make_shared<BookManager::Entity::Person>(44, "Edward", "Rice", BookManager::Entity::Role::Author)};
-    EXPECT_FALSE(sut->updateBook(book));
+
+    std::string expectedLog = "Error occured while updating authors";
+    updateBookWithException(book, expectedLog);
 }
 
 TEST_F(TableUpdaterTest, testUpdateBookError_ForeignKeySubCategory)
@@ -121,13 +136,15 @@ TEST_F(TableUpdaterTest, testUpdateBookError_ForeignKeySubCategory)
     book->id = 1;
     book->author = {std::make_shared<BookManager::Entity::Person>(1, "Jacques", "Edouard", BookManager::Entity::Role::Author)};
     book->subCategory = {std::make_shared<BookManager::Category::Category>(55, "Not a Category")};
-    EXPECT_FALSE(sut->updateBook(book));
+
+    std::string expectedLog = "Error occured while updating Subcategories";
+    updateBookWithException(book, expectedLog);
 }
 
 TEST_F(TableUpdaterTest, testUpdateBookError_IdDoesntExist)
 {
     // Update Book with Id = 9
-    std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
-    book->id = 9;
+    auto book = DatabaseManagerTestCommon::initBookTestAllOptionalField();
+    book->id = 980;
     EXPECT_FALSE(sut->updateBook(book));
 }
