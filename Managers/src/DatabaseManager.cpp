@@ -176,22 +176,22 @@ namespace BookManager
 
                 LOG_INFO("Creating Books Table...");
                 db.exec("CREATE TABLE Books(\
-                                id INT PRIMARY KEY NOT NULL,\
-                                type INT NOT NULL /*-- or text ? */, \
+                                id INTEGER PRIMARY KEY NOT NULL,\
+                                type INTEGER NOT NULL /*-- or text ? */, \
                                 title TEXT NOT NULL,\
                                 /* author */\
-                                main_category INT,\
+                                main_category INTEGER,\
                                 /* Subcategory */\
-                                publisher INT,\
-                                book_serie INT,\
+                                publisher INTEGER,\
+                                book_serie INTEGER,\
                                 published_date TEXT NOT NULL /* (YYYY-MM-DD) */,\
                                 purchased_date TEXT /* (YYYY-MM-DD) */,\
                                 price REAL CHECK(price > 0),\
-                                status INT DEFAULT 0,\
-                                is_read BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INT DEFAULT 0 */,\
+                                status INTEGER DEFAULT 0,\
+                                is_read BOOLEAN DEFAULT false NOT NULL /* 0 False / 1 True or INTEGER DEFAULT 0 */,\
                                 start_reading_date TEXT /* (YYYY-MM-DD) */,\
                                 end_reading_date TEXT /* (YYYY-MM-DD) */,\
-                                rate INT DEFAULT NULL,\
+                                rate INTEGER DEFAULT NULL,\
                                 FOREIGN KEY(main_category) REFERENCES Categories(id)\
                                         ON UPDATE cascade\
                                         ON DELETE set null,\
@@ -204,8 +204,8 @@ namespace BookManager
 
                 LOG_INFO("Creating Relational Table Books_Persons...");
                 db.exec("CREATE TABLE Books_Persons(\
-                                bookId INT NOT NULL,\
-                                personId INT NOT NULL,\
+                                bookId INTEGER NOT NULL,\
+                                personId INTEGER NOT NULL,\
                                 FOREIGN KEY(bookId) REFERENCES Books(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade,\
@@ -215,8 +215,8 @@ namespace BookManager
 
                 LOG_INFO("Creating Relational Table Books_SubCategory...");
                 db.exec("CREATE TABLE Books_SubCategories(\
-                                bookId INT NOT NULL,\
-                                subCategoryId INT NOT NULL,\
+                                bookId INTEGER NOT NULL,\
+                                subCategoryId INTEGER NOT NULL,\
                                 FOREIGN KEY(bookId) REFERENCES Books(id)\
                                     ON UPDATE cascade\
                                     ON DELETE cascade,\
