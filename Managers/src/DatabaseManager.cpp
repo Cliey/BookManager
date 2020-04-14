@@ -11,6 +11,7 @@
 #include "Utils/EnumUtils.hpp"
 #include "../../Category.hpp"
 #include "Managers/Utils/TableDeserializers.hpp"
+#include "Managers/Utils/TableInsert.hpp"
 #include "Managers/Utils/TableUpdater.hpp"
 
 namespace BookManager
@@ -33,6 +34,10 @@ namespace BookManager
             return std::make_unique<TableDeserializers>(database);
         }
 
+        std::unique_ptr<TableInsert> DatabaseManager::createTableInsert(std::shared_ptr<SQLite::Database> database)
+        {
+            return std::make_unique<TableInsert>(database);
+        }
         std::unique_ptr<TableUpdater> DatabaseManager::createTableUpdater(std::shared_ptr<SQLite::Database> database)
         {
             return std::make_unique<TableUpdater>(database);
@@ -48,6 +53,7 @@ namespace BookManager
                 database = std::make_shared<SQLite::Database>(db.getFilename(), SQLite::OPEN_READWRITE);
                 database->exec("PRAGMA foreign_keys = ON");
                 tableDeserializer = createTableDeserializer(database);
+                tableInsert = createTableInsert(database);
                 tableUpdater = createTableUpdater(database);
             }
             catch(const std::exception& e)
@@ -117,6 +123,27 @@ namespace BookManager
         bool DatabaseManager::updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToUpdate)
         {
             return tableUpdater->updateBook(bookToUpdate);
+        }
+
+        bool DatabaseManager::insertPerson(BookManager::Entity::Person personToAdd)
+        {
+            return tableInsert->addPerson(personToAdd);
+        }
+        bool DatabaseManager::insertPublisher(BookManager::Entity::Publisher publisherToAdd)
+        {
+            return tableInsert->addPublisher(publisherToAdd);
+        }
+        bool DatabaseManager::insertCategory(BookManager::Category::Category categoryToAdd)
+        {
+            return tableInsert->addCategory(categoryToAdd);
+        }
+        bool DatabaseManager::insertBookSerie(BookManager::Entity::BookSerie bookSerieToAdd)
+        {
+            return tableInsert->addBookSerie(bookSerieToAdd);
+        }
+        bool DatabaseManager::insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
+        {
+            return tableInsert->addBook(bookToAdd);
         }
 
         void DatabaseManager::createDatabase()

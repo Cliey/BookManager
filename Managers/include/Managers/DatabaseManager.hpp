@@ -27,6 +27,7 @@ namespace BookManager
     {
 
         class TableDeserializers;
+        class TableInsert;
         class TableUpdater;
         class DatabaseManager
         {
@@ -45,11 +46,11 @@ namespace BookManager
             bool updateBookSerie(BookManager::Entity::BookSerie);
             bool updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
-            void insertPerson(BookManager::Entity::Person);
-            void insertPublisher(BookManager::Entity::Publisher);
-            void insertCategory(BookManager::Category::Category);
-            void insertBookSerie(BookManager::Entity::BookSerie);
-            // void insertBook();
+            bool insertPerson(BookManager::Entity::Person);
+            bool insertPublisher(BookManager::Entity::Publisher);
+            bool insertCategory(BookManager::Category::Category);
+            bool insertBookSerie(BookManager::Entity::BookSerie);
+            bool insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             // shared_ptr<DatabaseGetter> getPerson(); // DatabaseGetter.byId(int)
             // PersonDatabaseGetter getPerson(); // DatabaseGetter.byName(string)
@@ -62,9 +63,11 @@ namespace BookManager
             void createDatabase();
 
             std::unique_ptr<TableDeserializers> createTableDeserializer(std::shared_ptr<SQLite::Database>);
+            std::unique_ptr<TableInsert> createTableInsert(std::shared_ptr<SQLite::Database> database);
             std::unique_ptr<TableUpdater> createTableUpdater(std::shared_ptr<SQLite::Database>);
 
             std::unique_ptr<TableDeserializers> tableDeserializer;
+            std::unique_ptr<TableInsert> tableInsert;
             std::unique_ptr<TableUpdater> tableUpdater;
             std::shared_ptr<SQLite::Database> database;
         };
