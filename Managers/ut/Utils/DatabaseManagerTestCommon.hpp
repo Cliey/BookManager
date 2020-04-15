@@ -1,4 +1,5 @@
 #pragma once
+#include <gtest/gtest.h>
 #include <cstdio>
 #include <iostream>
 #include <SQLiteCpp/SQLiteCpp.h>
@@ -12,7 +13,7 @@
 #include "BookTypes/Artbook.hpp"
 #include "BookFactory/BookFactory.hpp"
 
-class DatabaseManagerTestCommon
+class DatabaseManagerTestCommon : public ::testing::Test
 {
 public:
     static void initDbTest()
@@ -161,6 +162,14 @@ public:
         book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
         book->isRead = false;
         return book;
+    }
+
+    static void checkLogOutput(std::string output, std::string expectedLog)
+    {
+        auto logFound = output.find(expectedLog);
+
+        std::cout << output << std::endl;
+        EXPECT_TRUE(logFound != std::string::npos);
     }
 
 private:

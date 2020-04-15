@@ -39,10 +39,7 @@ public:
         EXPECT_FALSE(sut->addBook(book));
 
         std::string output = testing::internal::GetCapturedStdout();
-        auto logFound = output.find(expectedLog);
-
-        std::cout << output << std::endl;
-        EXPECT_TRUE(logFound != std::string::npos);
+        DatabaseManagerTestCommon::checkLogOutput(output, expectedLog);
     }
 
     std::shared_ptr<TableInsert> sut;
