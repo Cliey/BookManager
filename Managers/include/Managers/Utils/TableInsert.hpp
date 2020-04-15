@@ -54,7 +54,6 @@ namespace BookManager
                 void deleteInBooksSubCategoriesTable(int bookId);
                 void deleteInBooksPersonsTable(int bookId);
                 void deleteInBooksTable(int bookId);
-                void deleteBookEntryInTable(std::string table, int bookId);
 
 
                 std::shared_ptr<SQLite::Database> database;

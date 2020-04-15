@@ -56,10 +56,6 @@ namespace BookManager
             return query.exec() > 0;
         }
 
-        /************
-         *  Not Yet *
-         * *********/
-
         void TableInsert::bindOptionalDate(SQLite::Statement& query, std::string bindName, std::optional<time_t> date)
         {
             if(date)
