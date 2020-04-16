@@ -12,6 +12,7 @@ set(SRCS
 	src/SettingsManager.cpp
 	src/Utils/SettingsTypes.cpp
 	src/Utils/TableDeserializers.cpp
+	src/Utils/TableDelete.cpp
 	src/Utils/TableInsert.cpp
 	src/Utils/TableUpdater.cpp
     )
@@ -23,6 +24,7 @@ set(HEADERS
 	include/Manager/Utils/SortingEnum.hpp
 	include/Manager/Utils/SettingsTypes.hpp
 	include/Manager/Utils/TableDeserializers.hpp
+	include/Manager/Utils/TableDelete.hpp
 	include/Manager/Utils/TableInsert.hpp
 	include/Manager/Utils/TableUpdater.hpp
     )

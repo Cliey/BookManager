@@ -11,6 +11,7 @@
 #include "Utils/EnumUtils.hpp"
 #include "../../Category.hpp"
 #include "Managers/Utils/TableDeserializers.hpp"
+#include "Managers/Utils/TableDelete.hpp"
 #include "Managers/Utils/TableInsert.hpp"
 #include "Managers/Utils/TableUpdater.hpp"
 
@@ -42,6 +43,10 @@ namespace BookManager
         {
             return std::make_unique<TableUpdater>(database);
         }
+        std::unique_ptr<TableDelete> DatabaseManager::createTableDelete(std::shared_ptr<SQLite::Database> database)
+        {
+            return std::make_unique<TableDelete>(database);
+        }
 
         DatabaseManager::DatabaseManager()
         {
@@ -55,6 +60,7 @@ namespace BookManager
                 tableDeserializer = createTableDeserializer(database);
                 tableInsert = createTableInsert(database);
                 tableUpdater = createTableUpdater(database);
+                tableDelete = createTableDelete(database);
             }
             catch(const std::exception& e)
             {
@@ -104,22 +110,18 @@ namespace BookManager
         {
             return tableUpdater->updatePerson(personToUpdate);
         }
-
         bool DatabaseManager::updatePublisher(BookManager::Entity::Publisher publisherToUpdate)
         {
             return tableUpdater->updatePublisher(publisherToUpdate);
         }
-
         bool DatabaseManager::updateCategory(BookManager::Category::Category categoryToUpdate)
         {
             return tableUpdater->updateCategory(categoryToUpdate);
         }
-
         bool DatabaseManager::updateBookSerie(BookManager::Entity::BookSerie bookSerieToUpdate)
         {
             return tableUpdater->updateBookSerie(bookSerieToUpdate);
         }
-
         bool DatabaseManager::updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToUpdate)
         {
             return tableUpdater->updateBook(bookToUpdate);
@@ -144,6 +146,27 @@ namespace BookManager
         bool DatabaseManager::insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
         {
             return tableInsert->addBook(bookToAdd);
+        }
+
+        bool DatabaseManager::deletePerson(int personId, bool bypassForeignKey)
+        {
+            return tableDelete->deleteInPersonTable(personId, bypassForeignKey);
+        }
+        bool DatabaseManager::deletePublisher(int publisherId, bool bypassForeignKey)
+        {
+            return tableDelete->deleteInPublisherTable(publisherId, bypassForeignKey);
+        }
+        bool DatabaseManager::deleteCategory(int categoryId, bool bypassForeignKey)
+        {
+            return tableDelete->deleteInCategoryTable(categoryId, bypassForeignKey);
+        }
+        bool DatabaseManager::deleteBookSerie(int bookSerieId, bool bypassForeignKey)
+        {
+            return tableDelete->deleteInBookSerieTable(bookSerieId, bypassForeignKey);
+        }
+        bool DatabaseManager::deleteBook(int bookId)
+        {
+            return tableDelete->deleteInBooksTable(bookId);
         }
 
         void DatabaseManager::createDatabase()

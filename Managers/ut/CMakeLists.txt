@@ -8,6 +8,7 @@ set(SRCS
 	SettingsManagerUT.cpp
 	TableDeserializersUT.cpp
 	TableDeserializersBookUT.cpp
+	TableDeleteUT.cpp
 	TableInsertUT.cpp
 	TableUpdaterUT.cpp
     )
