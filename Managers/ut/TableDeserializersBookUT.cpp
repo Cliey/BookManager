@@ -24,7 +24,7 @@ public:
 
     void expectBookTable(std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable, std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> expectedDeserializedTable)
     {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
+        ASSERT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
             EXPECT_EQ(deserializedTable[i]->getType(), expectedDeserializedTable[i]->getType());
@@ -53,11 +53,14 @@ TEST_F(TableDeserializersBookTest, testGetBookVectorNoOffset)
     initBookFactoryMaillon();
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> expectedDeserializedTable{};
 
-    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTest1 = DatabaseManagerTestCommon::initBookTestNoOptionalField();
-    expectedDeserializedTable.push_back(bookTest1);
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestNoOptionalField = DatabaseManagerTestCommon::initBookTestNoOptionalField();
+    expectedDeserializedTable.push_back(bookTestNoOptionalField);
 
-    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTest2 = DatabaseManagerTestCommon::initBookTestAllOptionalField();
-    expectedDeserializedTable.push_back(bookTest2);
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestAllOptionalField = DatabaseManagerTestCommon::initBookTestAllOptionalField();
+    expectedDeserializedTable.push_back(bookTestAllOptionalField);
+
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSerie = DatabaseManagerTestCommon::initBookTestWithBookSerie();
+    expectedDeserializedTable.push_back(bookTestWithBookSerie);
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
     deserializedTable = sut->deserializeBookTable(4, 0);
@@ -69,8 +72,10 @@ TEST_F(TableDeserializersBookTest, testGetBookVectorWithOffset)
     initBookFactoryMaillon();
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> expectedDeserializedTable{};
 
-    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTest = DatabaseManagerTestCommon::initBookTestAllOptionalField();
-    expectedDeserializedTable.push_back(bookTest);
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestAllOptionalField = DatabaseManagerTestCommon::initBookTestAllOptionalField();
+    expectedDeserializedTable.push_back(bookTestAllOptionalField);
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSerie = DatabaseManagerTestCommon::initBookTestWithBookSerie();
+    expectedDeserializedTable.push_back(bookTestWithBookSerie);
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
     deserializedTable = sut->deserializeBookTable(2, 1);

@@ -248,7 +248,7 @@ namespace BookManager
                 newBook->subCategory = getSubcategory(bookId);
 
                 int publisher = query.getColumn("publisher");
-                newBook->publisher = std::make_shared<BookManager::Entity::Publisher>(getPublisherFromId(mainCategory));
+                newBook->publisher = std::make_shared<BookManager::Entity::Publisher>(getPublisherFromId(publisher));
 
                 setOptionalFieldIfExist(newBook->published, query, "published_date");
 

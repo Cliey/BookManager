@@ -11,6 +11,7 @@
 #include "../../Category.hpp"
 #include "BookTypes/Novel.hpp"
 #include "BookTypes/Artbook.hpp"
+#include "BookTypes/Comics.hpp"
 #include "BookFactory/BookFactory.hpp"
 
 class DatabaseManagerTestCommon : public ::testing::Test
@@ -106,16 +107,35 @@ public:
         db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('2', 'Sci-Fi')");
         db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('3', 'Fantasy')");
         db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('4', 'Young Adult')");
+        db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('5', 'Bit-Lit')");
 
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"published_date\", \"is_read\") VALUES ('1', '0', 'ArtBook Toy Story', '1', '1', '2017-02-04', '0')");
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"purchased_date\", \"price\", \"status\", \"is_read\", \"start_reading_date\", \"end_reading_date\", \"rate\") VALUES ('2', '3', 'TestBook', '2', '2', '3', '2018-07-21', '2019-12-04', '3.7', '2', '1', '2020-01-04', '2020-02-07', '8')");
+        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"is_read\") VALUES ('3', '0', 'ArtBook Toy Story 2', '3', '1', '1', '2017-02-04', '0')");
 
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('1', '1')");
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('2', '1')");
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('2', '3')");
+        db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('3', '3')");
 
         db.exec("INSERT INTO Books_SubCategories (\"bookId\", \"subCategoryId\") VALUES ('2', '4')");
         db.exec("INSERT INTO Books_SubCategories (\"bookId\", \"subCategoryId\") VALUES ('2', '3')");
+    }
+
+    static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestNoOptionalField()
+    {
+        std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
+        book->id = 1;
+        book->title = "ArtBook Toy Story";
+        std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVector;
+        std::shared_ptr<BookManager::Entity::Person> authorJacquesEdouard = initAuthor(1, "Jacques", "Edouard", BookManager::Entity::Role::Author);
+        authorsVector.push_back(authorJacquesEdouard);
+        book->author = authorsVector;
+        book->mainCategory = std::make_shared<BookManager::Category::Category>(1, "Thriller");
+        book->publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
+        book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
+        book->isRead = false;
+        return book;
     }
 
     static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestAllOptionalField()
@@ -148,18 +168,19 @@ public:
         return book;
     }
 
-    static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestNoOptionalField()
+    static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestWithBookSerie()
     {
         std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
-        book->id = 1;
-        book->title = "ArtBook Toy Story";
+        book->id = 3;
+        book->title = "ArtBook Toy Story 2";
         std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVector;
-        std::shared_ptr<BookManager::Entity::Person> authorJacquesEdouard = initAuthor(1, "Jacques", "Edouard", BookManager::Entity::Role::Author);
+        std::shared_ptr<BookManager::Entity::Person> authorJacquesEdouard =  initAuthor(3, "Peter", "Jackson", BookManager::Entity::Role::Author);
         authorsVector.push_back(authorJacquesEdouard);
         book->author = authorsVector;
-        book->mainCategory = std::make_shared<BookManager::Category::Category>(1, "Thriller");
+        book->mainCategory = std::make_shared<BookManager::Category::Category>(3, "Fantasy");
         book->publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
         book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
+        book->bookSerie = std::make_shared<BookManager::Entity::BookSerie>(1, "Harry Potter");
         book->isRead = false;
         return book;
     }
