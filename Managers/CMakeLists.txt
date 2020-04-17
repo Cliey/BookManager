@@ -14,6 +14,7 @@ set(SRCS
 	src/Utils/TableDeserializers.cpp
 	src/Utils/TableDelete.cpp
 	src/Utils/TableInsert.cpp
+	src/Utils/TableModifier.cpp
 	src/Utils/TableUpdater.cpp
     )
 
@@ -26,6 +27,7 @@ set(HEADERS
 	include/Manager/Utils/TableDeserializers.hpp
 	include/Manager/Utils/TableDelete.hpp
 	include/Manager/Utils/TableInsert.hpp
+	include/Manager/Utils/TableModifier.hpp
 	include/Manager/Utils/TableUpdater.hpp
     )
 

@@ -44,7 +44,7 @@ TEST_F(TableDeleteTest, tableDeletePersonBypassForeignKey)
 TEST_F(TableDeleteTest, tableDeletePersonNoBypass)
 {
     int idToDelete{1};
-    std::string expectedLog = "Warning : the author has 2";
+    std::string expectedLog = "Warning : the author has 2 book(s) associated, are you sure you want to delete it?";
     testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::deleteInPersonTable);
 }
 
@@ -70,7 +70,7 @@ TEST_F(TableDeleteTest, tableDeletePublisherBypassForeignKey)
 TEST_F(TableDeleteTest, tableDeletePublisherNoBypass)
 {
     int idToDelete{2};
-    std::string expectedLog = "Warning : the publisher has 1";
+    std::string expectedLog = "Warning : the publisher has 1 book(s) associated, are you sure you want to delete it?";
     testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::deleteInPublisherTable);
 }
 
@@ -96,21 +96,21 @@ TEST_F(TableDeleteTest, tableDeleteCategoryBypassForeignKey)
 TEST_F(TableDeleteTest, tableDeleteCategoryNoBypass_MainCategoryOfABook)
 {
     int idToDelete{2};
-    std::string expectedLog = "Warning : the category has 1";
+    std::string expectedLog = "Warning : the category has 1 book(s) associated, are you sure you want to delete it?";
     testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::deleteInCategoryTable);
 }
 
 TEST_F(TableDeleteTest, tableDeleteCategoryNoBypass_MainCategoryAndSubcategoryOfBooks)
 {
     int idToDelete{3};
-    std::string expectedLog = "Warning : the category has 2";
+    std::string expectedLog = "Warning : the category has 2 book(s) associated, are you sure you want to delete it?";
     testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::deleteInCategoryTable);
 }
 
 TEST_F(TableDeleteTest, tableDeleteCategoryNoBypass_SubcategoryOfABook)
 {
     int idToDelete{4};
-    std::string expectedLog = "Warning : the category has 1";
+    std::string expectedLog = "Warning : the category has 1 book(s) associated, are you sure you want to delete it?";
     testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::deleteInCategoryTable);
 }
 
@@ -136,7 +136,7 @@ TEST_F(TableDeleteTest, tableDeleteBookSerieBypassForeignKey)
 TEST_F(TableDeleteTest, tableDeleteBookSerieNoBypass)
 {
     int idToDelete{1};
-    std::string expectedLog = "Warning : the book serie has 1";
+    std::string expectedLog = "Warning : the book serie has 1 book(s) associated, are you sure you want to delete it?";
     testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::deleteInBookSerieTable);
 }
 

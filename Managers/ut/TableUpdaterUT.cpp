@@ -81,8 +81,8 @@ TEST_F(TableUpdaterTest, testUpdateCategoryOnExistingCategory)
 
 TEST_F(TableUpdaterTest, testUpdateCategoryError_IdDoesntExist)
 {
-    // Update Category with Id = 9
-    BookManager::Category::Category updatedCategory{9, "Hachette"};
+    // Update Category with Id = 44
+    BookManager::Category::Category updatedCategory{44, "Hachette"};
     EXPECT_FALSE(sut->updateCategory(updatedCategory));
 }
 
@@ -123,7 +123,7 @@ TEST_F(TableUpdaterTest, testUpdateBookError_ForeignKeyAuthor)
     book->id = 1;
     book->author = {std::make_shared<BookManager::Entity::Person>(44, "Edward", "Rice", BookManager::Entity::Role::Author)};
 
-    std::string expectedLog = "Error occured while updating authors";
+    std::string expectedLog = "Error occured with author : The author \"Rice, Edward\" doesn't exist";
     updateBookWithException(book, expectedLog);
 }
 
@@ -134,7 +134,7 @@ TEST_F(TableUpdaterTest, testUpdateBookError_ForeignKeySubCategory)
     book->author = {std::make_shared<BookManager::Entity::Person>(1, "Jacques", "Edouard", BookManager::Entity::Role::Author)};
     book->subCategory = {std::make_shared<BookManager::Category::Category>(55, "Not a Category")};
 
-    std::string expectedLog = "Error occured while updating Subcategories";
+    std::string expectedLog = "Error occured with Subcategories : The Subcategory \"Not a category\" doesn't exist.";
     updateBookWithException(book, expectedLog);
 }
 

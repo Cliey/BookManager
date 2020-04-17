@@ -33,7 +33,7 @@ public:
 
     void expectPersonTable(std::vector<BookManager::Entity::Person> deserializedTable, std::vector<BookManager::Entity::Person> expectedDeserializedTable)
     {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
+        ASSERT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
             expectPersonTableOneElement(deserializedTable[i], expectedDeserializedTable[i]);
@@ -42,7 +42,7 @@ public:
 
     void expectPersonTable(std::vector<std::shared_ptr<BookManager::Entity::Person>> deserializedTable, std::vector<std::shared_ptr<BookManager::Entity::Person>> expectedDeserializedTable)
     {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
+        ASSERT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
             EXPECT_EQ(deserializedTable[i] == nullptr, expectedDeserializedTable[i] == nullptr);
@@ -55,7 +55,7 @@ public:
 
     template<class T> void expectIdAndName(std::vector<T> deserializedTable, std::vector<T> expectedDeserializedTable)
     {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
+        ASSERT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
             expectOneIdAndName<T>(deserializedTable[i], expectedDeserializedTable[i]);
@@ -64,7 +64,7 @@ public:
 
     template<class T> void expectIdAndName(std::vector<std::shared_ptr<T>> deserializedTable, std::vector<std::shared_ptr<T>> expectedDeserializedTable)
     {
-        EXPECT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
+        ASSERT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
             expectOneIdAndName<T>(deserializedTable[i], expectedDeserializedTable[i]);
