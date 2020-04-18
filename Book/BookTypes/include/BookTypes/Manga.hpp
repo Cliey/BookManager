@@ -5,7 +5,7 @@ namespace BookManager
 {
 	namespace Book
 	{
-		class Manga : public Abstraction::DrawBook
+		struct Manga : public Abstraction::DrawBook
 		{
 		public:
 			Manga() = default;

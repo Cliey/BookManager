@@ -5,7 +5,7 @@ namespace BookManager
 {
 	namespace Book
 	{
-		class Novel : public Abstraction::Book
+		struct Novel : public Abstraction::Book
 		{
 		public:
 			Novel() = default;

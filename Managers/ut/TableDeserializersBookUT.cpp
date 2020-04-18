@@ -29,21 +29,21 @@ public:
         {
             EXPECT_EQ(deserializedTable[i]->getType(), expectedDeserializedTable[i]->getType());
             EXPECT_EQ(deserializedTable[i]->id, expectedDeserializedTable[i]->id);
-            EXPECT_EQ(deserializedTable[i]->title, expectedDeserializedTable[i]->title);
-            expectPersonTable(deserializedTable[i]->author, expectedDeserializedTable[i]->author);
-            expectOneIdAndName<BookManager::Category::Category>(deserializedTable[i]->mainCategory, expectedDeserializedTable[i]->mainCategory);
-            expectIdAndName<BookManager::Category::Category>(deserializedTable[i]->subCategory, expectedDeserializedTable[i]->subCategory);
-            expectOneIdAndName<BookManager::Entity::Publisher>(deserializedTable[i]->publisher, expectedDeserializedTable[i]->publisher);
-            expectOneIdAndName<BookManager::Entity::BookSerie>(deserializedTable[i]->bookSerie, expectedDeserializedTable[i]->bookSerie);
+            EXPECT_EQ(deserializedTable[i]->generalInfo.title, expectedDeserializedTable[i]->generalInfo.title);
+            expectPersonTable(deserializedTable[i]->generalInfo.author, expectedDeserializedTable[i]->generalInfo.author);
+            expectOneIdAndName<BookManager::Entity::Publisher>(deserializedTable[i]->generalInfo.publisher, expectedDeserializedTable[i]->generalInfo.publisher);
+            expectOneIdAndName<BookManager::Entity::BookSerie>(deserializedTable[i]->generalInfo.bookSerie, expectedDeserializedTable[i]->generalInfo.bookSerie);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->generalInfo.published, expectedDeserializedTable[i]->generalInfo.published);
+            expectOneIdAndName<BookManager::Category::Category>(deserializedTable[i]->categoryInfo.mainCategory, expectedDeserializedTable[i]->categoryInfo.mainCategory);
+            expectIdAndName<BookManager::Category::Category>(deserializedTable[i]->categoryInfo.subCategory, expectedDeserializedTable[i]->categoryInfo.subCategory);
 
-            CheckOptionalField::check<std::time_t>(deserializedTable[i]->published, expectedDeserializedTable[i]->published);
-            CheckOptionalField::check<std::time_t>(deserializedTable[i]->purchasedDate, expectedDeserializedTable[i]->purchasedDate);
-            CheckOptionalField::check<double>(deserializedTable[i]->price, expectedDeserializedTable[i]->price);
-            EXPECT_EQ(deserializedTable[i]->status, expectedDeserializedTable[i]->status);
-            EXPECT_EQ(deserializedTable[i]->isRead, expectedDeserializedTable[i]->isRead);
-            CheckOptionalField::check<std::time_t>(deserializedTable[i]->startReadingDate, expectedDeserializedTable[i]->startReadingDate);
-            CheckOptionalField::check<std::time_t>(deserializedTable[i]->endReadingDate, expectedDeserializedTable[i]->endReadingDate);
-            EXPECT_EQ(deserializedTable[i]->rate, expectedDeserializedTable[i]->rate);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->statInfo.purchasedDate, expectedDeserializedTable[i]->statInfo.purchasedDate);
+            CheckOptionalField::check<double>(deserializedTable[i]->statInfo.price, expectedDeserializedTable[i]->statInfo.price);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->statInfo.startReadingDate, expectedDeserializedTable[i]->statInfo.startReadingDate);
+            CheckOptionalField::check<std::time_t>(deserializedTable[i]->statInfo.endReadingDate, expectedDeserializedTable[i]->statInfo.endReadingDate);
+            EXPECT_EQ(deserializedTable[i]->additionalInfo.isRead, expectedDeserializedTable[i]->additionalInfo.isRead);
+            EXPECT_EQ(deserializedTable[i]->additionalInfo.status, expectedDeserializedTable[i]->additionalInfo.status);
+            EXPECT_EQ(deserializedTable[i]->additionalInfo.rate, expectedDeserializedTable[i]->additionalInfo.rate);
         }
     }
 };

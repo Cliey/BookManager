@@ -126,15 +126,15 @@ public:
     {
         std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
         book->id = 1;
-        book->title = "ArtBook Toy Story";
+        book->generalInfo.title = "ArtBook Toy Story";
         std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVector;
         std::shared_ptr<BookManager::Entity::Person> authorJacquesEdouard = initAuthor(1, "Jacques", "Edouard", BookManager::Entity::Role::Author);
         authorsVector.push_back(authorJacquesEdouard);
-        book->author = authorsVector;
-        book->mainCategory = std::make_shared<BookManager::Category::Category>(1, "Thriller");
-        book->publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
-        book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
-        book->isRead = false;
+        book->generalInfo.author = authorsVector;
+        book->categoryInfo.mainCategory = std::make_shared<BookManager::Category::Category>(1, "Thriller");
+        book->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
+        book->generalInfo.published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
+        book->additionalInfo.isRead = false;
         return book;
     }
 
@@ -142,29 +142,29 @@ public:
     {
         std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Novel>();
         book->id = 2;
-        book->title = "TestBook";
+        book->generalInfo.title = "TestBook";
         std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVec;
         std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVector;
         std::shared_ptr<BookManager::Entity::Person> authorJacquesEdouard = initAuthor(1, "Jacques", "Edouard", BookManager::Entity::Role::Author);
         std::shared_ptr<BookManager::Entity::Person> authorPeterJackson = initAuthor(3, "Peter", "Jackson", BookManager::Entity::Role::Author);
         authorsVector.push_back(authorJacquesEdouard);
         authorsVector.push_back(authorPeterJackson);
-        book->author = authorsVector;
-        book->mainCategory = std::make_shared<BookManager::Category::Category>(2, "Sci-Fi");
+        book->generalInfo.author = authorsVector;
+        book->categoryInfo.mainCategory = std::make_shared<BookManager::Category::Category>(2, "Sci-Fi");
         std::vector<std::shared_ptr<BookManager::Category::Category>>  subCategory =
             {std::make_shared<BookManager::Category::Category>(4, "Young Adult"),
             std::make_shared<BookManager::Category::Category>(3, "Fantasy")};
-        book->subCategory = subCategory;
-        book->publisher = std::make_shared<BookManager::Entity::Publisher>(2, "Mu");
-        book->bookSerie = std::make_shared<BookManager::Entity::BookSerie>(3, "Star Wars");
-        book->published = std::make_optional<std::time_t>(initDate(2018, 7, 21));
-        book->purchasedDate = std::make_optional<std::time_t>(initDate(2019, 12, 4));
-        book->status = BookManager::Book::BookStatus::WantIt;
-        book->price = 3.7;
-        book->isRead = true;
-        book->startReadingDate = std::make_optional<std::time_t>(initDate(2020, 1, 4));
-        book->endReadingDate = std::make_optional<std::time_t>(initDate(2020, 2, 7));
-        book->rate = 8;
+        book->categoryInfo.subCategory = subCategory;
+        book->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(2, "Mu");
+        book->generalInfo.bookSerie = std::make_shared<BookManager::Entity::BookSerie>(3, "Star Wars");
+        book->generalInfo.published = std::make_optional<std::time_t>(initDate(2018, 7, 21));
+        book->statInfo.purchasedDate = std::make_optional<std::time_t>(initDate(2019, 12, 4));
+        book->additionalInfo.status = BookManager::Book::BookStatus::WantIt;
+        book->statInfo.price = 3.7;
+        book->additionalInfo.isRead = true;
+        book->statInfo.startReadingDate = std::make_optional<std::time_t>(initDate(2020, 1, 4));
+        book->statInfo.endReadingDate = std::make_optional<std::time_t>(initDate(2020, 2, 7));
+        book->additionalInfo.rate = 8;
         return book;
     }
 
@@ -172,16 +172,16 @@ public:
     {
         std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
         book->id = 3;
-        book->title = "ArtBook Toy Story 2";
+        book->generalInfo.title = "ArtBook Toy Story 2";
         std::vector<std::shared_ptr<BookManager::Entity::Person>> authorsVector;
         std::shared_ptr<BookManager::Entity::Person> authorJacquesEdouard =  initAuthor(3, "Peter", "Jackson", BookManager::Entity::Role::Author);
         authorsVector.push_back(authorJacquesEdouard);
-        book->author = authorsVector;
-        book->mainCategory = std::make_shared<BookManager::Category::Category>(3, "Fantasy");
-        book->publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
-        book->published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
-        book->bookSerie = std::make_shared<BookManager::Entity::BookSerie>(1, "Harry Potter");
-        book->isRead = false;
+        book->generalInfo.author = authorsVector;
+        book->categoryInfo.mainCategory = std::make_shared<BookManager::Category::Category>(3, "Fantasy");
+        book->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
+        book->generalInfo.published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
+        book->generalInfo.bookSerie = std::make_shared<BookManager::Entity::BookSerie>(1, "Harry Potter");
+        book->additionalInfo.isRead = false;
         return book;
     }
 

@@ -121,8 +121,8 @@ namespace BookManager
                     LOG_ERROR("Error occured while updating Book : Id is not associated to any book")
                     return false;
                 }
-                updateBooksPersonsTable(bookToUpdate->id, bookToUpdate->author);
-                updateBooksSubCategoriesTable(bookToUpdate->id, bookToUpdate->subCategory);
+                updateBooksPersonsTable(bookToUpdate->id, bookToUpdate->generalInfo.author);
+                updateBooksSubCategoriesTable(bookToUpdate->id, bookToUpdate->categoryInfo.subCategory);
                 transaction.commit();
                 return  true;
             }

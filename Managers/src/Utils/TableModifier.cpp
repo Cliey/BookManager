@@ -129,25 +129,25 @@ namespace BookManager
         int TableModifier::modifyBookTable(std::shared_ptr<BookManager::Book::Abstraction::Book> book, SQLite::Statement& query)
         {
             query.bind(":type", static_cast<int>(book->getType()));
-            query.bind(":title", book->title);
+            query.bind(":title", book->generalInfo.title);
             bindPointersType<BookManager::Category::Category, const int>(
-                query, ":main_category", book->mainCategory, &BookManager::Category::Category::getId);
+                query, ":main_category", book->categoryInfo.mainCategory, &BookManager::Category::Category::getId);
             bindPointersType<BookManager::Entity::Publisher, const int>(
-                query, ":publisher", book->publisher, &BookManager::Entity::Publisher::getId);
+                query, ":publisher", book->generalInfo.publisher, &BookManager::Entity::Publisher::getId);
             bindPointersType<BookManager::Entity::BookSerie, const int>(
-                query, ":book_serie", book->bookSerie, &BookManager::Entity::BookSerie::getId);
-            bindOptionalDate(query, ":published_date", book->published);
-            bindOptionalDate(query, ":purchased_date", book->purchasedDate);
-            if(book->price)
-                query.bind(":price", book->price.value()); // YYY-MM-DD
+                query, ":book_serie", book->generalInfo.bookSerie, &BookManager::Entity::BookSerie::getId);
+            bindOptionalDate(query, ":published_date", book->generalInfo.published);
+            bindOptionalDate(query, ":purchased_date", book->statInfo.purchasedDate);
+            if(book->statInfo.price)
+                query.bind(":price", book->statInfo.price.value()); // YYY-MM-DD
             else
                 query.bind(":price"); // bind to null
 
-            query.bind(":status", static_cast<int>(book->status));
-            query.bind(":is_read", book->isRead);
-            bindOptionalDate(query, ":start_reading_date", book->startReadingDate);
-            bindOptionalDate(query, ":end_reading_date", book->endReadingDate);
-            query.bind(":rate", book->rate);
+            query.bind(":status", static_cast<int>(book->additionalInfo.status));
+            query.bind(":is_read", book->additionalInfo.isRead);
+            bindOptionalDate(query, ":start_reading_date", book->statInfo.startReadingDate);
+            bindOptionalDate(query, ":end_reading_date", book->statInfo.endReadingDate);
+            query.bind(":rate", book->additionalInfo.rate);
 
             try
             {

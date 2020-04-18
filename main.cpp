@@ -77,10 +77,6 @@ int main()
 	std::cout << "Hello World" << std::endl;
 
 	test();
-	/*
-	Publisher p1{ "abc" }, p2{ "abe" }, p3{ "abb" };
 
-	EXPECT_EQ(p1, "Abc");
-	*/
 	return 0;
 }

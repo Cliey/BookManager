@@ -5,7 +5,7 @@ namespace BookManager
 {
 	namespace Book
 	{
-		class Comics : public Abstraction::DrawBook
+		struct Comics : public Abstraction::DrawBook
 		{
 		public:
 			Comics() = default;

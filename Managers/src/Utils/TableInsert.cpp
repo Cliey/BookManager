@@ -93,8 +93,8 @@ namespace BookManager
             {
                 tableModifier->modifyBookTable(bookToAdd, query);
                 lastIdBook = database->getLastInsertRowid();
-                addBooksPersonsTable(lastIdBook, bookToAdd->author);
-                addBooksSubCategoriesTable(lastIdBook, bookToAdd->subCategory);
+                addBooksPersonsTable(lastIdBook, bookToAdd->generalInfo.author);
+                addBooksSubCategoriesTable(lastIdBook, bookToAdd->categoryInfo.subCategory);
                 transaction.commit();
                 return true;
             }
