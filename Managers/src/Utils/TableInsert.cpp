@@ -74,26 +74,9 @@ namespace BookManager
             }
         }
 
-        void TableInsert::deleteInBooksSubCategoriesTable(int bookId)
-        {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Books_SubCategories WHERE bookId = :book_id");
-            tableModifier->deleteInTableWithBookIdBind(bookId, queryDelete);
-        }
-
-        void TableInsert::deleteInBooksPersonsTable(int bookId)
-        {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Books_Persons WHERE bookId = :book_id");
-            tableModifier->deleteInTableWithBookIdBind(bookId, queryDelete);
-        }
-
-        void TableInsert::deleteInBooksTable(int bookId)
-        {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Books WHERE id = :book_id");
-            tableModifier->deleteInTableWithBookIdBind(bookId, queryDelete);
-        }
-
         bool TableInsert::addBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
         {
+            SQLite::Transaction transaction(*database);
             SQLite::Statement query(*database, "INSERT INTO Books \
                 (   type, title, main_category, \
                     publisher, book_serie, published_date, \
@@ -108,17 +91,16 @@ namespace BookManager
             int lastIdBook;
             try
             {
-                auto rowAdded = tableModifier->modifyBookTable(bookToAdd, query);
+                tableModifier->modifyBookTable(bookToAdd, query);
                 lastIdBook = database->getLastInsertRowid();
                 addBooksPersonsTable(lastIdBook, bookToAdd->author);
                 addBooksSubCategoriesTable(lastIdBook, bookToAdd->subCategory);
-                return rowAdded > 0;
+                transaction.commit();
+                return true;
             }
             catch(const std::exception& e)
             {
-                deleteInBooksTable(lastIdBook);
-                deleteInBooksPersonsTable(lastIdBook);
-                deleteInBooksSubCategoriesTable(lastIdBook);
+                // Rollback
                 LOG_ERROR("Error occured while adding Book : {}", e.what())
                 return false;
             }

@@ -17,7 +17,6 @@ namespace BookManager
 
         bool TableDelete::deleteInPersonTable(int personId, bool bypassForeignKey)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :person_id");
             SQLite::Statement queryCountBookWithAuthor(*database, "SELECT COUNT(*) FROM Books_Persons WHERE personId = :person_id");
             queryCountBookWithAuthor.bind(":person_id", personId);
             if(not bypassForeignKey)
@@ -29,13 +28,13 @@ namespace BookManager
                 }
             }
 
+            SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :person_id");
             queryDelete.bind(":person_id", personId);
             return queryDelete.exec() > 0;
         }
 
         bool TableDelete::deleteInPublisherTable(int publisherId, bool bypassForeignKey)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Publishers WHERE id = :publisher_id");
             SQLite::Statement queryCountBookWithPublisher(*database, "SELECT COUNT(*) FROM Books WHERE publisher = :publisher_id");
             queryCountBookWithPublisher.bind(":publisher_id", publisherId);
             if(not bypassForeignKey)
@@ -46,13 +45,14 @@ namespace BookManager
                     return false;
                 }
             }
+
+            SQLite::Statement queryDelete(*database, "DELETE FROM Publishers WHERE id = :publisher_id");
             queryDelete.bind(":publisher_id", publisherId);
             return queryDelete.exec() > 0;
         }
 
         bool TableDelete::deleteInCategoryTable(int categoryId, bool bypassForeignKey)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Categories WHERE id = :category_id");
             SQLite::Statement queryCountBookWithMainCategory(*database, "SELECT COUNT(*) FROM Books WHERE main_category = :category_id");
             queryCountBookWithMainCategory.bind(":category_id", categoryId);
             SQLite::Statement queryCountBookWithSubCategory(*database, "SELECT COUNT(*) FROM Books_SubCategories WHERE subCategoryId = :subCategory_id");
@@ -65,13 +65,14 @@ namespace BookManager
                     return false;
                 }
             }
+
+            SQLite::Statement queryDelete(*database, "DELETE FROM Categories WHERE id = :category_id");
             queryDelete.bind(":category_id", categoryId);
             return queryDelete.exec() > 0;
         }
 
         bool TableDelete::deleteInBookSerieTable(int bookSerieId, bool bypassForeignKey)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :bookSerie_id");
             SQLite::Statement queryCountBookWithBookSerie(*database, "SELECT COUNT(*) FROM Books WHERE book_serie = :bookSerie_id");
             queryCountBookWithBookSerie.bind(":bookSerie_id", bookSerieId);
             if(not bypassForeignKey)
@@ -82,6 +83,8 @@ namespace BookManager
                     return false;
                 }
             }
+
+            SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :bookSerie_id");
             queryDelete.bind(":bookSerie_id", bookSerieId);
             return queryDelete.exec() > 0;
         }

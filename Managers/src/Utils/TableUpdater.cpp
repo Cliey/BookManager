@@ -105,7 +105,7 @@ namespace BookManager
 
         bool TableUpdater::updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToUpdate)
         {
-            // Update Book -> simple
+            SQLite::Transaction transaction(*database);
             SQLite::Statement query = createQueryAndBindId(
                 "UPDATE Books \
                 SET type = :type, title = :title, main_category = :main_category, \
@@ -116,13 +116,19 @@ namespace BookManager
 
             try
             {
-                // If error : lost BooksPerson & BooksSubCategories. Should undo modification : transaction ? Rollback
+                if(tableModifier->modifyBookTable(bookToUpdate, query) == 0)
+                {
+                    LOG_ERROR("Error occured while updating Book : Id is not associated to any book")
+                    return false;
+                }
                 updateBooksPersonsTable(bookToUpdate->id, bookToUpdate->author);
                 updateBooksSubCategoriesTable(bookToUpdate->id, bookToUpdate->subCategory);
-                return tableModifier->modifyBookTable(bookToUpdate, query) > 0;
+                transaction.commit();
+                return  true;
             }
             catch(const std::exception& e)
             {
+                // Rollback
                 LOG_ERROR("Error occured while updating Book : {}", e.what())
                 return false;
             }

@@ -151,8 +151,8 @@ namespace BookManager
 
             try
             {
-                auto rowAdded = query.exec();
-                return rowAdded;
+                auto rowModified = query.exec();
+                return rowModified;
             }
             catch(const std::exception& e)
             {
