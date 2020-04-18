@@ -16,32 +16,32 @@ namespace BookManager
 {
     namespace Manager
     {
-        bool TableModifier::modifyPersonTable(BookManager::Entity::Person personToAdd, SQLite::Statement& query)
+        bool TableModifier::modifyPersonTable(BookManager::Entity::Person person, SQLite::Statement& query)
         {
-            query.bind(":first_name", personToAdd.getFirstName());
-            query.bind(":last_name", personToAdd.getLastName());
-            query.bind(":role", static_cast<int>(personToAdd.getRole()));
+            query.bind(":first_name", person.getFirstName());
+            query.bind(":last_name", person.getLastName());
+            query.bind(":role", static_cast<int>(person.getRole()));
 
             return query.exec() > 0;
         }
 
-        bool TableModifier::modifyPublisherTable(BookManager::Entity::Publisher publisherToAdd, SQLite::Statement& query)
+        bool TableModifier::modifyPublisherTable(BookManager::Entity::Publisher publisher, SQLite::Statement& query)
         {
-            query.bind(":name", publisherToAdd.getName());
+            query.bind(":name", publisher.getName());
 
             return query.exec() > 0;
         }
 
-        bool TableModifier::modifyCategoryTable(BookManager::Category::Category categoryToAdd, SQLite::Statement& query)
+        bool TableModifier::modifyCategoryTable(BookManager::Category::Category category, SQLite::Statement& query)
         {
-            query.bind(":name", categoryToAdd.getName());
+            query.bind(":name", category.getName());
 
             return query.exec() > 0;
         }
 
-        bool TableModifier::modifyBookSerieTable(BookManager::Entity::BookSerie bookSeriesToAdd, SQLite::Statement& query)
+        bool TableModifier::modifyBookSerieTable(BookManager::Entity::BookSerie bookSeries, SQLite::Statement& query)
         {
-            query.bind(":name", bookSeriesToAdd.getName());
+            query.bind(":name", bookSeries.getName());
 
             return query.exec() > 0;
         }
@@ -126,28 +126,28 @@ namespace BookManager
             query.exec();
         }
 
-        int TableModifier::modifyBookTable(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd, SQLite::Statement& query)
+        int TableModifier::modifyBookTable(std::shared_ptr<BookManager::Book::Abstraction::Book> book, SQLite::Statement& query)
         {
-            query.bind(":type", static_cast<int>(bookToAdd->getType()));
-            query.bind(":title", bookToAdd->title);
+            query.bind(":type", static_cast<int>(book->getType()));
+            query.bind(":title", book->title);
             bindPointersType<BookManager::Category::Category, const int>(
-                query, ":main_category", bookToAdd->mainCategory, &BookManager::Category::Category::getId);
+                query, ":main_category", book->mainCategory, &BookManager::Category::Category::getId);
             bindPointersType<BookManager::Entity::Publisher, const int>(
-                query, ":publisher", bookToAdd->publisher, &BookManager::Entity::Publisher::getId);
+                query, ":publisher", book->publisher, &BookManager::Entity::Publisher::getId);
             bindPointersType<BookManager::Entity::BookSerie, const int>(
-                query, ":book_serie", bookToAdd->bookSerie, &BookManager::Entity::BookSerie::getId);
-            bindOptionalDate(query, ":published_date", bookToAdd->published);
-            bindOptionalDate(query, ":purchased_date", bookToAdd->purchasedDate);
-            if(bookToAdd->price)
-                query.bind(":price", bookToAdd->price.value()); // YYY-MM-DD
+                query, ":book_serie", book->bookSerie, &BookManager::Entity::BookSerie::getId);
+            bindOptionalDate(query, ":published_date", book->published);
+            bindOptionalDate(query, ":purchased_date", book->purchasedDate);
+            if(book->price)
+                query.bind(":price", book->price.value()); // YYY-MM-DD
             else
                 query.bind(":price"); // bind to null
 
-            query.bind(":status", static_cast<int>(bookToAdd->status));
-            query.bind(":is_read", bookToAdd->isRead);
-            bindOptionalDate(query, ":start_reading_date", bookToAdd->startReadingDate);
-            bindOptionalDate(query, ":end_reading_date", bookToAdd->endReadingDate);
-            query.bind(":rate", bookToAdd->rate);
+            query.bind(":status", static_cast<int>(book->status));
+            query.bind(":is_read", book->isRead);
+            bindOptionalDate(query, ":start_reading_date", book->startReadingDate);
+            bindOptionalDate(query, ":end_reading_date", book->endReadingDate);
+            query.bind(":rate", book->rate);
 
             try
             {
