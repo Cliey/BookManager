@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 #include <ctime>
+#include <functional>
+#include <iostream>
 
 namespace BookManager
 {
@@ -51,6 +53,9 @@ namespace BookManager
                 std::string getElementOfDateAndEraseIt(std::string& date);
                 void setOptionalFieldIfExist(std::optional<std::time_t>&, SQLite::Statement&, std::string);
                 void setOptionalFieldIfExist(std::optional<double>&, SQLite::Statement&, std::string);
+                template<typename T>
+                std::shared_ptr<T> setIfColumnNotNull(SQLite::Statement& query, std::string columnName, std::function<T(TableDeserializers, int)> func);
+
                 BookManager::Category::Category getCategoryFromId(int);
                 BookManager::Entity::BookSerie getBookSerieFromId(int);
                 BookManager::Entity::Publisher getPublisherFromId(int);
@@ -67,6 +72,18 @@ namespace BookManager
             int id = query.getColumn("id");
             std::string name = query.getColumn("name");
             return T{id, name};
+        }
+
+        template<typename T>
+        std::shared_ptr<T> TableDeserializers::setIfColumnNotNull(SQLite::Statement& query, std::string columnName, std::function<T(TableDeserializers, int)> func)
+        {
+            auto columnChar = columnName.c_str();
+            if(!query.isColumnNull(columnChar))
+            {
+                int field = query.getColumn(columnChar);
+                return std::make_shared<T>(func(*this, field));
+            }
+            return nullptr;
         }
 
     } // namespace Manager

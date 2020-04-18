@@ -27,6 +27,7 @@ public:
         ASSERT_EQ(deserializedTable.size(), expectedDeserializedTable.size());
         for(int i = 0; i < deserializedTable.size(); i++)
         {
+            std::cout << " i = " << i << std::endl;
             EXPECT_EQ(deserializedTable[i]->getType(), expectedDeserializedTable[i]->getType());
             EXPECT_EQ(deserializedTable[i]->id, expectedDeserializedTable[i]->id);
             EXPECT_EQ(deserializedTable[i]->generalInfo.title, expectedDeserializedTable[i]->generalInfo.title);
@@ -61,6 +62,12 @@ TEST_F(TableDeserializersBookTest, testGetBookVectorNoOffset)
 
     std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSerie = DatabaseManagerTestCommon::initBookTestWithBookSerie();
     expectedDeserializedTable.push_back(bookTestWithBookSerie);
+
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestPtrNotSet = DatabaseManagerTestCommon::initBookTestPtrNotSet();
+    expectedDeserializedTable.push_back(bookTestPtrNotSet);
+
+    if(bookTestPtrNotSet->generalInfo.bookSerie)
+        std::cout << "bookSerie set" << std::endl;
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
     deserializedTable = sut->deserializeBookTable(4, 0);

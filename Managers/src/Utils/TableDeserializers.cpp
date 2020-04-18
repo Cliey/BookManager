@@ -111,6 +111,8 @@ namespace BookManager
                     return BookManager::Book::BookType::Manga;
                 case 3:
                     return BookManager::Book::BookType::Novel;
+                default:
+                    return BookManager::Book::BookType::None;
             }
         }
 
@@ -124,6 +126,8 @@ namespace BookManager
                     return BookManager::Book::BookStatus::HaveIt;
                 case 2:
                     return BookManager::Book::BookStatus::WantIt;
+                default:
+                    return BookManager::Book::BookStatus::None;
             }
         }
 
@@ -242,30 +246,21 @@ namespace BookManager
                 std::string title = query.getColumn("title");
                 newBook->generalInfo.title = title;
                 newBook->generalInfo.author = getAuthors(bookId);
-
-                int mainCategory = query.getColumn("main_category");
-                newBook->categoryInfo.mainCategory = std::make_shared<BookManager::Category::Category>(getCategoryFromId(mainCategory));
-                newBook->categoryInfo.subCategory = getSubcategory(bookId);
-
-                int publisher = query.getColumn("publisher");
-                newBook->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(getPublisherFromId(publisher));
-
+                newBook->generalInfo.bookSerie = setIfColumnNotNull<BookManager::Entity::BookSerie>(query, "book_serie", &getBookSerieFromId);
+                newBook->generalInfo.publisher = setIfColumnNotNull<BookManager::Entity::Publisher>(query, "publisher", &getPublisherFromId);
                 setOptionalFieldIfExist(newBook->generalInfo.published, query, "published_date");
 
-                if(!query.isColumnNull("book_serie"))
-                {
-                    int bookSerie = query.getColumn("book_serie");
-                    newBook->generalInfo.bookSerie = std::make_shared<BookManager::Entity::BookSerie>(getBookSerieFromId(bookSerie));
-                }
+                newBook->categoryInfo.mainCategory = setIfColumnNotNull<BookManager::Category::Category>(query, "main_category", &getCategoryFromId);
+                newBook->categoryInfo.subCategory = getSubcategory(bookId);
 
                 setOptionalFieldIfExist(newBook->statInfo.purchasedDate, query, "purchased_date");
                 setOptionalFieldIfExist(newBook->statInfo.price, query, "price");
-                newBook->additionalInfo.status = getBookStatus(query.getColumn("status"));
-                int isRead = query.getColumn("is_read");
-                newBook->additionalInfo.isRead = static_cast<bool>(isRead);
                 setOptionalFieldIfExist(newBook->statInfo.startReadingDate, query, "start_reading_date");
                 setOptionalFieldIfExist(newBook->statInfo.endReadingDate, query, "end_reading_date");
 
+                newBook->additionalInfo.status = getBookStatus(query.getColumn("status"));
+                int isRead = query.getColumn("is_read");
+                newBook->additionalInfo.isRead = static_cast<bool>(isRead);
                 if(!query.isColumnNull("rate"))
                 {
                     newBook->additionalInfo.rate = query.getColumn("rate");

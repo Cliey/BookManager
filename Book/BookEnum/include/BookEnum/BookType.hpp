@@ -9,7 +9,8 @@ namespace BookManager
 			ArtBook = 0,
 			Comics = 1,
 			Manga = 2,
-			Novel = 3
+			Novel = 3,
+			None = 4
 		};
 	} // namespace Book
 } // namespace BookManager

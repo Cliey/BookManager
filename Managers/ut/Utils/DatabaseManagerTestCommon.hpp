@@ -112,6 +112,7 @@ public:
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"published_date\", \"is_read\") VALUES ('1', '0', 'ArtBook Toy Story', '1', '1', '2017-02-04', '0')");
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"purchased_date\", \"price\", \"status\", \"is_read\", \"start_reading_date\", \"end_reading_date\", \"rate\") VALUES ('2', '3', 'TestBook', '2', '2', '3', '2018-07-21', '2019-12-04', '3.7', '2', '1', '2020-01-04', '2020-02-07', '8')");
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"is_read\") VALUES ('3', '0', 'ArtBook Toy Story 2', '3', '1', '1', '2017-02-04', '0')");
+        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"published_date\", \"is_read\") VALUES ('4', '1', 'Batman', '2012-04-22', '0')");
 
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('1', '1')");
         db.exec("INSERT INTO Books_Persons (\"bookId\", \"personId\") VALUES ('2', '1')");
@@ -181,6 +182,16 @@ public:
         book->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
         book->generalInfo.published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
         book->generalInfo.bookSerie = std::make_shared<BookManager::Entity::BookSerie>(1, "Harry Potter");
+        book->additionalInfo.isRead = false;
+        return book;
+    }
+
+    static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestPtrNotSet()
+    {
+        std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Comics>();
+        book->id = 4;
+        book->generalInfo.title = "Batman";
+        book->generalInfo.published = std::make_optional<std::time_t>(initDate(2012, 4, 22));
         book->additionalInfo.isRead = false;
         return book;
     }
