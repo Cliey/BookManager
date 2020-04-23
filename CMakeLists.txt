@@ -13,6 +13,11 @@ if (BM_COVERAGE)
     set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 endif ()
 
+option(BM_UNIT_TEST "Activate Unit Test compilation, replace log function" OFF)
+if (BM_UNIT_TEST)
+    message("Unit Test compilation, replace log function")
+    add_definitions(-DUNIT_TESTS)
+endif ()
 
 # Project Name
 project(BookManager CXX)

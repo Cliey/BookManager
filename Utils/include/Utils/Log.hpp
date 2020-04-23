@@ -17,8 +17,16 @@
 
 #define LOG_ERROR(format, ...) LOG(LOG_ERROR, format, ##__VA_ARGS__)
 
+#ifndef UNIT_TESTS
 #define LOG_WINDOW(format, ...) {\
         std::stringstream stri;\
         stri << LOG_STRING(LOG_WINDOW) << format << "\n";\
         Utils::Loggers::LoggerWindow::getinstance()->log(stri.str().c_str(), ##__VA_ARGS__);\
     }
+#else
+#define LOG_WINDOW(format, ...) {\
+        std::stringstream stri;\
+        stri << LOG_STRING(LOG_WINDOW_UT) << format << "\n";\
+        Utils::Loggers::LoggerWindow::getinstance()->log(stri.str().c_str(), ##__VA_ARGS__);\
+    }
+#endif
