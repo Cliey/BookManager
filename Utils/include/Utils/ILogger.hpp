@@ -21,6 +21,15 @@ namespace Utils
                     this->write(to_string(out));
                 }
 
+                template<typename... Args>
+                void log(std::function<void()> functionValid, const char* format, Args... args)
+                {
+                    fmt::memory_buffer out;
+                    fmt::format_to(out, format, args...);
+
+                    this->write(functionValid, to_string(out));
+                }
+
                 ILogger& log() { return *this; }
 
                 template <class T> ILogger& operator <<(const T& toLog)
@@ -34,6 +43,7 @@ namespace Utils
 
             private:
                 virtual void write(const std::string& str) = 0;
+                virtual void write(std::function<void()> functionValid, const std::string& str) = 0;
         };
     } // namespace Loggers
 } // namespace Utils

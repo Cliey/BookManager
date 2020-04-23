@@ -46,6 +46,18 @@ namespace Utils
             printf(str.c_str());
         }
 
+        /***********************
+         ***********************
+         *  LoggerWindowYesNo  *
+         ***********************
+        ************************/
+        void LoggerWindowYesNo::write(std::function<void()> functionValid, const std::string& str)
+        {
+            // PopUp a window with Yes or No option
+            printf("[%s]", levelLog);
+            printf(str.c_str());
+            functionValid();
+        }
 
     } // namespace Loggers
 } // namespace Utils

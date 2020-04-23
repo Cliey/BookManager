@@ -30,3 +30,17 @@
         Utils::Loggers::LoggerWindow::getinstance()->log(stri.str().c_str(), ##__VA_ARGS__);\
     }
 #endif
+
+#ifndef UNIT_TESTS
+#define LOG_WINDOW_YES_NO(functionValid, format, ...) {\
+        std::stringstream stri;\
+        stri << LOG_STRING(LOG_WINDOW_YES_NO) << format << "\n";\
+        Utils::Loggers::LoggerWindowYesNo::getinstance()->log(functionValid, stri.str().c_str(), ##__VA_ARGS__);\
+    }
+#else
+#define LOG_WINDOW_YES_NO(functionValid, format, ...) {\
+        std::stringstream stri;\
+        stri << LOG_STRING(LOG_WINDOW_YES_NO_UT) << format << "\n";\
+        Utils::Loggers::LoggerWindowYesNo::getinstance()->log(functionValid, stri.str().c_str(), ##__VA_ARGS__);\
+    }
+#endif

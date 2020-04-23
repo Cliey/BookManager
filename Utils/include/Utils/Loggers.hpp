@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include <sstream>
+#include <functional>
 #include "Utils/Singleton.hpp"
 #include "Utils/ILogger.hpp"
 
@@ -14,6 +15,7 @@ namespace Utils
             private:
                 LoggerConsole() = default;
                 virtual void write(const std::string& str) override;
+                virtual void write(std::function<void()> functionValid, const std::string& str) override {}
 
             protected:
                 const char* levelLog{"Console"};
@@ -27,6 +29,7 @@ namespace Utils
             private:
                 LoggerFile();
                 virtual void write(const std::string& str) override;
+                virtual void write(std::function<void()> functionValid, const std::string& str) override {}
 
             protected:
                 std::ofstream file;
@@ -38,9 +41,22 @@ namespace Utils
             private:
                 LoggerWindow() = default;
                 virtual void write(const std::string& str) override;
+                virtual void write(std::function<void()> functionValid, const std::string& str) override {}
 
             protected:
                 const char* levelLog{"Window"};
+        };
+
+         class LoggerWindowYesNo : public ::Utils::Singleton<LoggerWindowYesNo>, public ILogger
+        {
+            friend class ::Utils::Singleton<LoggerWindowYesNo>;
+            private:
+                LoggerWindowYesNo() = default;
+                virtual void write(const std::string& str) override{}
+                virtual void write(std::function<void()> functionValid, const std::string& str) override;
+
+            protected:
+                const char* levelLog{"WindowYesNo"};
         };
     } // namespace Loggers
 } // namespace Utils
