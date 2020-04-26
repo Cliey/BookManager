@@ -53,6 +53,10 @@ set(HEADERS
 	Category.hpp
     )
 
+
+set(DATA_FOLDER_PATH "${CMAKE_CURRENT_BINARY_DIR}/data")
+file(MAKE_DIRECTORY ${DATA_FOLDER_PATH})
+message("Data folder has been created in ${CMAKE_CURRENT_BINARY_DIR}")
 # Exectuable name is BookManager, compiled from files stored in SRCS and HEADERS
 add_executable(BookManager ${SRCS} ${HEADERS})
 target_link_libraries(BookManager
