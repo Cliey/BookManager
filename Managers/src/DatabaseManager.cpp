@@ -150,19 +150,19 @@ namespace BookManager
 
         bool DatabaseManager::deletePerson(int personId, bool bypassForeignKey)
         {
-            return tableDelete->deleteInPersonTable(personId, bypassForeignKey);
+            return tableDelete->checkAndDeleteInPersonTable(personId, bypassForeignKey);
         }
         bool DatabaseManager::deletePublisher(int publisherId, bool bypassForeignKey)
         {
-            return tableDelete->deleteInPublisherTable(publisherId, bypassForeignKey);
+            return tableDelete->checkAndDeleteInPublisherTable(publisherId, bypassForeignKey);
         }
         bool DatabaseManager::deleteCategory(int categoryId, bool bypassForeignKey)
         {
-            return tableDelete->deleteInCategoryTable(categoryId, bypassForeignKey);
+            return tableDelete->checkAndDeleteInCategoryTable(categoryId, bypassForeignKey);
         }
         bool DatabaseManager::deleteBookSerie(int bookSerieId, bool bypassForeignKey)
         {
-            return tableDelete->deleteInBookSerieTable(bookSerieId, bypassForeignKey);
+            return tableDelete->checkAndDeleteInBookSerieTable(bookSerieId, bypassForeignKey);
         }
         bool DatabaseManager::deleteBook(int bookId)
         {

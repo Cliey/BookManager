@@ -1,5 +1,6 @@
 #include "Utils/Loggers.hpp"
 #include <iostream>
+#include <cctype>
 
 namespace Utils
 {
@@ -51,6 +52,7 @@ namespace Utils
          *  LoggerWindowYesNo  *
          ***********************
         ************************/
+        #ifndef UNIT_TESTS
         void LoggerWindowYesNo::write(std::function<void()> functionValid, const std::string& str)
         {
             // PopUp a window with Yes or No option
@@ -58,6 +60,14 @@ namespace Utils
             printf(str.c_str());
             functionValid();
         }
+        #else
+        void LoggerWindowYesNo::write(std::function<void()> functionValid, const std::string& str)
+        {
+            // For Unit test, functionValid is not executed
+            printf("[%s]", levelLog);
+            printf(str.c_str());
+        }
+        #endif
 
     } // namespace Loggers
 } // namespace Utils

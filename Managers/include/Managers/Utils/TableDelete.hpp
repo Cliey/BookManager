@@ -35,15 +35,17 @@ namespace BookManager
                 TableDelete(std::shared_ptr<SQLite::Database> database) : database(database)
                 {}
 
-                bool deleteInPersonTable(int, bool);
-                bool deleteInPublisherTable(int, bool);
-                bool deleteInCategoryTable(int, bool);
-                bool deleteInBookSerieTable(int, bool);
+                bool checkAndDeleteInPersonTable(int, bool);
+                bool checkAndDeleteInPublisherTable(int, bool);
+                bool checkAndDeleteInCategoryTable(int, bool);
+                bool checkAndDeleteInBookSerieTable(int, bool);
                 bool deleteInBooksTable(int);
 
             private:
-                bool deleteInBooksSubCategoriesTable(int);
-                bool deleteInBooksPersonsTable(int);
+                bool deleteInPersonTable(int);
+                bool deleteInPublisherTable(int);
+                bool deleteInCategoryTable(int);
+                bool deleteInBookSerieTable(int);
 
                 std::shared_ptr<SQLite::Database> database;
         };

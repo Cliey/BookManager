@@ -15,7 +15,14 @@ namespace BookManager
             return count;
         }
 
-        bool TableDelete::deleteInPersonTable(int personId, bool bypassForeignKey)
+        bool TableDelete::deleteInPersonTable(int personId)
+        {
+            SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :person_id");
+            queryDelete.bind(":person_id", personId);
+            return queryDelete.exec() > 0;
+        }
+
+        bool TableDelete::checkAndDeleteInPersonTable(int personId, bool bypassForeignKey)
         {
             SQLite::Statement queryCountBookWithAuthor(*database, "SELECT COUNT(*) FROM Books_Persons WHERE personId = :person_id");
             queryCountBookWithAuthor.bind(":person_id", personId);
@@ -23,17 +30,24 @@ namespace BookManager
             {
                 if (int count = countRelations(queryCountBookWithAuthor); count > 0)
                 {
-                    LOG_WINDOW("Warning : the author has {} book(s) associated, are you sure you want to delete it?", count);
-                    return false;
+                    bool returnValue = false;
+                    auto deletePerson = [this, personId, &returnValue]() { returnValue = this->deleteInPersonTable(personId); };
+                    LOG_WINDOW_YES_NO(deletePerson, "Warning : the author has {} book(s) associated, are you sure you want to delete it?", count);
+                    return returnValue;
                 }
             }
 
-            SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :person_id");
-            queryDelete.bind(":person_id", personId);
+            return deleteInPersonTable(personId);
+        }
+
+        bool TableDelete::deleteInPublisherTable(int publisherId)
+        {
+            SQLite::Statement queryDelete(*database, "DELETE FROM Publishers WHERE id = :publisher_id");
+            queryDelete.bind(":publisher_id", publisherId);
             return queryDelete.exec() > 0;
         }
 
-        bool TableDelete::deleteInPublisherTable(int publisherId, bool bypassForeignKey)
+        bool TableDelete::checkAndDeleteInPublisherTable(int publisherId, bool bypassForeignKey)
         {
             SQLite::Statement queryCountBookWithPublisher(*database, "SELECT COUNT(*) FROM Books WHERE publisher = :publisher_id");
             queryCountBookWithPublisher.bind(":publisher_id", publisherId);
@@ -41,17 +55,24 @@ namespace BookManager
             {
                 if (int count = countRelations(queryCountBookWithPublisher); count > 0)
                 {
-                    LOG_WINDOW("Warning : the publisher has {} book(s) associated, are you sure you want to delete it?", count);
-                    return false;
+                    bool returnValue = false;
+                    auto deletePublisher = [this, publisherId, &returnValue]() { returnValue = this->deleteInPublisherTable(publisherId); };
+                    LOG_WINDOW_YES_NO(deletePublisher, "Warning : the publisher has {} book(s) associated, are you sure you want to delete it?", count);
+                    return returnValue;
                 }
             }
 
-            SQLite::Statement queryDelete(*database, "DELETE FROM Publishers WHERE id = :publisher_id");
-            queryDelete.bind(":publisher_id", publisherId);
+            return deleteInPublisherTable(publisherId);
+        }
+
+        bool TableDelete::deleteInCategoryTable(int categoryId)
+        {
+            SQLite::Statement queryDelete(*database, "DELETE FROM Categories WHERE id = :category_id");
+            queryDelete.bind(":category_id", categoryId);
             return queryDelete.exec() > 0;
         }
 
-        bool TableDelete::deleteInCategoryTable(int categoryId, bool bypassForeignKey)
+        bool TableDelete::checkAndDeleteInCategoryTable(int categoryId, bool bypassForeignKey)
         {
             SQLite::Statement queryCountBookWithMainCategory(*database, "SELECT COUNT(*) FROM Books WHERE main_category = :category_id");
             queryCountBookWithMainCategory.bind(":category_id", categoryId);
@@ -61,17 +82,24 @@ namespace BookManager
             {
                 if (int count = countRelations(queryCountBookWithMainCategory) + countRelations(queryCountBookWithSubCategory); count > 0)
                 {
-                    LOG_WINDOW("Warning : the category has {} book(s) associated, are you sure you want to delete it?", count);
-                    return false;
+                    bool returnValue = false;
+                    auto deleteCategory = [this, categoryId, &returnValue]() { returnValue = this->deleteInBookSerieTable(categoryId); };
+                    LOG_WINDOW_YES_NO(deleteCategory, "Warning : the category has {} book(s) associated, are you sure you want to delete it?", count);
+                    return returnValue;
                 }
             }
 
-            SQLite::Statement queryDelete(*database, "DELETE FROM Categories WHERE id = :category_id");
-            queryDelete.bind(":category_id", categoryId);
+            return deleteInCategoryTable(categoryId);
+        }
+
+        bool TableDelete::deleteInBookSerieTable(int bookSerieId)
+        {
+            SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :bookSerie_id");
+            queryDelete.bind(":bookSerie_id", bookSerieId);
             return queryDelete.exec() > 0;
         }
 
-        bool TableDelete::deleteInBookSerieTable(int bookSerieId, bool bypassForeignKey)
+        bool TableDelete::checkAndDeleteInBookSerieTable(int bookSerieId, bool bypassForeignKey)
         {
             SQLite::Statement queryCountBookWithBookSerie(*database, "SELECT COUNT(*) FROM Books WHERE book_serie = :bookSerie_id");
             queryCountBookWithBookSerie.bind(":bookSerie_id", bookSerieId);
@@ -79,14 +107,14 @@ namespace BookManager
             {
                 if (int count = countRelations(queryCountBookWithBookSerie); count > 0)
                 {
-                    LOG_WINDOW("Warning : the book serie has {} book(s) associated, are you sure you want to delete it?", count);
-                    return false;
+                    bool returnValue = false;
+                    auto deleteBookSerie = [this, bookSerieId, &returnValue]() { returnValue = this->deleteInBookSerieTable(bookSerieId); };
+                    LOG_WINDOW_YES_NO(deleteBookSerie, "Warning : the book serie has {} book(s) associated, are you sure you want to delete it?", count);
+                    return returnValue;
                 }
             }
 
-            SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :bookSerie_id");
-            queryDelete.bind(":bookSerie_id", bookSerieId);
-            return queryDelete.exec() > 0;
+            return deleteInBookSerieTable(bookSerieId);
         }
 
         bool TableDelete::deleteInBooksTable(int bookId)
