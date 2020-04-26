@@ -60,6 +60,7 @@ public:
                         start_reading_date TEXT /* (YYYY-MM-DD) */,\
                         end_reading_date TEXT /* (YYYY-MM-DD) */,\
                         rate INTEGER DEFAULT NULL,\
+                        comment TEXT,\
                         FOREIGN KEY(main_category) REFERENCES Categories(id)\
                                 ON UPDATE cascade\
                                 ON DELETE set null,\
@@ -110,7 +111,7 @@ public:
         db.exec("INSERT INTO Categories (\"id\", \"name\") VALUES ('5', 'Bit-Lit')");
 
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"published_date\", \"is_read\") VALUES ('1', '0', 'ArtBook Toy Story', '1', '1', '2017-02-04', '0')");
-        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"purchased_date\", \"price\", \"status\", \"is_read\", \"start_reading_date\", \"end_reading_date\", \"rate\") VALUES ('2', '3', 'TestBook', '2', '2', '3', '2018-07-21', '2019-12-04', '3.7', '2', '1', '2020-01-04', '2020-02-07', '8')");
+        db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"purchased_date\", \"price\", \"status\", \"is_read\", \"start_reading_date\", \"end_reading_date\", \"rate\", \"comment\") VALUES ('2', '3', 'TestBook', '2', '2', '3', '2018-07-21', '2019-12-04', '3.7', '2', '1', '2020-01-04', '2020-02-07', '8', 'Nice book, breath-taking.')");
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"main_category\", \"publisher\", \"book_serie\", \"published_date\", \"is_read\") VALUES ('3', '0', 'ArtBook Toy Story 2', '3', '1', '1', '2017-02-04', '0')");
         db.exec("INSERT INTO Books (\"id\", \"type\", \"title\", \"published_date\", \"is_read\") VALUES ('4', '1', 'Batman', '2012-04-22', '0')");
 
@@ -166,6 +167,7 @@ public:
         book->statInfo.startReadingDate = std::make_optional<std::time_t>(initDate(2020, 1, 4));
         book->statInfo.endReadingDate = std::make_optional<std::time_t>(initDate(2020, 2, 7));
         book->additionalInfo.rate = 8;
+        book->additionalInfo.comment = "Nice book, breath-taking.";
         return book;
     }
 

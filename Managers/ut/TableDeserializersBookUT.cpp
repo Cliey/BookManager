@@ -44,7 +44,8 @@ public:
             CheckOptionalField::check<std::time_t>(deserializedTable[i]->statInfo.endReadingDate, expectedDeserializedTable[i]->statInfo.endReadingDate);
             EXPECT_EQ(deserializedTable[i]->additionalInfo.isRead, expectedDeserializedTable[i]->additionalInfo.isRead);
             EXPECT_EQ(deserializedTable[i]->additionalInfo.status, expectedDeserializedTable[i]->additionalInfo.status);
-            EXPECT_EQ(deserializedTable[i]->additionalInfo.rate, expectedDeserializedTable[i]->additionalInfo.rate);
+            CheckOptionalField::check<int>(deserializedTable[i]->additionalInfo.rate, expectedDeserializedTable[i]->additionalInfo.rate);
+            EXPECT_EQ(deserializedTable[i]->additionalInfo.comment, expectedDeserializedTable[i]->additionalInfo.comment);
         }
     }
 };

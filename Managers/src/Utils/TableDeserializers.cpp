@@ -151,22 +151,14 @@ namespace BookManager
             return std::mktime(&returnDate);
         }
 
-        void TableDeserializers::setOptionalFieldIfExist(std::optional<std::time_t>& fieldToInit, SQLite::Statement& query, std::string column)
+        template<>
+        void TableDeserializers::setOptionalFieldIfExist<std::time_t>(std::optional<std::time_t>& fieldToInit, SQLite::Statement& query, std::string column)
         {
             if(query.isColumnNull(column.c_str()))
                 return;
 
             auto field = query.getColumn(column.c_str());
             fieldToInit = std::make_optional<std::time_t>(convertDate(field));
-        }
-
-        void TableDeserializers::setOptionalFieldIfExist(std::optional<double>& fieldToInit, SQLite::Statement& query, std::string column)
-        {
-            if(query.isColumnNull(column.c_str()))
-                return;
-
-            auto field = query.getColumn(column.c_str());
-            fieldToInit = std::make_optional<double>(field);
         }
 
         BookManager::Category::Category TableDeserializers::getCategoryFromId(int id)
@@ -261,9 +253,11 @@ namespace BookManager
                 newBook->additionalInfo.status = getBookStatus(query.getColumn("status"));
                 int isRead = query.getColumn("is_read");
                 newBook->additionalInfo.isRead = static_cast<bool>(isRead);
-                if(!query.isColumnNull("rate"))
+                setOptionalFieldIfExist(newBook->additionalInfo.rate, query, "rate");
+                std::string comment = query.getColumn("comment");
+                if(!query.isColumnNull("comment"))
                 {
-                    newBook->additionalInfo.rate = query.getColumn("rate");
+                    newBook->additionalInfo.comment = comment;
                 }
 
                 bookVector.push_back(newBook);

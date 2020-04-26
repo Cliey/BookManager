@@ -81,12 +81,12 @@ namespace BookManager
                 (   type, title, main_category, \
                     publisher, book_serie, published_date, \
                     purchased_date, price, status, is_read, \
-                    start_reading_date, end_reading_date, rate) \
+                    start_reading_date, end_reading_date, rate, comment) \
                 VALUES( \
                     :type, :title, :main_category, \
                     :publisher, :book_serie, :published_date, \
                     :purchased_date, :price, :status, :is_read, \
-                    :start_reading_date, :end_reading_date, :rate)");
+                    :start_reading_date, :end_reading_date, :rate, :comment)");
 
             int lastIdBook;
             try

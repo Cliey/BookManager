@@ -44,15 +44,14 @@ namespace BookManager
                 void deleteInTableWithBookIdBind(int, SQLite::Statement&);
 
             private:
-                void bindOptionalDate(SQLite::Statement&, std::string, std::optional<time_t>);
+                void bindString(SQLite::Statement& query, std::string bindName, std::string field);
                 std::string convertDateToString(std::time_t);
                 template<typename T>
                 void bindPointersTypeForId(SQLite::Statement&, std::string, std::shared_ptr<T>);
                 template<typename T, typename U>
                 void bindPointersType(SQLite::Statement&, std::string, std::shared_ptr<T>, std::function<U(std::shared_ptr<T>)> const);
-
-
-
+                template<typename T>
+                void bindOptional(SQLite::Statement&, std::string, std::optional<T>);
         };
 
         template<typename T>
@@ -69,6 +68,15 @@ namespace BookManager
         {
             if(value)
                 query.bind(bindName, func(value));
+            else
+                query.bind(bindName); // bind to null
+        }
+
+        template<typename T>
+        void TableModifier::bindOptional(SQLite::Statement& query, std::string bindName, std::optional<T> field)
+        {
+            if(field)
+                query.bind(bindName, field.value());
             else
                 query.bind(bindName); // bind to null
         }

@@ -51,10 +51,10 @@ namespace BookManager
                 BookManager::Book::BookStatus getBookStatus(int status);
                 std::time_t convertDate(std::string);
                 std::string getElementOfDateAndEraseIt(std::string& date);
-                void setOptionalFieldIfExist(std::optional<std::time_t>&, SQLite::Statement&, std::string);
-                void setOptionalFieldIfExist(std::optional<double>&, SQLite::Statement&, std::string);
                 template<typename T>
                 std::shared_ptr<T> setIfColumnNotNull(SQLite::Statement& query, std::string columnName, std::function<T(TableDeserializers, int)> func);
+                template<typename T>
+                void setOptionalFieldIfExist(std::optional<T>& fieldToInit, SQLite::Statement& query, std::string column);
 
                 BookManager::Category::Category getCategoryFromId(int);
                 BookManager::Entity::BookSerie getBookSerieFromId(int);
@@ -86,5 +86,14 @@ namespace BookManager
             return nullptr;
         }
 
+        template<typename T>
+        void TableDeserializers::setOptionalFieldIfExist(std::optional<T>& fieldToInit, SQLite::Statement& query, std::string column)
+        {
+            if(query.isColumnNull(column.c_str()))
+                return;
+
+            auto field = query.getColumn(column.c_str());
+            fieldToInit = std::make_optional<double>(field);
+        }
     } // namespace Manager
 } // namespace BookManager

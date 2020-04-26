@@ -111,7 +111,8 @@ namespace BookManager
                 SET type = :type, title = :title, main_category = :main_category, \
                     publisher = :publisher, book_serie = :book_serie, published_date = :published_date, \
                     purchased_date = :purchased_date, price = :price, status = :status, is_read = :is_read, \
-                    start_reading_date = :start_reading_date, end_reading_date = :end_reading_date, rate = :rate \
+                    start_reading_date = :start_reading_date, end_reading_date = :end_reading_date, rate = :rate, \
+                    comment = :comment \
                 WHERE id = :id",  bookToUpdate->id);
 
             try

@@ -55,7 +55,8 @@ namespace BookManager
 			{
 				BookStatus status{ BookStatus::Listed };
 				bool isRead{ false };
-				int rate{ 0 };
+				std::optional<int> rate;
+				std::string comment;
 			};
 
 			struct Book

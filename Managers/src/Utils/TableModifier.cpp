@@ -46,7 +46,8 @@ namespace BookManager
             return query.exec() > 0;
         }
 
-        void TableModifier::bindOptionalDate(SQLite::Statement& query, std::string bindName, std::optional<time_t> date)
+        template<>
+        void TableModifier::bindOptional<time_t>(SQLite::Statement& query, std::string bindName, std::optional<time_t> date)
         {
             if(date)
                 query.bind(bindName, convertDateToString(date.value())); // YYY-MM-DD
@@ -126,6 +127,14 @@ namespace BookManager
             query.exec();
         }
 
+        void TableModifier::bindString(SQLite::Statement& query, std::string bindName, std::string field)
+        {
+            if(!field.empty())
+                query.bind(bindName, field);
+            else
+                query.bind(bindName); // bind to null
+        }
+
         int TableModifier::modifyBookTable(std::shared_ptr<BookManager::Book::Abstraction::Book> book, SQLite::Statement& query)
         {
             query.bind(":type", static_cast<int>(book->getType()));
@@ -136,18 +145,16 @@ namespace BookManager
                 query, ":publisher", book->generalInfo.publisher, &BookManager::Entity::Publisher::getId);
             bindPointersType<BookManager::Entity::BookSerie, const int>(
                 query, ":book_serie", book->generalInfo.bookSerie, &BookManager::Entity::BookSerie::getId);
-            bindOptionalDate(query, ":published_date", book->generalInfo.published);
-            bindOptionalDate(query, ":purchased_date", book->statInfo.purchasedDate);
-            if(book->statInfo.price)
-                query.bind(":price", book->statInfo.price.value()); // YYY-MM-DD
-            else
-                query.bind(":price"); // bind to null
+            bindOptional<time_t>(query, ":published_date", book->generalInfo.published);
+            bindOptional<time_t>(query, ":purchased_date", book->statInfo.purchasedDate);
+            bindOptional<double>(query, ":price", book->statInfo.price);
+            bindOptional<time_t>(query, ":start_reading_date", book->statInfo.startReadingDate);
+            bindOptional<time_t>(query, ":end_reading_date", book->statInfo.endReadingDate);
 
             query.bind(":status", static_cast<int>(book->additionalInfo.status));
             query.bind(":is_read", book->additionalInfo.isRead);
-            bindOptionalDate(query, ":start_reading_date", book->statInfo.startReadingDate);
-            bindOptionalDate(query, ":end_reading_date", book->statInfo.endReadingDate);
-            query.bind(":rate", book->additionalInfo.rate);
+            bindOptional<int>(query, ":rate", book->additionalInfo.rate);
+            bindString(query, ":comment", book->additionalInfo.comment);
 
             try
             {
