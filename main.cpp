@@ -14,7 +14,8 @@
 #include "EntityEnum/Role.hpp"
 #include "Managers/GeneralManager.hpp"
 #include "Utils/EnumUtils.hpp"
-#include "GraphicalInterface/MainWindow.hpp"
+
+#include "View/MainWindow.hpp"
 #include <QApplication>
 
 void test()
