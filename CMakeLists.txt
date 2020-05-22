@@ -19,11 +19,14 @@ if (BM_UNIT_TEST)
     add_definitions(-DUNIT_TESTS)
 endif ()
 
+
 # Project Name
 project(BookManager CXX)
+find_package(Qt5Widgets)
 
 add_subdirectory(Book)
 add_subdirectory(Entity)
+add_subdirectory(GraphicalInterface)
 add_subdirectory(MaillonCreation)
 add_subdirectory(Managers)
 add_subdirectory(Utils)
@@ -67,6 +70,7 @@ target_link_libraries(BookManager
         maillon_creation
         managers
         utils
+        graphical_interface
     )
 
 # UTs
