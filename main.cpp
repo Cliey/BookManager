@@ -14,6 +14,8 @@
 #include "EntityEnum/Role.hpp"
 #include "Managers/GeneralManager.hpp"
 #include "Utils/EnumUtils.hpp"
+#include "GraphicalInterface/MainWindow.hpp"
+#include <QApplication>
 
 void test()
 {
@@ -72,11 +74,13 @@ void test()
 	// std::shared_ptr<BookManager::Book::Abstraction::Book> newNovel = BookManager::Book::BookFactory::create(BookManager::Book::BookType::Comics);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	std::cout << "Hello World" << std::endl;
 
-	test();
-
-	return 0;
+	QApplication app(argc, argv);
+	MainWindow mainWindow;
+	mainWindow.show();
+    return app.exec();
 }
+
