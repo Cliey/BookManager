@@ -1,27 +1,11 @@
 #include <iostream>
-#include <string>
-#include <memory>
-#include "Category.hpp"
-#include "BookAbstract/Book.hpp"
-#include "BookEnum/BookType.hpp"
-#include "BookFactory/BookFactory.hpp"
-#include "BookTypes/ArtBook.hpp"
-#include "BookTypes/Comics.hpp"
-#include "BookTypes/Manga.hpp"
-#include "BookTypes/Novel.hpp"
-#include "EntityTypes/Person.hpp"
-#include "EntityTypes/Publisher.hpp"
-#include "EntityEnum/Role.hpp"
-#include "Managers/GeneralManager.hpp"
-#include "Utils/EnumUtils.hpp"
-
 #include "View/MainWindow.hpp"
 #include <QApplication>
 
 void test()
 {
-	BookManager::Manager::GeneralManager GeneralManager;
-	GeneralManager.startApp();
+	// BookManager::Manager::GeneralManager GeneralManager;
+	// GeneralManager.startApp();
 	// std::string a{ "Aello" };
 	// std::string b{ "Hello" };
 	// std::cout << "compare Hello & World : " << a.compare(b) << std::endl;

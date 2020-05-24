@@ -1,5 +1,6 @@
 #include "View/MainWindow.hpp"
 #include "View/BookPage.hpp"
+#include "View/CategoryPage.hpp"
 #include <QToolButton>
 #include <QAction>
 #include <QMenu>
@@ -12,9 +13,6 @@
 #include <QShortcut>
 #include <QKeySequence>
 #include <iostream>
-
-#include <QGraphicsOpacityEffect>
-#include <QPropertyAnimation>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -99,8 +97,10 @@ void MainWindow::initSearchToolBar()
 void MainWindow::initCentralZone()
 {
     BookPage* bookPage = new BookPage();
+    CategoryPage* categoryPage = new CategoryPage();
     tabWidget = new QTabWidget();
     tabWidget->addTab(bookPage, "Book");
+    tabWidget->addTab(categoryPage, "Category");
 
     tabWidget->setTabPosition(QTabWidget::TabPosition::West);
     this->setCentralWidget(tabWidget);

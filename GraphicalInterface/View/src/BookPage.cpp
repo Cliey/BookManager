@@ -1,6 +1,7 @@
 #include "View/BookPage.hpp"
 #include <QHBoxLayout>
 #include <QTextEdit>
+#include <QSizePolicy>
 #include <QLabel>
 
 BookPage::BookPage(QWidget *parent) : QWidget(parent)
@@ -8,8 +9,10 @@ BookPage::BookPage(QWidget *parent) : QWidget(parent)
     QHBoxLayout* layout = new QHBoxLayout();
     QTextEdit* left =  new QTextEdit();
     initRightPane();
-    layout->addWidget(left);
-    layout->addWidget(right);
+
+    layout->addWidget(left, 50);
+    layout->addWidget(right, 50);
+
 
     setLayout(layout);
 }

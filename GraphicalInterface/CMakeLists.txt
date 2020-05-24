@@ -5,4 +5,4 @@ set(LIB_NAME graphical_interface)
 project(${LIB_NAME} CXX)
 
 add_subdirectory(View)
-# add_subdirectory(Models)
+add_subdirectory(Models)

@@ -4,7 +4,7 @@
 A software to manage book collection.
 
 ## Current State
-Working on Database Management.
+Working on GUI.
 
 ## Future Improvement
-* Add a GUI
+* GUI creation

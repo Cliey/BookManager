@@ -4,7 +4,6 @@
 #include <memory>
 #include "Utils/StringUtils.hpp"
 
-class SubCategory;
 namespace BookManager
 {
 	namespace Category
@@ -12,13 +11,15 @@ namespace BookManager
 		class Category
 		{
 		public:
+			Category() = default;
+
 			Category(int id_, std::string name_) {
 				id = id_;
 				name = Utils::StringUtils::lowerCaseExceptFirstLetter(name_);
 			}
 
-			int getId() { return this->id; }
-			std::string getName() { return this->name; }
+			const int getId() const { return this->id; }
+			const std::string getName() const { return this->name; }
 			void setName(std::string name_) {
 				this->name = Utils::StringUtils::lowerCaseExceptFirstLetter(name_);
 			}
@@ -35,11 +36,9 @@ namespace BookManager
 					return true;
 				return false;
 			}
-			//void addSubCategory();
 		private:
 			int id;
 			std::string name;
-			//std::vector<std::weak_ptr<SubCategory>> subcategoryList;
 		};
 	} // namespace Category
 } // namespace BookManager
