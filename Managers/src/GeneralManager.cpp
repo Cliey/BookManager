@@ -47,5 +47,11 @@ namespace BookManager
             LOG_INFO("Load Database....");
             databaseManager = DatabaseManager::getDbManager();
         }
+
+        std::shared_ptr<DatabaseManager> GeneralManager::getDatabaseManager()
+        {
+            return databaseManager;
+        }
+
     } // namespace Manager
 } // namespace BookManager

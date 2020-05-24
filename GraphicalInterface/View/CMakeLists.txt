@@ -27,7 +27,8 @@ target_link_libraries(${LIB_NAME}
 	PUBLIC
 		Qt5::Widgets
 	PRIVATE
-		graphical_interface_models)
+		graphical_interface_models
+		managers)
 
 target_include_directories(${LIB_NAME}
 	PUBLIC

@@ -74,6 +74,17 @@ TEST_F(CategoryModelTest, testGetDataCategoryName)
     }
 }
 
+TEST_F(CategoryModelTest, testGetDataCategoryId)
+{
+    for(int i = 0; i < categoryTest.size(); i++)
+    {
+        QModelIndex index = sut->index(i, 0);
+        QVariant data = sut->data(index, CategoryModel::CategoryRole::CategoryId);
+        ASSERT_TRUE(data.isValid());
+        auto expectedCategory = categoryTest.at(i);
+        EXPECT_EQ(data.toInt(), expectedCategory.getId());
+    }
+}
 TEST_F(CategoryModelTest, testGetDataNull)
 {
     QModelIndex invalidIndex = sut->index(10, 0);

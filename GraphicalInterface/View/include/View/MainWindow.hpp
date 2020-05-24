@@ -5,6 +5,8 @@
 #include <QTabWidget>
 #include <QAction>
 #include <QLineEdit>
+#include "Managers/GeneralManager.hpp"
+#include <memory>
 
 class MainWindow : public QMainWindow
 {
@@ -22,6 +24,7 @@ private:
     void initSearchToolBar();
     void initCentralZone();
 
+    std::shared_ptr<BookManager::Manager::GeneralManager> generalManager;
 
     QToolBar *generalToolbar;
     QTabWidget *tabWidget;

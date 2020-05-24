@@ -15,7 +15,12 @@ public:
 
     enum CategoryRole {
         CategoryObject = Qt::UserRole + 1,
+        CategoryId,
         CategoryName
+    };
+
+    enum CategoryColumn {
+        Name = 0
     };
 
     CategoryModel(const QList<BookManager::Category::Category> &categories, QObject *parent = nullptr)
@@ -29,6 +34,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
 private:
     QList<BookManager::Category::Category> categoryList;

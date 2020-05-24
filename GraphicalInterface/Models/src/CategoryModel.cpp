@@ -24,6 +24,8 @@ QVariant CategoryModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
         case Qt::EditRole:
             return QString::fromStdString(categoryList.at(index.row()).getName());
+        case CategoryRole::CategoryId:
+            return categoryList.at(index.row()).getId();
         case CategoryRole::CategoryObject:
             return QVariant::fromValue(categoryList.at(index.row()));
         default:
@@ -72,3 +74,7 @@ bool  CategoryModel::removeRows(int position, int rows, const QModelIndex&)
     return true;
 }
 
+void CategoryModel::sort(int column, Qt::SortOrder order)
+{
+    std::sort(categoryList.begin(), categoryList.end());
+}

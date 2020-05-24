@@ -16,6 +16,8 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    generalManager = std::make_shared<BookManager::Manager::GeneralManager>();
+    generalManager->startApp();
     Q_INIT_RESOURCE(resource);
     setWindowTitle(tr("BookManager"));
     initToolBars();
@@ -97,7 +99,7 @@ void MainWindow::initSearchToolBar()
 void MainWindow::initCentralZone()
 {
     BookPage* bookPage = new BookPage();
-    CategoryPage* categoryPage = new CategoryPage();
+    CategoryPage* categoryPage = new CategoryPage(generalManager->getDatabaseManager());
     tabWidget = new QTabWidget();
     tabWidget->addTab(bookPage, "Book");
     tabWidget->addTab(categoryPage, "Category");

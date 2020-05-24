@@ -9,7 +9,8 @@
 #include <QListWidgetItem>
 #include <iostream>
 
-CategoryPage::CategoryPage(QWidget *parent) : QWidget(parent)
+CategoryPage::CategoryPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent)
+    : databaseManager(databaseManager), QWidget(parent)
 {
     QHBoxLayout* layout = new QHBoxLayout();
     right =  new QLabel("Something here later");
@@ -35,7 +36,7 @@ void CategoryPage::initLeftPane()
     buttonDeleteCategory->setIcon(QIcon(":/icons/trash.png"));
     buttonDeleteCategory->setFixedSize(28, 28);
     buttonDeleteCategory->setIconSize(QSize(20, 20));
-    QObject::connect(buttonDeleteCategory, SIGNAL(clicked()), this, SLOT(deleteCategoriesSelected()));
+    QObject::connect(buttonDeleteCategory, &QPushButton::clicked, this, &CategoryPage::deleteCategoriesSelected);
 
     headerLayout->addWidget(headerName);
     headerLayout->addWidget(buttonDeleteCategory);
@@ -46,21 +47,17 @@ void CategoryPage::initLeftPane()
 
 void CategoryPage::initList()
 {
-    QList<BookManager::Category::Category> categoryTest = {
-        {1, "Thriller"},
-        {2, "Sci-Fi"},
-        {3, "Fantasy"},
-        {4, "Young Adult"}};
+    auto categoryVect = databaseManager->getCategoryVector(20, 0);
+    QList<BookManager::Category::Category> categoryList(categoryVect.begin(), categoryVect.end());
 
-    // Here DatabaseManager -> getCategory
-
-    categoryModel = new CategoryModel(categoryTest);
+    categoryModel = new CategoryModel(categoryList);
     categoryListView = new QListView();
+    categoryModel->sort(CategoryModel::CategoryColumn::Name);
     categoryListView->setModel(categoryModel);
     categoryListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     categoryListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     categoryListView->setContextMenuPolicy(Qt::CustomContextMenu);
-    QObject::connect(categoryListView, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(openMenu(const QPoint&)));
+    QObject::connect(categoryListView, &QListView::customContextMenuRequested, this, &CategoryPage::openMenu);
 }
 
 void CategoryPage::deleteCategoriesSelected()
@@ -70,6 +67,10 @@ void CategoryPage::deleteCategoriesSelected()
     std::sort(listIndexes.rbegin(), listIndexes.rend()); // reverse iterator, greater to lower
     for(auto& index : listIndexes)
     {
+        auto categoryId = categoryModel->data(index, CategoryModel::CategoryRole::CategoryId);
+        databaseManager->deleteCategory(categoryId.toInt(), false);
+        // If book with this category : popup a warning.
+        // Have to refactor how to manage it. For now : does nothing
         categoryModel->removeRow(index.row());
     }
 }

@@ -15,6 +15,8 @@ namespace BookManager
             GeneralManager() = default;
             void startApp();
             void saveSettings();
+            std::shared_ptr<DatabaseManager> getDatabaseManager();
+
         private:
             void registerHandlerFactory();
             void loadSettings();

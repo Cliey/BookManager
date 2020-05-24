@@ -24,7 +24,6 @@ target_link_libraries(${LIB_NAME}
 	PUBLIC
 		Qt5::Widgets
 		utils
-	PRIVATE
 	)
 
 target_include_directories(${LIB_NAME}

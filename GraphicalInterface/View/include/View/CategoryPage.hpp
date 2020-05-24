@@ -1,5 +1,6 @@
 #pragma once
 #include "Models/CategoryModel.hpp"
+#include "Managers/DatabaseManager.hpp"
 #include <QWidget>
 #include <QGridLayout>
 #include <QLabel>
@@ -11,7 +12,7 @@ class CategoryPage : public QWidget
 {
     Q_OBJECT
 public:
-    CategoryPage(QWidget *parent = nullptr);
+    CategoryPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent = nullptr);
 
 private slots:
     void deleteCategoriesSelected();
@@ -19,6 +20,8 @@ private slots:
 private:
     void initLeftPane();
     void initList();
+
+    std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager;
 
     QLabel* right;
     QVBoxLayout* leftLayout;

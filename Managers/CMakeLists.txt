@@ -39,7 +39,7 @@ target_link_libraries(${LIB_NAME}
         utils
         nlohmann_json::nlohmann_json
         entity::types
-    PRIVATE
+    # PRIVATE
         SQLiteCpp
         sqlite3
     )
