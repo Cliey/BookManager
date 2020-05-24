@@ -2,6 +2,7 @@
 <qresource prefix="/icons">
     <file alias="add.jpg">icons/addIcon.jpg</file>
     <file alias="settings.jpg">icons/settingsIcon.jpg</file>
+    <file alias="trash.png">icons/trashIcon.png</file>
     <file alias="exit.jpg">icons/exitIcon.jpg</file>
 </qresource>
 </RCC>
