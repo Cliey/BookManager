@@ -6,8 +6,7 @@
 #include <QPushButton>
 #include <QMenu>
 #include <QAction>
-
-#include <QListWidgetItem>
+#include <QMessageBox>
 #include <iostream>
 
 CategoryPage::CategoryPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent)
@@ -68,24 +67,32 @@ void CategoryPage::deleteCategoriesSelected()
     std::sort(listIndexes.rbegin(), listIndexes.rend()); // reverse iterator, greater to lower
     for(auto& index : listIndexes)
     {
-        auto categoryId = categoryModel->data(index, CategoryModel::CategoryRole::CategoryId);
-        try
-        {
-            databaseManager->deleteCategory(categoryId.toInt(), false);
-        }
-        catch(const Utils::Exceptions::EC_ForeignKeyFound& e)
-        {
-            // Open QDialog
-            //e.executeCallback();
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }
+        deleteCategorySelected(index);
+    }
+}
 
-        // If book with this category : popup a warning.
-        // Have to refactor how to manage it. For now : does nothing
+void CategoryPage::deleteCategorySelected(const QModelIndex& index)
+{
+    auto category = categoryModel->data(index, CategoryModel::CategoryRole::CategoryObject).value<BookManager::Category::Category>();
+    try
+    {
+        databaseManager->deleteCategory(category.getId(), false);
         categoryModel->removeRow(index.row());
+        return;
+    }
+    catch(const Utils::Exceptions::EC_ForeignKeyFound& e)
+    {
+        QString title = "Error deleting Category : " + QString::fromStdString(category.getName());
+        auto response = QMessageBox::critical(this, "Error deleting Category" , e.getStr(), QMessageBox::Yes | QMessageBox::No);
+        if(response == QMessageBox::Yes)
+        {
+            e.executeCallback();
+            categoryModel->removeRow(index.row());
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
 }
 

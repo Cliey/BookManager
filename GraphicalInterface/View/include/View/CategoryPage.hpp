@@ -17,9 +17,11 @@ public:
 private slots:
     void deleteCategoriesSelected();
     void openMenu(const QPoint& pos);
+
 private:
     void initLeftPane();
     void initList();
+    void deleteCategorySelected(const QModelIndex& index);
 
     std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager;
 
