@@ -1,4 +1,5 @@
 #include "View/CategoryPage.hpp"
+#include "Utils/Exceptions.hpp"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QList>
@@ -68,7 +69,20 @@ void CategoryPage::deleteCategoriesSelected()
     for(auto& index : listIndexes)
     {
         auto categoryId = categoryModel->data(index, CategoryModel::CategoryRole::CategoryId);
-        databaseManager->deleteCategory(categoryId.toInt(), false);
+        try
+        {
+            databaseManager->deleteCategory(categoryId.toInt(), false);
+        }
+        catch(const Utils::Exceptions::EC_ForeignKeyFound& e)
+        {
+            // Open QDialog
+            //e.executeCallback();
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+
         // If book with this category : popup a warning.
         // Have to refactor how to manage it. For now : does nothing
         categoryModel->removeRow(index.row());

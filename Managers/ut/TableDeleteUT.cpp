@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "Managers/Utils/TableDelete.hpp"
 #include "Utils/DatabaseManagerTestCommon.hpp"
+#include "Utils/Exceptions.hpp"
 
 using namespace BookManager::Manager;
 
@@ -24,7 +25,7 @@ public:
     {
         testing::internal::CaptureStdout();
 
-        EXPECT_FALSE(fct(sut, idToDelete, false));
+        EXPECT_THROW(fct(sut, idToDelete, false), Utils::Exceptions::EC_ForeignKeyFound);
 
         std::string output = testing::internal::GetCapturedStdout();
         DatabaseManagerTestCommon::checkLogOutput(output, expectedLog);

@@ -41,6 +41,6 @@
 #define LOG_WINDOW_YES_NO(functionValid, format, ...) {\
         std::stringstream stri;\
         stri << LOG_STRING(LOG_WINDOW_YES_NO_UT) << format << "\n";\
-        Utils::Loggers::LoggerWindowYesNo::getinstance()->log(functionValid, stri.str().c_str(), ##__VA_ARGS__);\
+        Utils::Loggers::LoggerWindowYesNo::getinstance()->log([](){}, stri.str().c_str(), ##__VA_ARGS__);\
     }
 #endif

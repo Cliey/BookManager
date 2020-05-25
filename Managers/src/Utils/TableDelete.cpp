@@ -1,5 +1,6 @@
 #include "Managers/Utils/TableDelete.hpp"
 #include "Utils/Log.hpp"
+#include "Utils/Exceptions.hpp"
 #include <iostream>
 #include <sqlite3.h>
 
@@ -32,8 +33,9 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deletePerson = [this, personId, &returnValue]() { returnValue = this->deleteInPersonTable(personId); };
-                    LOG_WINDOW_YES_NO(deletePerson, "Warning : the author has {} book(s) associated, are you sure you want to delete it?", count);
-                    return returnValue;
+                    std::string strException = "Warning : the author has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    LOG_ERROR(strException);
+                    throw Utils::Exceptions::EC_ForeignKeyFound(strException, deletePerson);
                 }
             }
 
@@ -57,8 +59,9 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deletePublisher = [this, publisherId, &returnValue]() { returnValue = this->deleteInPublisherTable(publisherId); };
-                    LOG_WINDOW_YES_NO(deletePublisher, "Warning : the publisher has {} book(s) associated, are you sure you want to delete it?", count);
-                    return returnValue;
+                    std::string strException = "Warning : the publisher has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    LOG_ERROR(strException);
+                    throw Utils::Exceptions::EC_ForeignKeyFound(strException, deletePublisher);
                 }
             }
 
@@ -83,9 +86,10 @@ namespace BookManager
                 if (int count = countRelations(queryCountBookWithMainCategory) + countRelations(queryCountBookWithSubCategory); count > 0)
                 {
                     bool returnValue = false;
-                    auto deleteCategory = [this, categoryId, &returnValue]() { returnValue = this->deleteInBookSerieTable(categoryId); };
-                    LOG_WINDOW_YES_NO(deleteCategory, "Warning : the category has {} book(s) associated, are you sure you want to delete it?", count);
-                    return returnValue;
+                    auto deleteCategory = [this, categoryId, &returnValue]() { returnValue = this->deleteInCategoryTable(categoryId); };
+                    std::string strException = "Warning : the category has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    LOG_ERROR(strException);
+                    throw Utils::Exceptions::EC_ForeignKeyFound(strException, deleteCategory);
                 }
             }
 
@@ -109,8 +113,9 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deleteBookSerie = [this, bookSerieId, &returnValue]() { returnValue = this->deleteInBookSerieTable(bookSerieId); };
-                    LOG_WINDOW_YES_NO(deleteBookSerie, "Warning : the book serie has {} book(s) associated, are you sure you want to delete it?", count);
-                    return returnValue;
+                    std::string strException = "Warning : the book serie has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    LOG_ERROR(strException);
+                    throw Utils::Exceptions::EC_ForeignKeyFound(strException, deleteBookSerie);
                 }
             }
 
