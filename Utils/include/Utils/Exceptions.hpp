@@ -47,6 +47,11 @@ namespace Utils
             {
                 this->callback();
             }
+
+            virtual const char* getStr() const throw()
+            {
+                return exceptionStr.c_str();
+            }
         protected:
             ExceptionWithCallBack(int id, const char* name, const std::string exceptionStr, std::function<void()> callback) :
                 Exception(id, name, exceptionStr),

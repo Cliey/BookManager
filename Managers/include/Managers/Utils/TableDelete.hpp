@@ -46,6 +46,8 @@ namespace BookManager
                 bool deleteInPublisherTable(int);
                 bool deleteInCategoryTable(int);
                 bool deleteInBookSerieTable(int);
+                std::string getName(SQLite::Statement&, int);
+                std::string getPersonName(int);
 
                 std::shared_ptr<SQLite::Database> database;
         };

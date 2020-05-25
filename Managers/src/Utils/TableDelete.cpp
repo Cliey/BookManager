@@ -16,6 +16,24 @@ namespace BookManager
             return count;
         }
 
+        std::string TableDelete::getName(SQLite::Statement& query, int id)
+        {
+            query.bind(":id", id);
+            query.executeStep();
+            return query.getColumn("name");
+        }
+
+        std::string TableDelete::getPersonName(int personId)
+        {
+            SQLite::Statement query(*database, "SELECT first_name, last_name FROM Persons WHERE id = :id");
+            query.bind(":id", personId);
+            query.executeStep();
+            std::string firstName = query.getColumn("first_name");
+            std::string lastName = query.getColumn("last_name");
+            std::string returnStr = lastName + ", " + firstName;
+            return returnStr;
+        }
+
         bool TableDelete::deleteInPersonTable(int personId)
         {
             SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :person_id");
@@ -33,7 +51,7 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deletePerson = [this, personId, &returnValue]() { returnValue = this->deleteInPersonTable(personId); };
-                    std::string strException = "Warning : the author has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    std::string strException = "Warning : the author \"" + getPersonName(personId)  + "\" has " + std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
                     LOG_ERROR(strException);
                     throw Utils::Exceptions::EC_ForeignKeyFound(strException, deletePerson);
                 }
@@ -59,7 +77,8 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deletePublisher = [this, publisherId, &returnValue]() { returnValue = this->deleteInPublisherTable(publisherId); };
-                    std::string strException = "Warning : the publisher has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    SQLite::Statement queryGetCategoryName(*database, "SELECT name FROM Publishers WHERE id = :id");
+                    std::string strException = "Warning : the publisher \"" + getName(queryGetCategoryName, publisherId) + "\" has " + std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
                     LOG_ERROR(strException);
                     throw Utils::Exceptions::EC_ForeignKeyFound(strException, deletePublisher);
                 }
@@ -87,7 +106,9 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deleteCategory = [this, categoryId, &returnValue]() { returnValue = this->deleteInCategoryTable(categoryId); };
-                    std::string strException = "Warning : the category has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    SQLite::Statement queryGetCategoryName(*database, "SELECT name FROM Categories WHERE id = :id");
+
+                    std::string strException = "Warning : the category \"" + getName(queryGetCategoryName, categoryId) + "\" has " + std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
                     LOG_ERROR(strException);
                     throw Utils::Exceptions::EC_ForeignKeyFound(strException, deleteCategory);
                 }
@@ -113,7 +134,8 @@ namespace BookManager
                 {
                     bool returnValue = false;
                     auto deleteBookSerie = [this, bookSerieId, &returnValue]() { returnValue = this->deleteInBookSerieTable(bookSerieId); };
-                    std::string strException = "Warning : the book serie has "+ std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    SQLite::Statement queryGetBookSerieName(*database, "SELECT name FROM BookSeries WHERE id = :id");
+                    std::string strException = "Warning : the book serie \"" + getName(queryGetBookSerieName, bookSerieId) + "\" has " + std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
                     LOG_ERROR(strException);
                     throw Utils::Exceptions::EC_ForeignKeyFound(strException, deleteBookSerie);
                 }
