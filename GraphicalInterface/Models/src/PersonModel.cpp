@@ -19,7 +19,6 @@ QVariant PersonModel::data(const QModelIndex &index, int role) const
         return QVariant();
     switch(role)
     {
-        case PersonModel::PersonRole::PersonFullName:
         case Qt::DisplayRole:
         case Qt::EditRole:
             if(index.column() == 0)
@@ -28,6 +27,8 @@ QVariant PersonModel::data(const QModelIndex &index, int role) const
                 return QString::fromStdString(personList.at(index.row()).getFullName());
         case PersonModel::PersonRole::PersonId:
             return personList.at(index.row()).getId();
+        case PersonModel::PersonRole::PersonFullName:
+             return QString::fromStdString(personList.at(index.row()).getFullName());
         case PersonModel::PersonRole::PersonFirstName:
             return QString::fromStdString(personList.at(index.row()).getFirstName());
         case PersonModel::PersonRole::PersonLastName:
