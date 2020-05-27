@@ -82,7 +82,6 @@ void CategoryPage::deleteCategorySelected(const QModelIndex& index)
     }
     catch(const Utils::Exceptions::EC_ForeignKeyFound& e)
     {
-        QString title = "Error deleting Category : " + QString::fromStdString(category.getName());
         auto response = QMessageBox::critical(this, "Error deleting Category" , e.getStr(), QMessageBox::Yes | QMessageBox::No);
         if(response == QMessageBox::Yes)
         {

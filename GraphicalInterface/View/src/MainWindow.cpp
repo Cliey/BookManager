@@ -1,6 +1,7 @@
 #include "View/MainWindow.hpp"
 #include "View/BookPage.hpp"
 #include "View/CategoryPage.hpp"
+#include "Popup/SettingsDialog.hpp"
 #include <QToolButton>
 #include <QAction>
 #include <QMenu>
@@ -36,6 +37,7 @@ void MainWindow::initGeneralToolBar()
 
     QAction* actionSettings = new QAction(tr("Settings"), this);
     actionSettings->setIcon(QIcon(":/icons/settings.jpg"));
+    QObject::connect(actionSettings, &QAction::triggered, this, &MainWindow::openSettingsWindow);
 
     QAction* actionExit = new QAction(tr("&Exit"), this);
     actionExit->setIcon(QIcon(":/icons/exit.jpg"));
@@ -74,6 +76,12 @@ QToolButton* MainWindow::initAddMenu()
     toolButtonAdd->setPopupMode(QToolButton::MenuButtonPopup);
     toolButtonAdd->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     return toolButtonAdd;
+}
+
+void MainWindow::openSettingsWindow()
+{
+    SettingsDialog settingDialog(generalManager->getSettingsManager(), this);
+    settingDialog.exec();
 }
 
 void MainWindow::initSearchToolBar()

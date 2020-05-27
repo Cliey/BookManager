@@ -16,6 +16,7 @@ public:
 
 private slots:
     void toggleSearch();
+    void openSettingsWindow();
 
 private:
     void initToolBars();
