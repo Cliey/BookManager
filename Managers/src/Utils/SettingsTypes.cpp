@@ -33,7 +33,8 @@ namespace BookManager
             j = nlohmann::json{
                     {"showCover", bookSetting.showCover},
                     {"sort", bookSetting.sort},
-                    {"showPerson", bookSetting.showPerson}
+                    {"showPerson", bookSetting.showPerson},
+                    {"displayType", bookSetting.displayType},
                 };
         }
 
@@ -44,6 +45,7 @@ namespace BookManager
             try_catch_from_json(j, "showCover", bookSetting.showCover, defaultSetting.showCover, err);
             try_catch_from_json(j, "sort", bookSetting.sort, defaultSetting.sort, err);
             try_catch_from_json(j, "showPerson", bookSetting.showPerson, defaultSetting.showPerson, err);
+            try_catch_from_json(j, "displayType", bookSetting.displayType, defaultSetting.displayType, err);
 
             if(err.size() > 0)
             {

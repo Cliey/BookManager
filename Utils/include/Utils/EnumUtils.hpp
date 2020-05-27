@@ -19,6 +19,7 @@ namespace BookManager
 		namespace Enum
 		{
 			enum class SortingEnumBook : uint8_t;
+			enum class DisplayBookEnum : uint8_t;
 		} // namespace Enum
 	} // namespace Managers
 } // namespace BookManager
@@ -31,5 +32,6 @@ namespace Utils
 		std::string bookStatusString(BookManager::Book::BookStatus);
 		std::string bookTypeString(BookManager::Book::BookType);
 		std::string sortingEnumBookString(BookManager::Manager::Enum::SortingEnumBook);
+		std::string displayTypeEnumString(BookManager::Manager::Enum::DisplayBookEnum);
 	} // namespace EnumUtils
 } // namespace Utils

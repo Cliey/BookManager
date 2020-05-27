@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <nlohmann/json.hpp>
 #include "SortingEnum.hpp"
+#include "SettingsEnum.hpp"
 #include "Utils/Log.hpp"
 
 #define AUTHORIZED_OBJECT_PER_PAGE std::vector<unsigned char>{20, 50, 100}
@@ -25,6 +26,8 @@ namespace BookManager
             bool showCover{true};
             Enum::SortingEnumBook sort{Enum::SortingEnumBook::title_asc};
             bool showPerson{false};
+            Enum::DisplayBookEnum displayType{Enum::DisplayBookEnum::listView};
+            // Show Style : list, cover (list with only Cover of the book, if mouse on it, display name under cover), Bookshelf (category color)
             static const char* name() { return "Book Settings"; }
         };
 

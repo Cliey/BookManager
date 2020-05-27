@@ -16,6 +16,7 @@ namespace BookManager
             void startApp();
             void saveSettings();
             std::shared_ptr<DatabaseManager> getDatabaseManager();
+            std::shared_ptr<SettingsManager> getSettingsManager();
 
         private:
             void registerHandlerFactory();

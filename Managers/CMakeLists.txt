@@ -24,6 +24,7 @@ set(HEADERS
 	include/Manager/SettingsManager.hpp
 	include/Manager/Utils/SortingEnum.hpp
 	include/Manager/Utils/SettingsTypes.hpp
+	include/Manager/Utils/SettingsEnum.hpp
 	include/Manager/Utils/TableDeserializers.hpp
 	include/Manager/Utils/TableDelete.hpp
 	include/Manager/Utils/TableInsert.hpp

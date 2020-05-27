@@ -18,7 +18,8 @@ class SettingsManagerTest : public ::testing::Test
             "sort": "name_asc"
         },
         "General": {
-            "objectsPerPage": 20
+            "objectsPerPage": 20,
+            "displayType": "listView"
         },
         "Person": {
             "showBooks": false,
@@ -39,7 +40,8 @@ class SettingsManagerTest : public ::testing::Test
                 },
                 "General": {
                     "objectsPerPage": 20,
-                    "hideEmptyType": false
+                    "hideEmptyType": false,
+                    "displayType": "listView"
                 },
                 "Person": {
                     "showBooks": false,
@@ -68,6 +70,7 @@ TEST_F(SettingsManagerTest, testDefaultValue)
     EXPECT_TRUE(sut->getBookSettings().showCover);
     EXPECT_FALSE(sut->getBookSettings().showPerson);
     EXPECT_EQ(sut->getBookSettings().sort, Enum::SortingEnumBook::title_asc);
+    EXPECT_EQ(sut->getBookSettings().displayType, Enum::DisplayBookEnum::listView);
 
     EXPECT_EQ(sut->getCategorySettings().sort, Enum::SortingEnumCategory::name_asc);
 
@@ -80,11 +83,12 @@ TEST_F(SettingsManagerTest, testDefaultValue)
 
 TEST_F(SettingsManagerTest, testSetNewValue)
 {
-    BookSettings newValueBookSetting{false, Enum::SortingEnumBook::dateAdded_desc, true};
+    BookSettings newValueBookSetting{false, Enum::SortingEnumBook::dateAdded_desc, true, Enum::DisplayBookEnum::coverView};
     sut->setBookSettings(newValueBookSetting);
     EXPECT_FALSE(sut->getBookSettings().showCover);
     EXPECT_EQ(sut->getBookSettings().sort, Enum::SortingEnumBook::dateAdded_desc);
     EXPECT_TRUE(sut->getBookSettings().showPerson);
+    EXPECT_EQ(sut->getBookSettings().displayType, Enum::DisplayBookEnum::coverView);
 
     CategorySettings newValueCategorySetting{Enum::SortingEnumCategory::name_desc};
     sut->setCategorySettings(newValueCategorySetting);

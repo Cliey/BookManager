@@ -3,6 +3,7 @@
 #include "BookEnum/BookType.hpp"
 #include "EntityEnum/Role.hpp"
 #include "Managers/Utils/SortingEnum.hpp"
+#include "Managers/Utils/SettingsEnum.hpp"
 
 namespace Utils
 {
@@ -86,8 +87,25 @@ namespace Utils
 				default:
 					return "Undefined";
 			}
-
 		}
+
+		std::string displayTypeEnumString(BookManager::Manager::Enum::DisplayBookEnum displayType)
+		{
+			using namespace BookManager::Manager::Enum;
+			switch(displayType)
+			{
+				case DisplayBookEnum::listView :
+					return "listView";
+				case DisplayBookEnum::coverView :
+					return "coverView";
+				case DisplayBookEnum::bookshelfView :
+					return "bookshelfView";
+				case DisplayBookEnum::undefined :
+				default:
+					return "Undefined";
+			}
+		}
+
 	} // namespace EnumUtils
 } // namespace Utils
 

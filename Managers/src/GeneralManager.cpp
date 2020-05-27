@@ -53,5 +53,10 @@ namespace BookManager
             return databaseManager;
         }
 
+        std::shared_ptr<SettingsManager> GeneralManager::getSettingsManager()
+        {
+            return settingsManager;
+        }
+
     } // namespace Manager
 } // namespace BookManager
