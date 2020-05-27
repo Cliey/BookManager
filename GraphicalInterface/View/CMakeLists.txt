@@ -12,12 +12,14 @@ set(SRCS
 	src/MainWindow.cpp
 	src/BookPage.cpp
 	src/CategoryPage.cpp
+	src/PersonPage.cpp
     )
 
 set(HEADERS
     include/View/MainWindow.hpp
     include/View/BookPage.hpp
-    include/View/CategoryPage.hpp)
+    include/View/CategoryPage.hpp
+    include/View/PersonPage.hpp)
 
 add_subdirectory(Popup)
 

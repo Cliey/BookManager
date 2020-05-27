@@ -2,7 +2,7 @@
 #include "Models/CategoryModel.hpp"
 #include "Managers/DatabaseManager.hpp"
 #include <QWidget>
-#include <QGridLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QListView>
 #include <QPoint>

@@ -1,4 +1,5 @@
 #include "Models/PersonModel.hpp"
+#include "Utils/EnumUtils.hpp"
 
 PersonModel::rowCount(const QModelIndex &parent) const
 {
@@ -21,7 +22,10 @@ QVariant PersonModel::data(const QModelIndex &index, int role) const
         case PersonModel::PersonRole::PersonFullName:
         case Qt::DisplayRole:
         case Qt::EditRole:
-            return QString::fromStdString(personList.at(index.row()).getFullName());
+            if(index.column() == 0)
+                return QString::fromStdString(Utils::EnumUtils::roleString(personList.at(index.row()).getRole()));
+            else if(index.column() == 1)
+                return QString::fromStdString(personList.at(index.row()).getFullName());
         case PersonModel::PersonRole::PersonId:
             return personList.at(index.row()).getId();
         case PersonModel::PersonRole::PersonFirstName:

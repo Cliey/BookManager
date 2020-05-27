@@ -1,6 +1,7 @@
 #include "View/MainWindow.hpp"
 #include "View/BookPage.hpp"
 #include "View/CategoryPage.hpp"
+#include "View/PersonPage.hpp"
 #include "Popup/SettingsDialog.hpp"
 #include <QToolButton>
 #include <QAction>
@@ -108,9 +109,11 @@ void MainWindow::initCentralZone()
 {
     BookPage* bookPage = new BookPage();
     CategoryPage* categoryPage = new CategoryPage(generalManager->getDatabaseManager());
+    PersonPage* personPage = new PersonPage(generalManager->getDatabaseManager());
     tabWidget = new QTabWidget();
     tabWidget->addTab(bookPage, "Book");
     tabWidget->addTab(categoryPage, "Category");
+    tabWidget->addTab(personPage, "Author");
 
     tabWidget->setTabPosition(QTabWidget::TabPosition::West);
     this->setCentralWidget(tabWidget);

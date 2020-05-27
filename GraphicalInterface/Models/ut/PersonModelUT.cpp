@@ -47,12 +47,6 @@ TEST_F(PersonModelTest, testInsertAndRemoveRows)
     EXPECT_EQ(sut->rowCount(), 6);
     EXPECT_TRUE(sut->removeRows(4, 2));
     EXPECT_EQ(sut->rowCount(), 4);
-    // print list
-    for(int i = 0; i < 4; i++)
-    {
-        QModelIndex index = sut->index(i, 0);
-        std::cout << sut->data(index, Qt::DisplayRole).toString().toStdString() << std::endl;
-    }
 }
 
 TEST_F(PersonModelTest, testGetDataPersonObject)
@@ -131,6 +125,10 @@ TEST_F(PersonModelTest, testGetDataNull)
 
     QModelIndex validIndex = sut->index(1, 0);
     data = sut->data(validIndex, Qt::StatusTipRole);
+    EXPECT_TRUE(data.isNull());
+
+    invalidIndex = sut->index(-2, 0);
+    data = sut->data(invalidIndex, Qt::DisplayRole);
     EXPECT_TRUE(data.isNull());
 }
 
