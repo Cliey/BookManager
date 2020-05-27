@@ -50,7 +50,7 @@ TEST_F(CategoryModelTest, testInsertAndRemoveRows)
     for(int i = 0; i < 4; i++)
     {
         QModelIndex index = sut->index(i, 0);
-        std::cout << sut->data(index, Qt::DisplayRole).value<BookManager::Category::Category>().getName() << std::endl;
+        std::cout << sut->data(index, Qt::DisplayRole).toString().toStdString() << std::endl;
     }
 }
 

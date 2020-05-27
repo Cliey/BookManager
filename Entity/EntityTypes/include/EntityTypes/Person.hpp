@@ -10,7 +10,7 @@ namespace BookManager
 		class Person
 		{
 		public:
-
+			Person() = default;
 			Person(int id_, std::string firstName_, std::string lastName_)
 			{
 				id = id_;
@@ -51,15 +51,14 @@ namespace BookManager
 				return false;
 			}
 
-		private:
-			std::string getFullName()
+			const std::string getFullName() const
 			{
 				std::string fullName{ lastName };
-				fullName.append(" ");
+				fullName.append(", ");
 				fullName.append(firstName);
 				return fullName;
 			}
-
+		private:
 			int id;
 			std::string firstName;
 			std::string lastName;

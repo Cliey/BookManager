@@ -5,6 +5,7 @@ project(${LIB_NAME}_UT CXX)
 
 set(SRCS
 	CategoryModelUT.cpp
+	PersonModelUT.cpp
     )
 
 add_executable(${LIB_NAME}_UT ${SRCS})

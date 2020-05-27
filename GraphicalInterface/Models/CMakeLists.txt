@@ -12,10 +12,12 @@ add_subdirectory(ut)
 
 set(SRCS
 	src/CategoryModel.cpp
+	src/PersonModel.cpp
     )
 
 set(HEADERS
 	include/Models/CategoryModel.hpp
+	include/Models/PersonModel.hpp
 	)
 
 add_library(${LIB_NAME} ${SRCS})
@@ -24,6 +26,7 @@ target_link_libraries(${LIB_NAME}
 	PUBLIC
 		Qt5::Widgets
 		utils
+		entity_types
 	)
 
 target_include_directories(${LIB_NAME}
