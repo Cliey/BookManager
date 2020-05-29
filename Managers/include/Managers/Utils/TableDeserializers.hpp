@@ -14,6 +14,7 @@ namespace BookManager
         class BookSerie;
         class Person;
         class Publisher;
+        enum class Role;
     }
     namespace Category
     {
@@ -36,6 +37,7 @@ namespace BookManager
             public:
                 TableDeserializers(std::shared_ptr<SQLite::Database> database) : database(database) {}
                 std::vector<BookManager::Entity::Person> deserializePersonTable(int limit, int offset);
+                std::vector<BookManager::Entity::Person> deserializePersonTable(int limit, int offset, BookManager::Entity::Role role);
                 std::vector<BookManager::Entity::Publisher> deserializePublisherTable(int limit, int offset);
                 std::vector<BookManager::Category::Category> deserializeCategoryTable(int limit, int offset);
                 std::vector<BookManager::Entity::BookSerie> deserializeBookSerieTable(int limit, int offset);
@@ -47,6 +49,7 @@ namespace BookManager
                 BookManager::Entity::Person deserializeOnePerson(SQLite::Statement&);
 
             private:
+                std::vector<BookManager::Entity::Person> executePersonTableQuery(SQLite::Statement& query);
                 BookManager::Book::BookType getType(int type);
                 BookManager::Book::BookStatus getBookStatus(int status);
                 std::time_t convertDate(std::string);

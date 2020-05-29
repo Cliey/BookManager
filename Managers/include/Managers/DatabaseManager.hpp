@@ -10,6 +10,7 @@ namespace BookManager
         class BookSerie;
         class Person;
         class Publisher;
+        enum class Role;
     }
     namespace Category
     {
@@ -36,6 +37,7 @@ namespace BookManager
             static std::shared_ptr<DatabaseManager> getDbManager();
 
             std::vector<BookManager::Entity::Person> getPersonVector(int limit, int offset);
+            std::vector<BookManager::Entity::Person> getPersonVector(int limit, int offset, BookManager::Entity::Role role);
             std::vector<BookManager::Entity::Publisher> getPublisherVector(int limit, int offset);
             std::vector<BookManager::Category::Category> getCategoryVector(int limit, int offset);
             std::vector<BookManager::Entity::BookSerie> getBookSerieVector(int limit, int offset);

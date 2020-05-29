@@ -22,6 +22,41 @@ TEST_F(TableDeserializersTest, testGetPersonVectorNoOffset)
     expectPersonTable(deserializedTable, expectedDeserializedTable);
 }
 
+TEST_F(TableDeserializersTest, testGetPersonVectorWithRoleNoOffset_Author)
+{
+    std::vector<BookManager::Entity::Person> expectedDeserializedTable{
+        {1, "Jacques", "Edouard", BookManager::Entity::Role::Author},
+        {3, "Peter", "Jackson", BookManager::Entity::Role::Author}};
+    std::vector<BookManager::Entity::Person> deserializedTable;
+
+    deserializedTable = sut->deserializePersonTable(4, 0, BookManager::Entity::Role::Author);
+    expectPersonTable(deserializedTable, expectedDeserializedTable);
+}
+
+TEST_F(TableDeserializersTest, testGetPersonVectorWithRoleNoOffset_Illustrator)
+{
+    std::vector<BookManager::Entity::Person> expectedDeserializedTable{
+        {2, "Charles", "Henry", BookManager::Entity::Role::Illustrator},
+        {4, "Richard", "Bordo", BookManager::Entity::Role::Illustrator}};
+    std::vector<BookManager::Entity::Person> deserializedTable;
+
+    deserializedTable = sut->deserializePersonTable(4, 0, BookManager::Entity::Role::Illustrator);
+    expectPersonTable(deserializedTable, expectedDeserializedTable);
+}
+
+TEST_F(TableDeserializersTest, testGetPersonVectorWithRoleNoOffset_Undefined)
+{
+    std::vector<BookManager::Entity::Person> expectedDeserializedTable{
+        {1, "Jacques", "Edouard", BookManager::Entity::Role::Author},
+        {2, "Charles", "Henry", BookManager::Entity::Role::Illustrator},
+        {3, "Peter", "Jackson", BookManager::Entity::Role::Author},
+        {4, "Richard", "Bordo", BookManager::Entity::Role::Illustrator}};
+    std::vector<BookManager::Entity::Person> deserializedTable;
+
+    deserializedTable = sut->deserializePersonTable(4, 0, BookManager::Entity::Role::Undefined);
+    expectPersonTable(deserializedTable, expectedDeserializedTable);
+}
+
 TEST_F(TableDeserializersTest, testGetPersonVectorWithOffset)
 {
     std::vector<BookManager::Entity::Person> expectedDeserializedTable{

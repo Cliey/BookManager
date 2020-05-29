@@ -86,6 +86,11 @@ namespace BookManager
             return tableDeserializer->deserializePersonTable(limit, offset);
         }
 
+        std::vector<BookManager::Entity::Person> DatabaseManager::getPersonVector(int limit, int offset, BookManager::Entity::Role role)
+        {
+            return tableDeserializer->deserializePersonTable(limit, offset, role);
+        }
+
         std::vector<BookManager::Entity::Publisher> DatabaseManager::getPublisherVector(int limit, int offset)
         {
             return tableDeserializer->deserializePublisherTable(limit, offset);

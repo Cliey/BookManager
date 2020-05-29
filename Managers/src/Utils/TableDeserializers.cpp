@@ -13,13 +13,9 @@ namespace BookManager
 {
     namespace Manager
     {
-        std::vector<BookManager::Entity::Person> TableDeserializers::deserializePersonTable(int limit, int offset)
+        std::vector<BookManager::Entity::Person> TableDeserializers::executePersonTableQuery(SQLite::Statement& query)
         {
             std::vector<BookManager::Entity::Person> personVector;
-            SQLite::Statement query(*database, "SELECT * FROM Persons LIMIT :limit OFFSET :offset");
-            query.bind(":limit", limit);
-            query.bind(":offset", offset);
-
             while(query.executeStep())
             {
                 personVector.emplace_back(deserializeOnePerson(query));
@@ -31,6 +27,26 @@ namespace BookManager
                     person.getId(), person.getFirstName(), person.getLastName(), Utils::EnumUtils::roleString(person.getRole()));
             }
             return personVector;
+        }
+
+        std::vector<BookManager::Entity::Person> TableDeserializers::deserializePersonTable(int limit, int offset)
+        {
+            SQLite::Statement query(*database, "SELECT * FROM Persons LIMIT :limit OFFSET :offset");
+            query.bind(":limit", limit);
+            query.bind(":offset", offset);
+            return executePersonTableQuery(query);
+        }
+
+        std::vector<BookManager::Entity::Person> TableDeserializers::deserializePersonTable(int limit, int offset, BookManager::Entity::Role role)
+        {
+            if(role == BookManager::Entity::Role::Undefined)
+                return deserializePersonTable(limit, offset);
+
+            SQLite::Statement query(*database, "SELECT * FROM Persons WHERE role=:role LIMIT :limit OFFSET :offset");
+            query.bind(":limit", limit);
+            query.bind(":offset", offset);
+            query.bind(":role", static_cast<int>(role));
+            return executePersonTableQuery(query);
         }
 
         std::vector<BookManager::Entity::Publisher> TableDeserializers::deserializePublisherTable(int limit, int offset)
