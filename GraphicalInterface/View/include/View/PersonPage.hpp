@@ -8,6 +8,8 @@ class QLabel;
 class QVBoxLayout;
 class QHBoxLayout;
 class QTableView;
+class QRadioButton;
+class QGroupBox;
 
 class PersonPage : public QWidget
 {
@@ -17,15 +19,15 @@ public:
 
 private slots:
     void deletePersonsSelected();
+    void setFilter();
 
 private:
     void initLeftPane();
     void initPersonList();
     QHBoxLayout* initLeftPaneHeader();
-    QHBoxLayout* initFilterButton();
+    QGroupBox* initFilterButton();
     void deletePersonSelected(const QModelIndex& index);
-
-
+    std::vector<BookManager::Entity::Person> getPersonFromDatabase();
 
     std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager;
 
@@ -33,4 +35,8 @@ private:
     QVBoxLayout* leftLayout;
     PersonModel* personModel;
     QTableView* personTableView;
+
+    QRadioButton* buttonAllFilter;
+    QRadioButton* buttonAuthorFilter;
+    QRadioButton* buttonIllustratorFilter;
 };

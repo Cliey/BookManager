@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QMessageBox>
+#include <QGroupBox>
 #include <iostream>
 
 PersonPage::PersonPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent)
@@ -30,13 +31,14 @@ void PersonPage::initLeftPane()
     initPersonList();
 
     leftLayout->addLayout(initLeftPaneHeader());
-    leftLayout->addLayout(initFilterButton());
+
+    leftLayout->addWidget(initFilterButton());
     leftLayout->addWidget(personTableView);
 }
 
 void PersonPage::initPersonList()
 {
-    auto personVector = databaseManager->getPersonVector(20, 0);
+    auto personVector = databaseManager->getPersonVector(20, 0, BookManager::Entity::Role::Undefined);
     QList<BookManager::Entity::Person> personList(personVector.begin(), personVector.end());
 
     personModel = new PersonModel(personList);
@@ -47,6 +49,7 @@ void PersonPage::initPersonList()
     personTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     personTableView->verticalHeader()->hide();
     personTableView->setSortingEnabled(true);
+    personTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 QHBoxLayout* PersonPage::initLeftPaneHeader()
@@ -68,16 +71,25 @@ QHBoxLayout* PersonPage::initLeftPaneHeader()
     return headerLayout;
 }
 
-QHBoxLayout* PersonPage::initFilterButton()
+QGroupBox* PersonPage::initFilterButton()
 {
+    QGroupBox* filterGroup = new QGroupBox("Filter");
+
     QHBoxLayout* filterButtonLayout = new QHBoxLayout();
-    QRadioButton* buttonAllFilter = new QRadioButton("All");
-    QRadioButton* buttonAuthorFilter = new QRadioButton("Author");
-    QRadioButton* buttonIllustratorFilter = new QRadioButton("Illustrator");
+    buttonAllFilter = new QRadioButton("All");
+    buttonAllFilter->setChecked(true);
+    buttonAuthorFilter = new QRadioButton("Author");
+    buttonIllustratorFilter = new QRadioButton("Illustrator");
     filterButtonLayout->addWidget(buttonAllFilter);
     filterButtonLayout->addWidget(buttonAuthorFilter);
     filterButtonLayout->addWidget(buttonIllustratorFilter);
-    return filterButtonLayout;
+
+    QObject::connect(buttonAllFilter, &QRadioButton::clicked, this, &PersonPage::setFilter);
+    QObject::connect(buttonAuthorFilter, &QRadioButton::clicked, this, &PersonPage::setFilter);
+    QObject::connect(buttonIllustratorFilter, &QRadioButton::clicked, this, &PersonPage::setFilter);
+
+    filterGroup->setLayout(filterButtonLayout);
+    return filterGroup;
 }
 
 void PersonPage::deletePersonsSelected()
@@ -116,3 +128,20 @@ void PersonPage::deletePersonSelected(const QModelIndex& index)
     }
 }
 
+std::vector<BookManager::Entity::Person> PersonPage::getPersonFromDatabase()
+{
+    if (buttonAuthorFilter->isChecked())
+        return databaseManager->getPersonVector(20, 0, BookManager::Entity::Role::Author);
+    else if (buttonIllustratorFilter->isChecked())
+        return databaseManager->getPersonVector(20, 0, BookManager::Entity::Role::Illustrator);
+    else
+        return databaseManager->getPersonVector(20, 0, BookManager::Entity::Role::Undefined);
+}
+
+void PersonPage::setFilter()
+{
+    auto personVector = getPersonFromDatabase();
+    QList<BookManager::Entity::Person> personList(personVector.begin(), personVector.end());
+    personModel = new PersonModel(personList);
+    personTableView->setModel(personModel);
+}
