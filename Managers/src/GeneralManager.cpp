@@ -22,7 +22,7 @@ namespace BookManager
 
             try
             {
-                settingsManager = SettingsManager::getSettingsManager();
+                settingsManager = std::make_shared<SettingsManager>("Settings.json");
             }
             catch(const std::exception& e)
             {

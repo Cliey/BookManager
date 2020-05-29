@@ -54,7 +54,7 @@ class SettingsManagerTest : public ::testing::Test
 public:
     SettingsManagerTest()
     {
-        sut = SettingsManager::getSettingsManager();
+        sut = std::make_shared<SettingsManager>("SettingsTest.json");
     }
     std::string getLogMessage(std::string logOutput)
     {

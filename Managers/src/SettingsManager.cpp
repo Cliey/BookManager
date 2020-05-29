@@ -11,26 +11,16 @@ namespace BookManager
 {
     namespace Manager
     {
-        std::shared_ptr<SettingsManager> SettingsManager::getSettingsManager()
+        SettingsManager::SettingsManager(std::string filename)
         {
-            static std::shared_ptr<SettingsManager> instance = nullptr;
-
-            if(!instance)
-            {
-                instance.reset(new SettingsManager());
-            }
-            return instance;
-        }
-
-        SettingsManager::SettingsManager()
-        {
+            this->filePath = "./data/" + filename;
             loadSettings();
         }
 
         void SettingsManager::loadSettings()
         {
             LOG_INFO("Loading Settings...");
-            std::ifstream file("./data/Settings.json");
+            std::ifstream file(this->filePath);
             if(file.is_open())
             {
                 nlohmann::json settings;
@@ -41,7 +31,7 @@ namespace BookManager
                 catch(const std::exception& e)
                 {
                     file.close();
-                    LOG_WINDOW("An error in the Setting File occured, do you want to reset Settings? (If you don't reset it, you won't be able to launch the app)");
+                    LOG_WINDOW("An error in the Setting File occurred, do you want to reset Settings? (If you don't reset it, you won't be able to launch the app)");
                     setDefaultSettings();
                     return;
                 }
@@ -71,14 +61,14 @@ namespace BookManager
             settings["Book"] = bookSettings;
             settings["Category"] = categorySettings;
             settings["Person"] = personSettings;
-            std::ofstream file("./data/Settings.json");
+            std::ofstream file(this->filePath);
             file << std::setw(4) << settings << std::endl;
         }
 
         void SettingsManager::setDefaultSettings()
         {
             std::ofstream file;
-            file.open("./data/Settings.json", std::ofstream::out);
+            file.open(this->filePath, std::ofstream::out);
             nlohmann::json defaultSettings;
             defaultSettings["General"] = GeneralSettings{};
             defaultSettings["Book"] = BookSettings{};

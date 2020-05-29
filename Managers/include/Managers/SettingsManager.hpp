@@ -14,10 +14,9 @@ namespace BookManager
         class SettingsManager
         {
         public:
-            static std::shared_ptr<SettingsManager> getSettingsManager();
+            SettingsManager(std::string filename);
 
             void saveSettings();
-            void printSettings();
 
             GeneralSettings getGeneralSettings() { return this->generalSettings; }
             BookSettings getBookSettings() { return this->bookSettings; }
@@ -32,11 +31,11 @@ namespace BookManager
             SettingsManager(const SettingsManager&) = delete;
             SettingsManager& operator=(const SettingsManager&) = delete;
         private:
-            SettingsManager();
             void loadSettings();
             void setDefaultSettings();
             void printSetting();
 
+            std::string filePath;
             GeneralSettings generalSettings;
             BookSettings bookSettings;
             CategorySettings categorySettings;
