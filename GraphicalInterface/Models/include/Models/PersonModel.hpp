@@ -14,6 +14,7 @@ Q_DECLARE_METATYPE(BookManager::Entity::Role)
 
 class PersonModel : public QAbstractTableModel
 {
+    Q_OBJECT
 public:
     enum PersonRole {
         PersonObject = Qt::UserRole +1,
@@ -37,6 +38,9 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     void sort(int column,  Qt::SortOrder order = Qt::AscendingOrder) override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+
+public slots:
+    void resetList(QList<BookManager::Entity::Person> newPersonList);
 
 private:
     QList<BookManager::Entity::Person> personList;

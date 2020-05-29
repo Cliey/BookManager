@@ -10,6 +10,8 @@
 #include <QRadioButton>
 #include <QMessageBox>
 #include <QGroupBox>
+#include <QMenu>
+#include <QAction>
 #include <iostream>
 
 PersonPage::PersonPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent)
@@ -47,15 +49,17 @@ void PersonPage::initPersonList()
     personTableView->setModel(personModel);
     personTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     personTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    personTableView->setContextMenuPolicy(Qt::CustomContextMenu);
     personTableView->verticalHeader()->hide();
     personTableView->setSortingEnabled(true);
     personTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    QObject::connect(personTableView, &QTableView::customContextMenuRequested, this, &PersonPage::openMenu);
 }
 
 QHBoxLayout* PersonPage::initLeftPaneHeader()
 {
     QHBoxLayout* headerLayout = new QHBoxLayout();
-    QLabel* headerName = new QLabel("Author/Illustrator");
+    QLabel* headerName = new QLabel(tr("Author/Illustrator"));
     QFont fontLabel;
     fontLabel.setPointSize(16);
     headerName->setFont(fontLabel);
@@ -76,10 +80,10 @@ QGroupBox* PersonPage::initFilterButton()
     QGroupBox* filterGroup = new QGroupBox("Filter");
 
     QHBoxLayout* filterButtonLayout = new QHBoxLayout();
-    buttonAllFilter = new QRadioButton("All");
+    buttonAllFilter = new QRadioButton(tr("All"));
     buttonAllFilter->setChecked(true);
-    buttonAuthorFilter = new QRadioButton("Author");
-    buttonIllustratorFilter = new QRadioButton("Illustrator");
+    buttonAuthorFilter = new QRadioButton(tr("Author"));
+    buttonIllustratorFilter = new QRadioButton(tr("Illustrator"));
     filterButtonLayout->addWidget(buttonAllFilter);
     filterButtonLayout->addWidget(buttonAuthorFilter);
     filterButtonLayout->addWidget(buttonIllustratorFilter);
@@ -115,7 +119,7 @@ void PersonPage::deletePersonSelected(const QModelIndex& index)
     }
     catch(const Utils::Exceptions::EC_ForeignKeyFound& e)
     {
-        auto response = QMessageBox::critical(this, "Error deleting an Author" , e.getStr(), QMessageBox::Yes | QMessageBox::No);
+        auto response = QMessageBox::critical(this, tr("Error deleting an Author") , e.getStr(), QMessageBox::Yes | QMessageBox::No);
         if(response == QMessageBox::Yes)
         {
             e.executeCallback();
@@ -142,6 +146,26 @@ void PersonPage::setFilter()
 {
     auto personVector = getPersonFromDatabase();
     QList<BookManager::Entity::Person> personList(personVector.begin(), personVector.end());
-    personModel = new PersonModel(personList);
-    personTableView->setModel(personModel);
+    personModel->resetList(personList);
+}
+
+void PersonPage::openMenu(const QPoint& pos)
+{
+    // Idea of the contextMenu
+    QMenu menuItem;
+    QAction* actionAdd = menuItem.addAction(tr("Add Author/Illustrator", "Add an author or an illustrator"));
+    QAction* actionSearchBook = menuItem.addAction(tr("Search books", "Search book written by the author selected"));
+    QAction* actionCopyAuthorName = menuItem.addAction(tr("Copy Full Name", "Copy author/illustrator full name"));
+
+    QModelIndex pointedItem = personTableView->indexAt(pos);
+    QAction* selectedAction;
+    if(pointedItem.isValid())
+    {
+        selectedAction = menuItem.exec(QCursor::pos());
+        return;
+    }
+    actionSearchBook->setEnabled(false);
+    actionCopyAuthorName->setEnabled(false);
+    selectedAction = menuItem.exec(QCursor::pos());
+    return;
 }

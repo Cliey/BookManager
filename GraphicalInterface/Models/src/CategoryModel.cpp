@@ -71,6 +71,7 @@ bool  CategoryModel::removeRows(int position, int rows, const QModelIndex&)
     {
         categoryList.removeAt(position);
     }
+    endRemoveRows();
     return true;
 }
 

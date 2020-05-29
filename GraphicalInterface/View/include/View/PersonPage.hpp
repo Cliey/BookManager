@@ -20,6 +20,7 @@ public:
 private slots:
     void deletePersonsSelected();
     void setFilter();
+    void openMenu(const QPoint& pos);
 
 private:
     void initLeftPane();

@@ -80,6 +80,7 @@ bool  PersonModel::removeRows(int position, int rows, const QModelIndex&)
     {
         personList.removeAt(position);
     }
+    endRemoveRows();
     return true;
 }
 
@@ -104,4 +105,11 @@ QVariant PersonModel::headerData(int section, Qt::Orientation orientation, int r
         }
     }
     return QVariant();
+}
+
+void PersonModel::resetList(QList<BookManager::Entity::Person> newPersonList)
+{
+    beginResetModel();
+    personList = newPersonList;
+    endResetModel();
 }

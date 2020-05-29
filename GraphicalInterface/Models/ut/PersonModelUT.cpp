@@ -158,3 +158,17 @@ TEST_F(PersonModelTest, setDataValidIndex)
     ASSERT_EQ(sut->rowCount(), 5);
     comparePerson(4, personToAdd);
 }
+
+TEST_F(PersonModelTest, testResetList)
+{
+    std::vector<BookManager::Entity::Person> newPersonVector = {{1, "Jacques", "Edouard", BookManager::Entity::Role::Author},
+            {3, "Peter", "Jackson", BookManager::Entity::Role::Author}};
+
+    QList<BookManager::Entity::Person> newPersonList(newPersonVector.begin(), newPersonVector.end());
+
+    sut->resetList(newPersonList);
+    for(int i = 0; i < newPersonVector.size(); i++)
+    {
+        comparePerson(i, newPersonVector.at(i));
+    }
+}

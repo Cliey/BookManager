@@ -20,7 +20,7 @@ set(HEADERS
 	include/Models/PersonModel.hpp
 	)
 
-add_library(${LIB_NAME} ${SRCS})
+add_library(${LIB_NAME} ${SRCS} ${HEADERS})
 
 target_link_libraries(${LIB_NAME}
 	PUBLIC
