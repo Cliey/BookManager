@@ -5,7 +5,7 @@
 #include <vector>
 #include "BookAbstract/Book.hpp"
 #include "Utils/Log.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
@@ -85,9 +85,9 @@ namespace BookManager
             return tableDeserializer->deserializeCategoryTable(limit, offset);
         }
 
-        std::vector<BookManager::Entity::BookSerie> DatabaseManager::getBookSerieVector(int limit, int offset)
+        std::vector<BookManager::Entity::BookSeries> DatabaseManager::getBookSeriesVector(int limit, int offset)
         {
-            return tableDeserializer->deserializeBookSerieTable(limit, offset);
+            return tableDeserializer->deserializeBookSeriesTable(limit, offset);
         }
 
         std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> DatabaseManager::getBookVector(int limit, int offset)
@@ -107,9 +107,9 @@ namespace BookManager
         {
             return tableUpdater->updateCategory(categoryToUpdate);
         }
-        bool DatabaseManager::updateBookSerie(BookManager::Entity::BookSerie bookSerieToUpdate)
+        bool DatabaseManager::updateBookSeries(BookManager::Entity::BookSeries bookSeriesToUpdate)
         {
-            return tableUpdater->updateBookSerie(bookSerieToUpdate);
+            return tableUpdater->updateBookSeries(bookSeriesToUpdate);
         }
         bool DatabaseManager::updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToUpdate)
         {
@@ -128,9 +128,9 @@ namespace BookManager
         {
             return tableInsert->addCategory(categoryToAdd);
         }
-        bool DatabaseManager::insertBookSerie(BookManager::Entity::BookSerie bookSerieToAdd)
+        bool DatabaseManager::insertBookSeries(BookManager::Entity::BookSeries bookSeriesToAdd)
         {
-            return tableInsert->addBookSerie(bookSerieToAdd);
+            return tableInsert->addBookSeries(bookSeriesToAdd);
         }
         bool DatabaseManager::insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
         {
@@ -149,9 +149,9 @@ namespace BookManager
         {
             return tableDelete->checkAndDeleteInCategoryTable(categoryId, bypassForeignKey);
         }
-        bool DatabaseManager::deleteBookSerie(int bookSerieId, bool bypassForeignKey)
+        bool DatabaseManager::deleteBookSeries(int bookSeriesId, bool bypassForeignKey)
         {
-            return tableDelete->checkAndDeleteInBookSerieTable(bookSerieId, bypassForeignKey);
+            return tableDelete->checkAndDeleteInBookSeriesTable(bookSeriesId, bypassForeignKey);
         }
         bool DatabaseManager::deleteBook(int bookId)
         {

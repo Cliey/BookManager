@@ -127,30 +127,30 @@ TEST_F(TableDeleteTest, tableDeleteCategoryDoesntExist)
     EXPECT_FALSE(sut->checkAndDeleteInCategoryTable(idToDelete, false));
 }
 
-// Book Serie
-TEST_F(TableDeleteTest, tableDeleteBookSerieBypassForeignKey)
+// Book Series
+TEST_F(TableDeleteTest, tableDeleteBookSeriesBypassForeignKey)
 {
     int idToDelete{3};
-    EXPECT_TRUE(sut->checkAndDeleteInBookSerieTable(idToDelete, true));
+    EXPECT_TRUE(sut->checkAndDeleteInBookSeriesTable(idToDelete, true));
 }
 
-TEST_F(TableDeleteTest, tableDeleteBookSerieNoBypass)
+TEST_F(TableDeleteTest, tableDeleteBookSeriesNoBypass)
 {
     int idToDelete{1};
-    std::string expectedLog = "Warning : the book serie \"Harry Potter\" has 1 book(s) associated, are you sure you want to delete it?";
-    testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::checkAndDeleteInBookSerieTable);
+    std::string expectedLog = "Warning : the book series \"Harry Potter\" has 1 book(s) associated, are you sure you want to delete it?";
+    testNoBypassElementAssociatedToABook(idToDelete, expectedLog, &TableDelete::checkAndDeleteInBookSeriesTable);
 }
 
-TEST_F(TableDeleteTest, tableDeleteBookSerieNoBypassNoBookAssociated)
+TEST_F(TableDeleteTest, tableDeleteBookSeriesNoBypassNoBookAssociated)
 {
     int idToDelete{2};
-    EXPECT_TRUE(sut->checkAndDeleteInBookSerieTable(idToDelete, false));
+    EXPECT_TRUE(sut->checkAndDeleteInBookSeriesTable(idToDelete, false));
 }
 
-TEST_F(TableDeleteTest, tableDeleteBookSerieDoesntExist)
+TEST_F(TableDeleteTest, tableDeleteBookSeriesDoesntExist)
 {
     int idToDelete{44};
-    EXPECT_FALSE(sut->checkAndDeleteInBookSerieTable(idToDelete, false));
+    EXPECT_FALSE(sut->checkAndDeleteInBookSeriesTable(idToDelete, false));
 }
 
 // Book

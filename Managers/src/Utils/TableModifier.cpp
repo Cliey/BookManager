@@ -2,7 +2,7 @@
 #include "BookAbstract/Book.hpp"
 #include "BookEnum/BookType.hpp"
 #include "BookFactory/BookFactory.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
@@ -39,7 +39,7 @@ namespace BookManager
             return query.exec() > 0;
         }
 
-        bool TableModifier::modifyBookSerieTable(BookManager::Entity::BookSerie bookSeries, SQLite::Statement& query)
+        bool TableModifier::modifyBookSeriesTable(BookManager::Entity::BookSeries bookSeries, SQLite::Statement& query)
         {
             query.bind(":name", bookSeries.getName());
 
@@ -143,8 +143,8 @@ namespace BookManager
                 query, ":main_category", book->categoryInfo.mainCategory, &BookManager::Category::Category::getId);
             bindPointersType<BookManager::Entity::Publisher, const int>(
                 query, ":publisher", book->generalInfo.publisher, &BookManager::Entity::Publisher::getId);
-            bindPointersType<BookManager::Entity::BookSerie, const int>(
-                query, ":book_serie", book->generalInfo.bookSerie, &BookManager::Entity::BookSerie::getId);
+            bindPointersType<BookManager::Entity::BookSeries, const int>(
+                query, ":book_serie", book->generalInfo.bookSeries, &BookManager::Entity::BookSeries::getId);
             bindOptional<time_t>(query, ":published_date", book->generalInfo.published);
             bindOptional<time_t>(query, ":purchased_date", book->statInfo.purchasedDate);
             bindOptional<double>(query, ":price", book->statInfo.price);

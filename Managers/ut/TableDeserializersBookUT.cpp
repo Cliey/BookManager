@@ -33,7 +33,7 @@ public:
             EXPECT_EQ(deserializedTable[i]->generalInfo.title, expectedDeserializedTable[i]->generalInfo.title);
             expectPersonTable(deserializedTable[i]->generalInfo.author, expectedDeserializedTable[i]->generalInfo.author);
             expectOneIdAndName<BookManager::Entity::Publisher>(deserializedTable[i]->generalInfo.publisher, expectedDeserializedTable[i]->generalInfo.publisher);
-            expectOneIdAndName<BookManager::Entity::BookSerie>(deserializedTable[i]->generalInfo.bookSerie, expectedDeserializedTable[i]->generalInfo.bookSerie);
+            expectOneIdAndName<BookManager::Entity::BookSeries>(deserializedTable[i]->generalInfo.bookSeries, expectedDeserializedTable[i]->generalInfo.bookSeries);
             CheckOptionalField::check<std::time_t>(deserializedTable[i]->generalInfo.published, expectedDeserializedTable[i]->generalInfo.published);
             expectOneIdAndName<BookManager::Category::Category>(deserializedTable[i]->categoryInfo.mainCategory, expectedDeserializedTable[i]->categoryInfo.mainCategory);
             expectIdAndName<BookManager::Category::Category>(deserializedTable[i]->categoryInfo.subCategory, expectedDeserializedTable[i]->categoryInfo.subCategory);
@@ -61,14 +61,14 @@ TEST_F(TableDeserializersBookTest, testGetBookVectorNoOffset)
     std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestAllOptionalField = DatabaseManagerTestCommon::initBookTestAllOptionalField();
     expectedDeserializedTable.push_back(bookTestAllOptionalField);
 
-    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSerie = DatabaseManagerTestCommon::initBookTestWithBookSerie();
-    expectedDeserializedTable.push_back(bookTestWithBookSerie);
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSeries = DatabaseManagerTestCommon::initBookTestWithBookSeries();
+    expectedDeserializedTable.push_back(bookTestWithBookSeries);
 
     std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestPtrNotSet = DatabaseManagerTestCommon::initBookTestPtrNotSet();
     expectedDeserializedTable.push_back(bookTestPtrNotSet);
 
-    if(bookTestPtrNotSet->generalInfo.bookSerie)
-        std::cout << "bookSerie set" << std::endl;
+    if(bookTestPtrNotSet->generalInfo.bookSeries)
+        std::cout << "bookSeries set" << std::endl;
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
     deserializedTable = sut->deserializeBookTable(4, 0);
@@ -82,8 +82,8 @@ TEST_F(TableDeserializersBookTest, testGetBookVectorWithOffset)
 
     std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestAllOptionalField = DatabaseManagerTestCommon::initBookTestAllOptionalField();
     expectedDeserializedTable.push_back(bookTestAllOptionalField);
-    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSerie = DatabaseManagerTestCommon::initBookTestWithBookSerie();
-    expectedDeserializedTable.push_back(bookTestWithBookSerie);
+    std::shared_ptr<BookManager::Book::Abstraction::Book> bookTestWithBookSeries = DatabaseManagerTestCommon::initBookTestWithBookSeries();
+    expectedDeserializedTable.push_back(bookTestWithBookSeries);
 
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable;
     deserializedTable = sut->deserializeBookTable(2, 1);

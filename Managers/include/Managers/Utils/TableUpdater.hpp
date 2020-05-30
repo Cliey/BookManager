@@ -12,7 +12,7 @@ namespace BookManager
 {
     namespace Entity
     {
-        class BookSerie;
+        class BookSeries;
         class Person;
         class Publisher;
     }
@@ -41,7 +41,7 @@ namespace BookManager
                 bool updatePerson(BookManager::Entity::Person);
                 bool updatePublisher(BookManager::Entity::Publisher);
                 bool updateCategory(BookManager::Category::Category);
-                bool updateBookSerie(BookManager::Entity::BookSerie);
+                bool updateBookSeries(BookManager::Entity::BookSeries);
                 bool updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             private:

@@ -11,7 +11,7 @@ namespace BookManager
 {
     namespace Entity
     {
-        class BookSerie;
+        class BookSeries;
         class Person;
         class Publisher;
     }

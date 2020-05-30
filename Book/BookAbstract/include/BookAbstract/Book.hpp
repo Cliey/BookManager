@@ -20,7 +20,7 @@ namespace BookManager
 
 	namespace Entity
 	{
-		class BookSerie;
+		class BookSeries;
 		class Person;
 		class Publisher;
 	} // namespace Entity
@@ -32,7 +32,7 @@ namespace BookManager
 			{
 				std::string title;
 				std::vector<std::shared_ptr<Entity::Person>> author;
-				std::shared_ptr<BookManager::Entity::BookSerie> bookSerie;
+				std::shared_ptr<BookManager::Entity::BookSeries> bookSeries;
 				std::shared_ptr<Entity::Publisher> publisher;
 				std::optional<std::time_t> published;
 			};

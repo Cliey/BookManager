@@ -5,10 +5,10 @@ namespace BookManager
 {
 	namespace Entity
 	{
-		class BookSerie
+		class BookSeries
 		{
 		public:
-			BookSerie(int id_, std::string name_){
+			BookSeries(int id_, std::string name_){
 				id = id_;
 				name = Utils::StringUtils::lowerCaseExceptFirstLetter(name_);
 			}
@@ -18,14 +18,14 @@ namespace BookManager
 
 			void setName(std::string name) { this->name = Utils::StringUtils::lowerCaseExceptFirstLetter(name); }
 
-			bool operator<(const BookSerie& rhs)
+			bool operator<(const BookSeries& rhs)
 			{
 				if((this->name).compare(rhs.name) < 0)
 					return true;
 				return false;
 			}
 
-			bool operator==(const BookSerie& rhs)
+			bool operator==(const BookSeries& rhs)
 			{
 				if ((this->name).compare(rhs.name) == 0)
 					return true;

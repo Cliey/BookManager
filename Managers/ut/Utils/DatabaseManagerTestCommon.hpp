@@ -5,7 +5,7 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <memory>
 #include "BookAbstract/Book.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "../../Category.hpp"
@@ -161,7 +161,7 @@ public:
             std::make_shared<BookManager::Category::Category>(3, "Fantasy")};
         book->categoryInfo.subCategory = subCategory;
         book->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(2, "Mu");
-        book->generalInfo.bookSerie = std::make_shared<BookManager::Entity::BookSerie>(3, "Star Wars");
+        book->generalInfo.bookSeries = std::make_shared<BookManager::Entity::BookSeries>(3, "Star Wars");
         book->generalInfo.published = std::make_optional<std::time_t>(initDate(2018, 7, 21));
         book->statInfo.purchasedDate = std::make_optional<std::time_t>(initDate(2019, 12, 4));
         book->additionalInfo.status = BookManager::Book::BookStatus::WantIt;
@@ -174,7 +174,7 @@ public:
         return book;
     }
 
-    static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestWithBookSerie()
+    static std::shared_ptr<BookManager::Book::Abstraction::Book> initBookTestWithBookSeries()
     {
         std::shared_ptr<BookManager::Book::Abstraction::Book> book = std::make_shared<BookManager::Book::Artbook>();
         book->id = 3;
@@ -186,7 +186,7 @@ public:
         book->categoryInfo.mainCategory = std::make_shared<BookManager::Category::Category>(3, "Fantasy");
         book->generalInfo.publisher = std::make_shared<BookManager::Entity::Publisher>(1, "12-25");
         book->generalInfo.published = std::make_optional<std::time_t>(initDate(2017, 2, 4));
-        book->generalInfo.bookSerie = std::make_shared<BookManager::Entity::BookSerie>(1, "Harry Potter");
+        book->generalInfo.bookSeries = std::make_shared<BookManager::Entity::BookSeries>(1, "Harry Potter");
         book->additionalInfo.isRead = false;
         return book;
     }

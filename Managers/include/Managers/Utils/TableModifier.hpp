@@ -11,7 +11,7 @@ namespace BookManager
 {
     namespace Entity
     {
-        class BookSerie;
+        class BookSeries;
         class Person;
         class Publisher;
     }
@@ -37,7 +37,7 @@ namespace BookManager
                 bool modifyPersonTable(BookManager::Entity::Person, SQLite::Statement&);
                 bool modifyPublisherTable(BookManager::Entity::Publisher, SQLite::Statement&);
                 bool modifyCategoryTable(BookManager::Category::Category, SQLite::Statement&);
-                bool modifyBookSerieTable(BookManager::Entity::BookSerie, SQLite::Statement&);
+                bool modifyBookSeriesTable(BookManager::Entity::BookSeries, SQLite::Statement&);
                 int modifyBookTable(std::shared_ptr<BookManager::Book::Abstraction::Book>, SQLite::Statement&);
                 void modifyBooksPersonsTable(int, std::vector<std::shared_ptr<Entity::Person>>, SQLite::Statement&);
                 void modifyBooksSubCategoriesTable(int, std::vector<std::shared_ptr<Category::Category>>, SQLite::Statement&);

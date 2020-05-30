@@ -4,7 +4,7 @@
 #include "Utils/DatabaseManagerTestCommon.hpp"
 
 #include "BookAbstract/Book.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "../../Category.hpp"

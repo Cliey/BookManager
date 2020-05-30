@@ -3,7 +3,7 @@
 #include "Utils/DatabaseManagerTestCommon.hpp"
 
 #include "BookAbstract/Book.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "../../Category.hpp"
@@ -72,11 +72,11 @@ TEST_F(TableInsertTest, testInsertCategory)
 
 
 // Book Series
-TEST_F(TableInsertTest, testInsertBookSerie)
+TEST_F(TableInsertTest, testInsertBookSeries)
 {
-    // Add BookSerie with Id = 65, id doesn't matter
-    BookManager::Entity::BookSerie newBookSerie{65, "Cycle de l'epee"};
-    EXPECT_TRUE(sut->addBookSerie(newBookSerie));
+    // Add BookSeries with Id = 65, id doesn't matter
+    BookManager::Entity::BookSeries newBookSeries{65, "Cycle de l'epee"};
+    EXPECT_TRUE(sut->addBookSeries(newBookSeries));
 }
 
 // Book

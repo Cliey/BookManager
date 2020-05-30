@@ -60,11 +60,11 @@ QToolButton* MainWindow::initAddMenu()
 {
     QMenu* menuAdd = new QMenu(tr("Add"));
     QAction* actionAddBook = new QAction(tr("Add &Book"), this);
-    QAction* actionAddBookSerie = new QAction(tr("Add Book &Serie"), this);
+    QAction* actionAddBookSeries = new QAction(tr("Add Book &Serie"), this);
     QAction* actionAddAuthor = new QAction(tr("Add &Author"), this);
     QAction* actionAddCategory = new QAction(tr("Add &Category"), this);
     menuAdd->addAction(actionAddBook);
-    menuAdd->addAction(actionAddBookSerie);
+    menuAdd->addAction(actionAddBookSeries);
     menuAdd->addAction(actionAddAuthor);
     menuAdd->addAction(actionAddCategory);
 

@@ -3,7 +3,7 @@
 #include "Utils/DatabaseManagerTestCommon.hpp"
 
 #include "BookAbstract/Book.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "../../Category.hpp"
@@ -88,18 +88,18 @@ TEST_F(TableUpdaterTest, testUpdateCategoryError_IdDoesntExist)
 
 
 // Book Series
-TEST_F(TableUpdaterTest, testUpdateBookSerieOnExistingBookSerie)
+TEST_F(TableUpdaterTest, testUpdateBookSeriesOnExistingBookSeries)
 {
-    // Update BookSerie with Id = 3
-    BookManager::Entity::BookSerie updatedBookSerie{3, "Cycle de l'epee"};
-    EXPECT_TRUE(sut->updateBookSerie(updatedBookSerie));
+    // Update BookSeries with Id = 3
+    BookManager::Entity::BookSeries updatedBookSeries{3, "Cycle de l'epee"};
+    EXPECT_TRUE(sut->updateBookSeries(updatedBookSeries));
 }
 
-TEST_F(TableUpdaterTest, testUpdateBookSerieError_IdDoesntExist)
+TEST_F(TableUpdaterTest, testUpdateBookSeriesError_IdDoesntExist)
 {
-    // Update BookSerie with Id = 9
-    BookManager::Entity::BookSerie updatedBookSerie{9, "Cycle de l'epee"};
-    EXPECT_FALSE(sut->updateBookSerie(updatedBookSerie));
+    // Update BookSeries with Id = 9
+    BookManager::Entity::BookSeries updatedBookSeries{9, "Cycle de l'epee"};
+    EXPECT_FALSE(sut->updateBookSeries(updatedBookSeries));
 }
 
 // Book

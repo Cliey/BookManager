@@ -2,7 +2,7 @@
 #include "BookAbstract/Book.hpp"
 #include "BookEnum/BookType.hpp"
 #include "BookFactory/BookFactory.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
@@ -87,21 +87,21 @@ namespace BookManager
             return categoryVector;
         }
 
-        std::vector<BookManager::Entity::BookSerie> TableDeserializers::deserializeBookSerieTable(int limit, int offset)
+        std::vector<BookManager::Entity::BookSeries> TableDeserializers::deserializeBookSeriesTable(int limit, int offset)
         {
-            std::vector<BookManager::Entity::BookSerie> bookSeriesVector;
+            std::vector<BookManager::Entity::BookSeries> bookSeriesVector;
             SQLite::Statement query(*database, "SELECT * FROM BookSeries LIMIT :limit OFFSET :offset");
             query.bind(":limit", limit);
             query.bind(":offset", offset);
 
             while(query.executeStep())
             {
-                bookSeriesVector.emplace_back(deserializeOneElementSimpleTableIdAndName<BookManager::Entity::BookSerie>(query));
+                bookSeriesVector.emplace_back(deserializeOneElementSimpleTableIdAndName<BookManager::Entity::BookSeries>(query));
             }
 
-            for(auto bookSerie : bookSeriesVector)
+            for(auto bookSeries : bookSeriesVector)
             {
-                LOG_INFO("BookSerie : ({}) {}", bookSerie.getId(), bookSerie.getName());
+                LOG_INFO("BookSeries : ({}) {}", bookSeries.getId(), bookSeries.getName());
             }
             return bookSeriesVector;
         }
@@ -185,12 +185,12 @@ namespace BookManager
             return deserializeOneElementSimpleTableIdAndName<BookManager::Category::Category>(query);
         }
 
-        BookManager::Entity::BookSerie TableDeserializers::getBookSerieFromId(int id)
+        BookManager::Entity::BookSeries TableDeserializers::getBookSeriesFromId(int id)
         {
             SQLite::Statement query(*database, "SELECT * FROM BookSeries WHERE id=:id");
             query.bind(":id", id);
             query.executeStep();
-            return deserializeOneElementSimpleTableIdAndName<BookManager::Entity::BookSerie>(query);
+            return deserializeOneElementSimpleTableIdAndName<BookManager::Entity::BookSeries>(query);
         }
 
         BookManager::Entity::Publisher TableDeserializers::getPublisherFromId(int id)
@@ -254,7 +254,7 @@ namespace BookManager
                 std::string title = query.getColumn("title");
                 newBook->generalInfo.title = title;
                 newBook->generalInfo.author = getAuthors(bookId);
-                newBook->generalInfo.bookSerie = setIfColumnNotNull<BookManager::Entity::BookSerie>(query, "book_serie", &getBookSerieFromId);
+                newBook->generalInfo.bookSeries = setIfColumnNotNull<BookManager::Entity::BookSeries>(query, "book_serie", &getBookSeriesFromId);
                 newBook->generalInfo.publisher = setIfColumnNotNull<BookManager::Entity::Publisher>(query, "publisher", &getPublisherFromId);
                 setOptionalFieldIfExist(newBook->generalInfo.published, query, "published_date");
 

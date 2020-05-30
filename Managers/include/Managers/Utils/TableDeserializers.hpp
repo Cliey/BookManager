@@ -11,7 +11,7 @@ namespace BookManager
 {
     namespace Entity
     {
-        class BookSerie;
+        class BookSeries;
         class Person;
         class Publisher;
         enum class Role;
@@ -40,7 +40,7 @@ namespace BookManager
                 std::vector<BookManager::Entity::Person> deserializePersonTable(int limit, int offset, BookManager::Entity::Role role);
                 std::vector<BookManager::Entity::Publisher> deserializePublisherTable(int limit, int offset);
                 std::vector<BookManager::Category::Category> deserializeCategoryTable(int limit, int offset);
-                std::vector<BookManager::Entity::BookSerie> deserializeBookSerieTable(int limit, int offset);
+                std::vector<BookManager::Entity::BookSeries> deserializeBookSeriesTable(int limit, int offset);
                 std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializeBookTable(int limit, int offset);
 
                 template<typename T>
@@ -60,7 +60,7 @@ namespace BookManager
                 void setOptionalFieldIfExist(std::optional<T>& fieldToInit, SQLite::Statement& query, std::string column);
 
                 BookManager::Category::Category getCategoryFromId(int);
-                BookManager::Entity::BookSerie getBookSerieFromId(int);
+                BookManager::Entity::BookSeries getBookSeriesFromId(int);
                 BookManager::Entity::Publisher getPublisherFromId(int);
                 BookManager::Entity::Person getAuthorFromId(int);
                 std::vector<std::shared_ptr<Category::Category>> getSubcategory(int);

@@ -2,7 +2,7 @@
 #include "BookAbstract/Book.hpp"
 #include "BookEnum/BookType.hpp"
 #include "BookFactory/BookFactory.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
@@ -39,11 +39,11 @@ namespace BookManager
             return tableModifier->modifyCategoryTable(categoryToAdd, query);
         }
 
-        bool TableInsert::addBookSerie(BookManager::Entity::BookSerie bookSeriesToAdd)
+        bool TableInsert::addBookSeries(BookManager::Entity::BookSeries bookSeriesToAdd)
         {
             SQLite::Statement query(*database, "INSERT INTO BookSeries (name) VALUES (:name)");
 
-            return tableModifier->modifyBookSerieTable(bookSeriesToAdd, query);
+            return tableModifier->modifyBookSeriesTable(bookSeriesToAdd, query);
         }
 
         void TableInsert::addBooksPersonsTable(int bookId, std::vector<std::shared_ptr<Entity::Person>> persons)

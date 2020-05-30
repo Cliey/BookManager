@@ -6,7 +6,7 @@ namespace BookManager
 {
     namespace Entity
     {
-        class BookSerie;
+        class BookSeries;
         class Person;
         class Publisher;
         enum class Role;
@@ -40,25 +40,25 @@ namespace BookManager
             std::vector<BookManager::Entity::Person> getPersonVector(int limit, int offset, BookManager::Entity::Role role);
             std::vector<BookManager::Entity::Publisher> getPublisherVector(int limit, int offset);
             std::vector<BookManager::Category::Category> getCategoryVector(int limit, int offset);
-            std::vector<BookManager::Entity::BookSerie> getBookSerieVector(int limit, int offset);
+            std::vector<BookManager::Entity::BookSeries> getBookSeriesVector(int limit, int offset);
             std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> getBookVector(int limit, int offset);
 
             bool updatePerson(BookManager::Entity::Person);
             bool updatePublisher(BookManager::Entity::Publisher);
             bool updateCategory(BookManager::Category::Category);
-            bool updateBookSerie(BookManager::Entity::BookSerie);
+            bool updateBookSeries(BookManager::Entity::BookSeries);
             bool updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             bool insertPerson(BookManager::Entity::Person);
             bool insertPublisher(BookManager::Entity::Publisher);
             bool insertCategory(BookManager::Category::Category);
-            bool insertBookSerie(BookManager::Entity::BookSerie);
+            bool insertBookSeries(BookManager::Entity::BookSeries);
             bool insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             bool deletePerson(int, bool);
             bool deletePublisher(int, bool);
             bool deleteCategory(int, bool);
-            bool deleteBookSerie(int, bool);
+            bool deleteBookSeries(int, bool);
             bool deleteBook(int);
             // shared_ptr<DatabaseGetter> getPerson(); // DatabaseGetter.byId(int)
             // PersonDatabaseGetter getPerson(); // DatabaseGetter.byName(string)

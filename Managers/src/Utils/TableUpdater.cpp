@@ -2,7 +2,7 @@
 #include "BookAbstract/Book.hpp"
 #include "BookEnum/BookType.hpp"
 #include "BookFactory/BookFactory.hpp"
-#include "EntityTypes/BookSerie.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include "EntityTypes/Person.hpp"
 #include "EntityTypes/Publisher.hpp"
 #include "Utils/EnumUtils.hpp"
@@ -60,7 +60,7 @@ namespace BookManager
             return tableModifier->modifyCategoryTable(categoryToUpdate, query);
         }
 
-        bool TableUpdater::updateBookSerie(BookManager::Entity::BookSerie bookSeriesToUpdate)
+        bool TableUpdater::updateBookSeries(BookManager::Entity::BookSeries bookSeriesToUpdate)
         {
             SQLite::Statement query = createQueryAndBindId(
                 "UPDATE BookSeries \
@@ -68,7 +68,7 @@ namespace BookManager
                     WHERE id = :id",
                 bookSeriesToUpdate.getId());
 
-            return tableModifier->modifyBookSerieTable(bookSeriesToUpdate, query);
+            return tableModifier->modifyBookSeriesTable(bookSeriesToUpdate, query);
         }
 
         void TableUpdater::updateBooksPersonsTable(int bookId, std::vector<std::shared_ptr<Entity::Person>> persons)

@@ -120,30 +120,30 @@ namespace BookManager
             return deleteInCategoryTable(categoryId);
         }
 
-        bool TableDelete::deleteInBookSerieTable(int bookSerieId)
+        bool TableDelete::deleteInBookSeriesTable(int bookSeriesId)
         {
             SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :id");
-            return deleteInTable(queryDelete, bookSerieId);
+            return deleteInTable(queryDelete, bookSeriesId);
         }
 
-        bool TableDelete::checkAndDeleteInBookSerieTable(int bookSerieId, bool bypassForeignKey)
+        bool TableDelete::checkAndDeleteInBookSeriesTable(int bookSeriesId, bool bypassForeignKey)
         {
-            SQLite::Statement queryCountBookWithBookSerie(*database, "SELECT COUNT(*) FROM Books WHERE book_serie = :bookSerie_id");
-            queryCountBookWithBookSerie.bind(":bookSerie_id", bookSerieId);
+            SQLite::Statement queryCountBookWithBookSeries(*database, "SELECT COUNT(*) FROM Books WHERE book_serie = :bookSeries_id");
+            queryCountBookWithBookSeries.bind(":bookSeries_id", bookSeriesId);
             if(not bypassForeignKey)
             {
-                if (int count = countRelations(queryCountBookWithBookSerie); count > 0)
+                if (int count = countRelations(queryCountBookWithBookSeries); count > 0)
                 {
                     bool returnValue = false;
-                    auto deleteBookSerie = [this, bookSerieId, &returnValue]() { returnValue = this->deleteInBookSerieTable(bookSerieId); };
-                    SQLite::Statement queryGetBookSerieName(*database, "SELECT name FROM BookSeries WHERE id = :id");
-                    std::string strException = "Warning : the book serie \"" + getName(queryGetBookSerieName, bookSerieId) + "\" has " + std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
+                    auto deleteBookSeries = [this, bookSeriesId, &returnValue]() { returnValue = this->deleteInBookSeriesTable(bookSeriesId); };
+                    SQLite::Statement queryGetBookSeriesName(*database, "SELECT name FROM BookSeries WHERE id = :id");
+                    std::string strException = "Warning : the book series \"" + getName(queryGetBookSeriesName, bookSeriesId) + "\" has " + std::to_string(count) + " book(s) associated, are you sure you want to delete it?";
                     LOG_ERROR(strException);
-                    throw Utils::Exceptions::EC_ForeignKeyFound(strException, deleteBookSerie);
+                    throw Utils::Exceptions::EC_ForeignKeyFound(strException, deleteBookSeries);
                 }
             }
 
-            return deleteInBookSerieTable(bookSerieId);
+            return deleteInBookSeriesTable(bookSeriesId);
         }
 
         bool TableDelete::deleteInBooksTable(int bookId)

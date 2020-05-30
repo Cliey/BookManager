@@ -144,35 +144,35 @@ TEST_F(TableDeserializersTest, testGetCategoryVectorWithOffsetTooLarge)
 }
 
 // Book Series
-TEST_F(TableDeserializersTest, testGetBookSerieVectorNoOffset)
+TEST_F(TableDeserializersTest, testGetBookSeriesVectorNoOffset)
 {
-    std::vector<BookManager::Entity::BookSerie> expectedDeserializedTable{
+    std::vector<BookManager::Entity::BookSeries> expectedDeserializedTable{
         {1, "Harry Potter"},
         {2, "Seigneur des Anneaux"},
         {3, "Star Wars"},
         {4, "Hunger Games"}};
-    std::vector<BookManager::Entity::BookSerie> deserializedTable;
+    std::vector<BookManager::Entity::BookSeries> deserializedTable;
 
-    deserializedTable = sut->deserializeBookSerieTable(4, 0);
-    expectIdAndName<BookManager::Entity::BookSerie>(deserializedTable, expectedDeserializedTable);
+    deserializedTable = sut->deserializeBookSeriesTable(4, 0);
+    expectIdAndName<BookManager::Entity::BookSeries>(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(TableDeserializersTest, testGetBookSerieVectorWithOffset)
+TEST_F(TableDeserializersTest, testGetBookSeriesVectorWithOffset)
 {
-    std::vector<BookManager::Entity::BookSerie> expectedDeserializedTable{
+    std::vector<BookManager::Entity::BookSeries> expectedDeserializedTable{
         {2, "Seigneur des Anneaux"},
         {3, "Star Wars"},
         {4, "Hunger Games"}};
-    std::vector<BookManager::Entity::BookSerie> deserializedTable;
+    std::vector<BookManager::Entity::BookSeries> deserializedTable;
 
-    deserializedTable = sut->deserializeBookSerieTable(3, 1);
-    expectIdAndName<BookManager::Entity::BookSerie>(deserializedTable, expectedDeserializedTable);
+    deserializedTable = sut->deserializeBookSeriesTable(3, 1);
+    expectIdAndName<BookManager::Entity::BookSeries>(deserializedTable, expectedDeserializedTable);
 }
 
-TEST_F(TableDeserializersTest, testGetBookSerieVectorWithOffsetTooLarge)
+TEST_F(TableDeserializersTest, testGetBookSeriesVectorWithOffsetTooLarge)
 {
-    std::vector<BookManager::Entity::BookSerie> deserializedTable;
+    std::vector<BookManager::Entity::BookSeries> deserializedTable;
 
-    deserializedTable = sut->deserializeBookSerieTable(3, 200);
+    deserializedTable = sut->deserializeBookSeriesTable(3, 200);
     EXPECT_TRUE(deserializedTable.empty());
 }
