@@ -34,11 +34,16 @@ namespace BookManager
             return returnStr;
         }
 
+        bool TableDelete::deleteInTable(SQLite::Statement& queryDelete, int id)
+        {
+            queryDelete.bind(":id", id);
+            return queryDelete.exec() > 0;
+        }
+
         bool TableDelete::deleteInPersonTable(int personId)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :person_id");
-            queryDelete.bind(":person_id", personId);
-            return queryDelete.exec() > 0;
+            SQLite::Statement queryDelete(*database, "DELETE FROM Persons WHERE id = :id");
+            return deleteInTable(queryDelete, personId);
         }
 
         bool TableDelete::checkAndDeleteInPersonTable(int personId, bool bypassForeignKey)
@@ -62,9 +67,8 @@ namespace BookManager
 
         bool TableDelete::deleteInPublisherTable(int publisherId)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Publishers WHERE id = :publisher_id");
-            queryDelete.bind(":publisher_id", publisherId);
-            return queryDelete.exec() > 0;
+            SQLite::Statement queryDelete(*database, "DELETE FROM Publishers WHERE id = :id");
+            return deleteInTable(queryDelete, publisherId);
         }
 
         bool TableDelete::checkAndDeleteInPublisherTable(int publisherId, bool bypassForeignKey)
@@ -89,9 +93,8 @@ namespace BookManager
 
         bool TableDelete::deleteInCategoryTable(int categoryId)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Categories WHERE id = :category_id");
-            queryDelete.bind(":category_id", categoryId);
-            return queryDelete.exec() > 0;
+            SQLite::Statement queryDelete(*database, "DELETE FROM Categories WHERE id = :id");
+            return deleteInTable(queryDelete, categoryId);
         }
 
         bool TableDelete::checkAndDeleteInCategoryTable(int categoryId, bool bypassForeignKey)
@@ -119,9 +122,8 @@ namespace BookManager
 
         bool TableDelete::deleteInBookSerieTable(int bookSerieId)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :bookSerie_id");
-            queryDelete.bind(":bookSerie_id", bookSerieId);
-            return queryDelete.exec() > 0;
+            SQLite::Statement queryDelete(*database, "DELETE FROM BookSeries WHERE id = :id");
+            return deleteInTable(queryDelete, bookSerieId);
         }
 
         bool TableDelete::checkAndDeleteInBookSerieTable(int bookSerieId, bool bypassForeignKey)
@@ -146,9 +148,8 @@ namespace BookManager
 
         bool TableDelete::deleteInBooksTable(int bookId)
         {
-            SQLite::Statement queryDelete(*database, "DELETE FROM Books WHERE id = :book_id");
-            queryDelete.bind(":book_id", bookId);
-            return queryDelete.exec() > 0;
+            SQLite::Statement queryDelete(*database, "DELETE FROM Books WHERE id = :id");
+            return deleteInTable(queryDelete, bookId);
         }
     } // namespace Manager
 } // namespace BookManager
