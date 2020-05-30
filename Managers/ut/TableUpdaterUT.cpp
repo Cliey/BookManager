@@ -23,7 +23,7 @@ public:
 
     TableUpdaterTest()
     {
-        std::shared_ptr<SQLite::Database> db = std::make_shared<SQLite::Database>("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+        std::shared_ptr<SQLite::Database> db = std::make_shared<SQLite::Database>(databasePathForTest, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
         db->exec("PRAGMA foreign_keys = ON");
         sut = std::make_shared<TableUpdater>(db);
     }

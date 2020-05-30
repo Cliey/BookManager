@@ -19,16 +19,25 @@ namespace BookManager
 {
     namespace Manager
     {
-        std::shared_ptr<DatabaseManager> DatabaseManager::getDbManager()
+        DatabaseManager::DatabaseManager(std::string databaseName)
         {
-            static std::shared_ptr<DatabaseManager> instance = nullptr;
-
-            if(!instance)
+            databasePath = "./data/" + databaseName;
+            LOG_INFO("DataBase Loading.....");
+            try
             {
-                instance.reset(new DatabaseManager);
+                database = std::make_shared<SQLite::Database>(databasePath, SQLite::OPEN_READWRITE);
+                database->exec("PRAGMA foreign_keys = ON");
+                this->initTableActionObject();
             }
-            return instance;
+            catch(const std::exception& e)
+            {
+                LOG_ERROR("Error occurred while loading the database : {}", e.what())
+                createDatabase();
+            }
+
         }
+
+        DatabaseManager::~DatabaseManager() = default;
 
         std::unique_ptr<TableDeserializers> DatabaseManager::createTableDeserializer(std::shared_ptr<SQLite::Database> database)
         {
@@ -48,37 +57,12 @@ namespace BookManager
             return std::make_unique<TableDelete>(database);
         }
 
-        DatabaseManager::DatabaseManager()
+        void DatabaseManager::initTableActionObject()
         {
-            LOG_INFO("DataBase Loading.....");
-            try
-            {
-                SQLite::Database db("./data/BookManager.db");
-                loadDatabase(db);
-                database = std::make_shared<SQLite::Database>(db.getFilename(), SQLite::OPEN_READWRITE);
-                database->exec("PRAGMA foreign_keys = ON");
-                tableDeserializer = createTableDeserializer(database);
-                tableInsert = createTableInsert(database);
-                tableUpdater = createTableUpdater(database);
-                tableDelete = createTableDelete(database);
-            }
-            catch(const std::exception& e)
-            {
-                LOG_ERROR("Error occured while loading the database : {}", e.what())
-                createDatabase();
-            }
-
-        }
-
-        void DatabaseManager::loadDatabase(SQLite::Database& database)
-        {
-            LOG_INFO("Loading Database...");
-            // Load Perons
-            // Load Publishers
-            // Load Category
-            // Load BookSeries
-            // Load Books
-
+            tableDeserializer = createTableDeserializer(database);
+            tableInsert = createTableInsert(database);
+            tableUpdater = createTableUpdater(database);
+            tableDelete = createTableDelete(database);
         }
 
         std::vector<BookManager::Entity::Person> DatabaseManager::getPersonVector(int limit, int offset)
@@ -179,28 +163,28 @@ namespace BookManager
             LOG_INFO("Creating Database...");
             try
             {
-                SQLite::Database db("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+                SQLite::Database db(databasePath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
                 LOG_INFO("Creating Publisher Table...");
                 db.exec("CREATE TABLE Publishers(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
-                                name TEXT NOT NULL)"); // OK
+                                name TEXT NOT NULL)");
 
                 LOG_INFO("Creating Author Table...");
                 db.exec("CREATE TABLE Persons(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
                                 first_name TEXT NOT NULL,\
                                 last_name TEXT NOT NULL,\
-                                role INTEGER NOT NULL)"); // OK
+                                role INTEGER NOT NULL)");
 
                 LOG_INFO("Creating BookSeries Table...");
                 db.exec("CREATE TABLE BookSeries(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
-                                name TEXT NOT NULL)"); // add BookVector ? BookId Vector ?
+                                name TEXT NOT NULL)");
 
                 LOG_INFO("Creating Category Table...");
                 db.exec("CREATE TABLE Categories(\
                                 id INTEGER PRIMARY KEY NOT NULL,\
-                                name TEXT NOT NULL)"); // OK
+                                name TEXT NOT NULL)");
 
                 LOG_INFO("Creating Books Table...");
                 db.exec("CREATE TABLE Books(\
@@ -239,7 +223,7 @@ namespace BookManager
                                     ON DELETE cascade,\
                                 FOREIGN KEY(personId) REFERENCES Persons(id)\
                                     ON UPDATE cascade\
-                                    ON DELETE cascade)"); // OK
+                                    ON DELETE cascade)");
 
                 LOG_INFO("Creating Relational Table Books_SubCategory...");
                 db.exec("CREATE TABLE Books_SubCategories(\
@@ -250,21 +234,18 @@ namespace BookManager
                                     ON DELETE cascade,\
                                 FOREIGN KEY(subCategoryId) REFERENCES Categories(id)\
                                     ON UPDATE cascade\
-                                    ON DELETE cascade)"); // OK
+                                    ON DELETE cascade)");
 
-                database = std::make_shared<SQLite::Database>(db.getFilename());
-                tableDeserializer = createTableDeserializer(database);
+                database = std::make_shared<SQLite::Database>(databasePath);
+                this->initTableActionObject();
             }
             catch(const std::exception& e)
             {
-                LOG_ERROR("Error occured while creating the database : {}", e.what())
-                std::remove("./data/BookManager.db");
+                LOG_ERROR("Error occurred while creating the database : {}", e.what())
+                std::remove(databasePath.c_str());
                 LOG_ERROR("Database has not been created.");
                 return;
             }
-
-
         }
-
     } // namespace Manager
 } // namespace BookManager

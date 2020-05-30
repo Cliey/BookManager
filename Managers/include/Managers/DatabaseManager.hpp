@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 #include <SQLiteCpp/SQLiteCpp.h>
-
 namespace BookManager
 {
     namespace Entity
@@ -34,7 +33,8 @@ namespace BookManager
         class DatabaseManager
         {
         public:
-            static std::shared_ptr<DatabaseManager> getDbManager();
+            DatabaseManager(std::string databaseName);
+            ~DatabaseManager();
 
             std::vector<BookManager::Entity::Person> getPersonVector(int limit, int offset);
             std::vector<BookManager::Entity::Person> getPersonVector(int limit, int offset, BookManager::Entity::Role role);
@@ -66,9 +66,11 @@ namespace BookManager
 
 
         private:
-            DatabaseManager();
             void loadDatabase(SQLite::Database& database);
             void createDatabase();
+            void initTableActionObject();
+
+            std::string databasePath;
 
             std::unique_ptr<TableDeserializers> createTableDeserializer(std::shared_ptr<SQLite::Database>);
             std::unique_ptr<TableInsert> createTableInsert(std::shared_ptr<SQLite::Database>);

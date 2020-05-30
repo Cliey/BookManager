@@ -14,17 +14,20 @@
 #include "BookTypes/Comics.hpp"
 #include "BookFactory/BookFactory.hpp"
 
+const std::string databaseNameForTest{"BookManagerTest.db"};
+const std::string databasePathForTest{"./data/" + databaseNameForTest};
+
 class DatabaseManagerTestCommon : public ::testing::Test
 {
 public:
     static void initDbTest()
     {
-        if( remove("./data/BookManager.db") != 0 )
+        if( remove(databasePathForTest.c_str()) != 0 )
             std::cout << "Error deleting file" << std::endl;
         else
             std::cout << "File successfully deleted" << std::endl;
 
-        SQLite::Database db("./data/BookManager.db", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+        SQLite::Database db(databasePathForTest, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
         db.exec("CREATE TABLE Publishers(\
                         id INTEGER PRIMARY KEY NOT NULL,\
                         name TEXT NOT NULL)"); // OK

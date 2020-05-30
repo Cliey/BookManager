@@ -45,7 +45,7 @@ namespace BookManager
         void GeneralManager::loadDatabase()
         {
             LOG_INFO("Load Database....");
-            databaseManager = DatabaseManager::getDbManager();
+            databaseManager = std::make_shared<DatabaseManager>("BookManager.db");
         }
 
         std::shared_ptr<DatabaseManager> GeneralManager::getDatabaseManager()
