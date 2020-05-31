@@ -16,34 +16,50 @@ namespace BookManager
 {
     namespace Manager
     {
-        bool TableInsert::addPerson(BookManager::Entity::Person personToAdd)
+        int TableInsert::getLastIdAddedInTable(const std::string table)
+        {
+            std::ostringstream stringStream;
+            stringStream << "SELECT MAX(id) AS max_id FROM " << table;
+            const std::string& tmp = stringStream.str();
+            SQLite::Statement query(*database, tmp.c_str());
+            query.executeStep();
+            int maxId = query.getColumn("max_id");
+            return maxId + 1;
+        }
+
+        std::tuple<bool, int> TableInsert::addPerson(BookManager::Entity::Person personToAdd)
         {
             SQLite::Statement query(*database, "INSERT INTO Persons \
                 (first_name, last_name, role) \
                 VALUES (:first_name, :last_name, :role)");
+            int lastId = getLastIdAddedInTable("Persons");
 
-            return tableModifier->modifyPersonTable(personToAdd, query);
+            return {tableModifier->modifyPersonTable(personToAdd, query), lastId};
         }
 
-        bool TableInsert::addPublisher(BookManager::Entity::Publisher publisherToAdd)
+        std::tuple<bool, int> TableInsert::addPublisher(BookManager::Entity::Publisher publisherToAdd)
         {
             SQLite::Statement query(*database, "INSERT INTO Publishers (name) VALUES (:name)");
+            int lastId = getLastIdAddedInTable("Publishers");
 
-            return tableModifier->modifyPublisherTable(publisherToAdd, query);
+            return {tableModifier->modifyPublisherTable(publisherToAdd, query), lastId};
         }
 
-        bool TableInsert::addCategory(BookManager::Category::Category categoryToAdd)
+        std::tuple<bool, int> TableInsert::addCategory(BookManager::Category::Category categoryToAdd)
         {
             SQLite::Statement query(*database, "INSERT INTO Categories (name) VALUES (:name)");
+            int lastId = getLastIdAddedInTable("Categories");
 
-            return tableModifier->modifyCategoryTable(categoryToAdd, query);
+            return {tableModifier->modifyCategoryTable(categoryToAdd, query), lastId};
         }
 
-        bool TableInsert::addBookSeries(BookManager::Entity::BookSeries bookSeriesToAdd)
+
+        std::tuple<bool, int> TableInsert::addBookSeries(BookManager::Entity::BookSeries bookSeriesToAdd)
         {
             SQLite::Statement query(*database, "INSERT INTO BookSeries (name) VALUES (:name)");
+            int lastId = getLastIdAddedInTable("BookSeries");
 
-            return tableModifier->modifyBookSeriesTable(bookSeriesToAdd, query);
+            return {tableModifier->modifyBookSeriesTable(bookSeriesToAdd, query), lastId};
         }
 
         void TableInsert::addBooksPersonsTable(int bookId, std::vector<std::shared_ptr<Entity::Person>> persons)
@@ -74,7 +90,7 @@ namespace BookManager
             }
         }
 
-        bool TableInsert::addBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
+        std::tuple<bool, int> TableInsert::addBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
         {
             SQLite::Transaction transaction(*database);
             SQLite::Statement query(*database, "INSERT INTO Books \
@@ -96,13 +112,13 @@ namespace BookManager
                 addBooksPersonsTable(lastIdBook, bookToAdd->generalInfo.author);
                 addBooksSubCategoriesTable(lastIdBook, bookToAdd->categoryInfo.subCategory);
                 transaction.commit();
-                return true;
+                return {true, lastIdBook};
             }
             catch(const std::exception& e)
             {
                 // Rollback
                 LOG_ERROR("Error occured while adding Book : {}", e.what())
-                return false;
+                return {false, 0};
             }
         }
     } // namespace Manager

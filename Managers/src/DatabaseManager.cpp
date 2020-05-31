@@ -116,23 +116,23 @@ namespace BookManager
             return tableUpdater->updateBook(bookToUpdate);
         }
 
-        bool DatabaseManager::insertPerson(BookManager::Entity::Person personToAdd)
+        std::tuple<bool, int> DatabaseManager::insertPerson(BookManager::Entity::Person personToAdd)
         {
             return tableInsert->addPerson(personToAdd);
         }
-        bool DatabaseManager::insertPublisher(BookManager::Entity::Publisher publisherToAdd)
+        std::tuple<bool, int> DatabaseManager::insertPublisher(BookManager::Entity::Publisher publisherToAdd)
         {
             return tableInsert->addPublisher(publisherToAdd);
         }
-        bool DatabaseManager::insertCategory(BookManager::Category::Category categoryToAdd)
+        std::tuple<bool, int> DatabaseManager::insertCategory(BookManager::Category::Category categoryToAdd)
         {
             return tableInsert->addCategory(categoryToAdd);
         }
-        bool DatabaseManager::insertBookSeries(BookManager::Entity::BookSeries bookSeriesToAdd)
+        std::tuple<bool, int> DatabaseManager::insertBookSeries(BookManager::Entity::BookSeries bookSeriesToAdd)
         {
             return tableInsert->addBookSeries(bookSeriesToAdd);
         }
-        bool DatabaseManager::insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
+        std::tuple<bool, int> DatabaseManager::insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book> bookToAdd)
         {
             return tableInsert->addBook(bookToAdd);
         }

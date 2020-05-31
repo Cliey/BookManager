@@ -49,11 +49,11 @@ namespace BookManager
             bool updateBookSeries(BookManager::Entity::BookSeries);
             bool updateBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
-            bool insertPerson(BookManager::Entity::Person);
-            bool insertPublisher(BookManager::Entity::Publisher);
-            bool insertCategory(BookManager::Category::Category);
-            bool insertBookSeries(BookManager::Entity::BookSeries);
-            bool insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
+            std::tuple<bool, int> insertPerson(BookManager::Entity::Person);
+            std::tuple<bool, int> insertPublisher(BookManager::Entity::Publisher);
+            std::tuple<bool, int> insertCategory(BookManager::Category::Category);
+            std::tuple<bool, int> insertBookSeries(BookManager::Entity::BookSeries);
+            std::tuple<bool, int> insertBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             bool deletePerson(int, bool);
             bool deletePublisher(int, bool);

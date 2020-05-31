@@ -38,13 +38,14 @@ namespace BookManager
                     tableModifier = std::make_shared<TableModifier>();
                 }
 
-                bool addPerson(BookManager::Entity::Person);
-                bool addPublisher(BookManager::Entity::Publisher);
-                bool addCategory(BookManager::Category::Category);
-                bool addBookSeries(BookManager::Entity::BookSeries);
-                bool addBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
+                std::tuple<bool, int> addPerson(BookManager::Entity::Person);
+                std::tuple<bool, int> addPublisher(BookManager::Entity::Publisher);
+                std::tuple<bool, int> addCategory(BookManager::Category::Category);
+                std::tuple<bool, int> addBookSeries(BookManager::Entity::BookSeries);
+                std::tuple<bool, int> addBook(std::shared_ptr<BookManager::Book::Abstraction::Book>);
 
             private:
+                int getLastIdAddedInTable(std::string table);
                 void addBooksPersonsTable(int, std::vector<std::shared_ptr<Entity::Person>>);
                 void addBooksSubCategoriesTable(int, std::vector<std::shared_ptr<Category::Category>>);
                 void deleteInBooksSubCategoriesTable(int bookId);
