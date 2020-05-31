@@ -35,6 +35,9 @@ public:
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    void resetList(const QList<BookManager::Category::Category> &newCategories);
+
+    QList<BookManager::Category::Category> getList();
 
 private:
     QList<BookManager::Category::Category> categoryList;

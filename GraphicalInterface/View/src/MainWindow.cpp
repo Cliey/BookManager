@@ -2,6 +2,7 @@
 #include "View/BookPage.hpp"
 #include "View/CategoryPage.hpp"
 #include "View/PersonPage.hpp"
+#include "Popup/CategoryDialog.hpp"
 #include "Popup/SettingsDialog.hpp"
 #include <QToolButton>
 #include <QAction>
@@ -63,6 +64,7 @@ QToolButton* MainWindow::initAddMenu()
     QAction* actionAddBookSeries = new QAction(tr("Add Book &Serie"), this);
     QAction* actionAddAuthor = new QAction(tr("Add &Author"), this);
     QAction* actionAddCategory = new QAction(tr("Add &Category"), this);
+    QObject::connect(actionAddCategory, &QAction::triggered, this, qOverload<>(&MainWindow::openCategoryDialog));
     menuAdd->addAction(actionAddBook);
     menuAdd->addAction(actionAddBookSeries);
     menuAdd->addAction(actionAddAuthor);
@@ -83,6 +85,29 @@ void MainWindow::openSettingsWindow()
 {
     SettingsDialog settingDialog(generalManager->getSettingsManager(), this);
     settingDialog.exec();
+}
+
+void MainWindow::openCategoryDialog()
+{
+    CategoryDialog* categoryDialog = new CategoryDialog(this);
+    QObject::connect(categoryDialog, &CategoryDialog::accepted,
+        [this](const BookManager::Category::Category& category){
+            auto [addSuccess, newId] = generalManager->getDatabaseManager()->insertCategory(category);
+            BookManager::Category::Category categoryWithNewId(newId, category.getName());
+            categoryPage->insertCategory(categoryWithNewId);
+        });
+    categoryDialog->exec();
+}
+
+void MainWindow::openCategoryDialog(const BookManager::Category::Category& categoryToEdit)
+{
+    CategoryDialog* categoryDialog = new CategoryDialog(categoryToEdit, this);
+    QObject::connect(categoryDialog, &CategoryDialog::accepted,
+        [this](const BookManager::Category::Category& category){
+            generalManager->getDatabaseManager()->updateCategory(category);
+            categoryPage->updateList(category);
+        });
+    categoryDialog->exec();
 }
 
 void MainWindow::initSearchToolBar()
@@ -108,11 +133,13 @@ void MainWindow::initSearchToolBar()
 void MainWindow::initCentralZone()
 {
     BookPage* bookPage = new BookPage();
-    CategoryPage* categoryPage = new CategoryPage(generalManager->getDatabaseManager());
+    categoryPage = new CategoryPage(generalManager->getDatabaseManager());
     PersonPage* personPage = new PersonPage(generalManager->getDatabaseManager());
     tabWidget = new QTabWidget();
     tabWidget->addTab(bookPage, "Book");
     tabWidget->addTab(categoryPage, "Category");
+    QObject::connect(categoryPage, &CategoryPage::addCategory, this, qOverload<>(&MainWindow::openCategoryDialog));
+    QObject::connect(categoryPage, &CategoryPage::editCategory, this, qOverload<const BookManager::Category::Category&>(&MainWindow::openCategoryDialog));
     tabWidget->addTab(personPage, "Author");
 
     tabWidget->setTabPosition(QTabWidget::TabPosition::West);

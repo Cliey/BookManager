@@ -79,3 +79,15 @@ void CategoryModel::sort(int column, Qt::SortOrder order)
 {
     std::sort(categoryList.begin(), categoryList.end());
 }
+
+QList<BookManager::Category::Category> CategoryModel::getList()
+{
+    return categoryList;
+}
+
+void CategoryModel::resetList(const QList<BookManager::Category::Category> &newCategories)
+{
+    beginResetModel();
+    categoryList = newCategories;
+    endResetModel();
+}

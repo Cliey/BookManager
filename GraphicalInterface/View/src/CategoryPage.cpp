@@ -58,6 +58,7 @@ void CategoryPage::initList()
     categoryListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     categoryListView->setContextMenuPolicy(Qt::CustomContextMenu);
     QObject::connect(categoryListView, &QListView::customContextMenuRequested, this, &CategoryPage::openMenu);
+    QObject::connect(categoryListView, &QListView::doubleClicked, this,  qOverload<QModelIndex>(&CategoryPage::editCategorySelected));
 }
 
 void CategoryPage::deleteCategoriesSelected()
@@ -100,6 +101,9 @@ void CategoryPage::openMenu(const QPoint& pos)
     // Idea of the contextMenu
     QMenu menuItem;
     QAction* actionAdd = menuItem.addAction(tr("Add category", "Add a category"));
+    QObject::connect(actionAdd, &QAction::triggered, [this](){ emit addCategory(); });
+    QAction* actionEdit = menuItem.addAction(tr("Edit category", "Edit a category"));
+    QObject::connect(actionEdit, &QAction::triggered, this,  qOverload<>(&editCategorySelected));
     QAction* actionSearchBook = menuItem.addAction(tr("Search books", "Search book with the selected category"));
     QAction* actionCopyCategoryName = menuItem.addAction(tr("Copy Name", "Copy category name"));
 
@@ -111,7 +115,44 @@ void CategoryPage::openMenu(const QPoint& pos)
         return;
     }
     actionSearchBook->setEnabled(false);
+    actionEdit->setEnabled(false);
     actionCopyCategoryName->setEnabled(false);
     selectedAction = menuItem.exec(QCursor::pos());
     return;
+}
+
+void CategoryPage::editCategorySelected()
+{
+    QItemSelectionModel *selection = categoryListView->selectionModel();
+    QModelIndex index = selection->currentIndex();
+    editCategorySelected(index);
+}
+
+void CategoryPage::editCategorySelected(QModelIndex index)
+{
+    auto category = categoryModel->data(index, CategoryModel::CategoryRole::CategoryObject).value<BookManager::Category::Category>();
+    emit editCategory(category);
+}
+
+
+void CategoryPage::insertCategory(const BookManager::Category::Category& category)
+{
+    int nbRowModel = categoryModel->rowCount();
+    if(categoryModel->insertRow(nbRowModel))
+    {
+        QModelIndex index = categoryModel->index(nbRowModel, 0);
+        //nbRowModel = previous one, so if insert is OK it's new index to add
+        categoryModel->setData(index, QVariant::fromValue(category));  // Not OK
+        categoryModel->sort(CategoryModel::CategoryColumn::Name);
+    }
+}
+
+void CategoryPage::updateList(const BookManager::Category::Category& category)
+{
+    auto categoryList = categoryModel->getList();
+    if(auto found = std::find(categoryList.begin(), categoryList.end(), category.getId()); found != categoryList.end())
+        *found = category;
+
+    categoryModel->resetList(categoryList);
+    categoryModel->sort(CategoryModel::CategoryColumn::Name);
 }

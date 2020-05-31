@@ -1,4 +1,5 @@
 #pragma once
+#include "../../../../Category.hpp"
 #include <QApplication>
 #include <QMainWindow>
 #include <QToolBar>
@@ -7,6 +8,8 @@
 #include <QLineEdit>
 #include "Managers/GeneralManager.hpp"
 #include <memory>
+
+class CategoryPage;
 
 class MainWindow : public QMainWindow
 {
@@ -17,6 +20,8 @@ public:
 private slots:
     void toggleSearch();
     void openSettingsWindow();
+    void openCategoryDialog();
+    void openCategoryDialog(const BookManager::Category::Category& categoryToEdit);
 
 private:
     void initToolBars();
@@ -28,7 +33,9 @@ private:
     std::shared_ptr<BookManager::Manager::GeneralManager> generalManager;
 
     QToolBar *generalToolbar;
+
     QTabWidget *tabWidget;
+    CategoryPage* categoryPage;
 
     QToolBar *searchToolbar;
     // QAction *searchAction;

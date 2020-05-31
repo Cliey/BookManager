@@ -14,9 +14,18 @@ class CategoryPage : public QWidget
 public:
     CategoryPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent = nullptr);
 
+    void insertCategory(const BookManager::Category::Category&);
+    void updateList(const BookManager::Category::Category&);
+
 private slots:
     void deleteCategoriesSelected();
     void openMenu(const QPoint& pos);
+    void editCategorySelected();
+    void editCategorySelected(QModelIndex index);
+
+signals:
+    void addCategory();
+    void editCategory(const BookManager::Category::Category&);
 
 private:
     void initLeftPane();

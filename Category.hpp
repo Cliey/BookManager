@@ -18,6 +18,13 @@ namespace BookManager
 				name = Utils::StringUtils::lowerCaseExceptFirstLetter(name_);
 			}
 
+			Category& operator=(const Category& category)
+			{
+				this->id = category.id;
+				this->name = category.name;
+				return *this;
+			}
+
 			const int getId() const { return this->id; }
 			const std::string getName() const { return this->name; }
 			void setName(std::string name_) {
@@ -33,6 +40,18 @@ namespace BookManager
 			bool operator==(const Category& rhs)
 			{
 				if ((this->name).compare(rhs.name) == 0)
+					return true;
+				return false;
+			}
+
+			bool operator==(const int& rhs)
+			{
+				return (this->id == rhs);
+			}
+
+			bool operator==(const std::string& rhs)
+			{
+				if ((this->name).compare(Utils::StringUtils::lowerCaseExceptFirstLetter(rhs)) == 0)
 					return true;
 				return false;
 			}
