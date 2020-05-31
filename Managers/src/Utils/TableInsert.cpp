@@ -117,7 +117,7 @@ namespace BookManager
             catch(const std::exception& e)
             {
                 // Rollback
-                LOG_ERROR("Error occured while adding Book : {}", e.what())
+                LOG_ERROR("Error occurred while adding Book : {}", e.what())
                 return {false, 0};
             }
         }

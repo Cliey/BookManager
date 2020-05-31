@@ -119,7 +119,7 @@ namespace BookManager
             {
                 if(tableModifier->modifyBookTable(bookToUpdate, query) == 0)
                 {
-                    LOG_ERROR("Error occured while updating Book : Id is not associated to any book")
+                    LOG_ERROR("Error occurred while updating Book : Id is not associated to any book")
                     return false;
                 }
                 updateBooksPersonsTable(bookToUpdate->id, bookToUpdate->generalInfo.author);
@@ -130,7 +130,7 @@ namespace BookManager
             catch(const std::exception& e)
             {
                 // Rollback
-                LOG_ERROR("Error occured while updating Book : {}", e.what())
+                LOG_ERROR("Error occurred while updating Book : {}", e.what())
                 return false;
             }
         }

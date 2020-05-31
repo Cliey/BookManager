@@ -77,16 +77,16 @@ namespace BookManager
                 catch (const SQLite::Exception &e) {
                     if (e.getExtendedErrorCode() == SQLITE_CONSTRAINT_FOREIGNKEY)
                     {
-                        LOG_WINDOW("Error occured with author : The author \"{}, {}\" doesn't exist.",
+                        LOG_WINDOW("Error occurred with author : The author \"{}, {}\" doesn't exist.",
                             person->getLastName(), person->getFirstName())
                         throw;
                     }
-                    LOG_WINDOW("Error occured with author : {}", e.what())
+                    LOG_WINDOW("Error occurred with author : {}", e.what())
                     throw;
                 }
                 catch(const std::exception& e)
                 {
-                    LOG_WINDOW("Error occured with author : {}", e.what())
+                    LOG_WINDOW("Error occurred with author : {}", e.what())
                     throw;
                 }
             }
@@ -106,16 +106,16 @@ namespace BookManager
                 catch (const SQLite::Exception &e) {
                     if (e.getExtendedErrorCode() == SQLITE_CONSTRAINT_FOREIGNKEY)
                     {
-                        LOG_WINDOW("Error occured with Subcategories : The Subcategory \"{}\" doesn't exist.",
+                        LOG_WINDOW("Error occurred with Subcategories : The Subcategory \"{}\" doesn't exist.",
                             subCategorie->getName())
                         throw;
                     }
-                    LOG_WINDOW("Error occured with Subcategories : {}", e.what());
+                    LOG_WINDOW("Error occurred with Subcategories : {}", e.what());
                     throw;
                 }
                 catch(const std::exception& e)
                 {
-                    LOG_WINDOW("Error occured with Subcategories : {}", e.what())
+                    LOG_WINDOW("Error occurred with Subcategories : {}", e.what())
                     throw;
                 }
             }

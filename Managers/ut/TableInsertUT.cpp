@@ -109,7 +109,7 @@ TEST_F(TableInsertTest, testInsertBookError_ForeignKeyAuthor)
     auto book = DatabaseManagerTestCommon::initBookTestAllOptionalField();
     book->generalInfo.author = {std::make_shared<BookManager::Entity::Person>(44, "Edward", "Rice", BookManager::Entity::Role::Author)};
 
-    std::string expectedLog = "Error occured with author : The author \"Rice, Edward\" doesn't exist";
+    std::string expectedLog = "Error occurred with author : The author \"Rice, Edward\" doesn't exist";
     addBookWithException(book, expectedLog);
 }
 
@@ -118,6 +118,6 @@ TEST_F(TableInsertTest, testInsertBookError_ForeignKeySubCategory)
     auto book = DatabaseManagerTestCommon::initBookTestAllOptionalField();
     book->categoryInfo.subCategory = {std::make_shared<BookManager::Category::Category>(55, "Not a Category")};
 
-    std::string expectedLog = "Error occured with Subcategories : The Subcategory \"Not a category\" doesn't exist.";
+    std::string expectedLog = "Error occurred with Subcategories : The Subcategory \"Not a category\" doesn't exist.";
     addBookWithException(book, expectedLog);
 }
