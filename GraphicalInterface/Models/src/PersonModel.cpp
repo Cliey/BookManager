@@ -107,6 +107,11 @@ QVariant PersonModel::headerData(int section, Qt::Orientation orientation, int r
     return QVariant();
 }
 
+QList<BookManager::Entity::Person> PersonModel::getList()
+{
+    return personList;
+}
+
 void PersonModel::resetList(QList<BookManager::Entity::Person> newPersonList)
 {
     beginResetModel();

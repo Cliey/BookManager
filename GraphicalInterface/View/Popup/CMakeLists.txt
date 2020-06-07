@@ -9,11 +9,13 @@ set(CMAKE_AUTOMOC ON)
 project(${LIB_NAME} CXX)
 
 set(SRCS
+	src/AuthorDialog.cpp
 	src/CategoryDialog.cpp
 	src/SettingsDialog.cpp
     )
 
 set(HEADERS
+    include/Popup/AuthorDialog.hpp
     include/Popup/CategoryDialog.hpp
     include/Popup/SettingsDialog.hpp
     )
@@ -24,7 +26,9 @@ target_link_libraries(${LIB_NAME}
 	PUBLIC
 		Qt5::Widgets
 	PRIVATE
-		managers)
+		managers
+        entity::types
+		)
 
 target_include_directories(${LIB_NAME}
 	PUBLIC

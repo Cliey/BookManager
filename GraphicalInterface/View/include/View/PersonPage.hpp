@@ -16,11 +16,19 @@ class PersonPage : public QWidget
     Q_OBJECT
 public:
     PersonPage(std::shared_ptr<BookManager::Manager::DatabaseManager> databaseManager, QWidget *parent = nullptr);
+    void insertPerson(const BookManager::Entity::Person&);
+    void updateList(const BookManager::Entity::Person& person);
 
 private slots:
     void deletePersonsSelected();
     void setFilter();
     void openMenu(const QPoint& pos);
+    void editPersonSelected();
+    void editPersonSelected(QModelIndex index);
+
+signals:
+    void addPerson();
+    void editPerson(const BookManager::Entity::Person&);
 
 private:
     void initLeftPane();

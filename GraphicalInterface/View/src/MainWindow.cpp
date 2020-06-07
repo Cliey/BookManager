@@ -2,6 +2,7 @@
 #include "View/BookPage.hpp"
 #include "View/CategoryPage.hpp"
 #include "View/PersonPage.hpp"
+#include "Popup/AuthorDialog.hpp"
 #include "Popup/CategoryDialog.hpp"
 #include "Popup/SettingsDialog.hpp"
 #include <QToolButton>
@@ -63,6 +64,7 @@ QToolButton* MainWindow::initAddMenu()
     QAction* actionAddBook = new QAction(tr("Add &Book"), this);
     QAction* actionAddBookSeries = new QAction(tr("Add Book &Serie"), this);
     QAction* actionAddAuthor = new QAction(tr("Add &Author"), this);
+    QObject::connect(actionAddAuthor, &QAction::triggered, this, qOverload<>(&MainWindow::openAuthorDialog));
     QAction* actionAddCategory = new QAction(tr("Add &Category"), this);
     QObject::connect(actionAddCategory, &QAction::triggered, this, qOverload<>(&MainWindow::openCategoryDialog));
     menuAdd->addAction(actionAddBook);
@@ -110,6 +112,30 @@ void MainWindow::openCategoryDialog(const BookManager::Category::Category& categ
     categoryDialog->exec();
 }
 
+void MainWindow::openAuthorDialog()
+{
+    AuthorDialog* authorDialog = new AuthorDialog(this);
+    QObject::connect(authorDialog, &AuthorDialog::accepted,
+        [this](const BookManager::Entity::Person& person){
+            auto [addSuccess, newId] = generalManager->getDatabaseManager()->insertPerson(person);
+            BookManager::Entity::Person personWithNewId = person;
+            personWithNewId.setId(newId);
+            personPage->insertPerson(personWithNewId);
+        });
+    authorDialog->exec();
+}
+
+void MainWindow::openAuthorDialog(const BookManager::Entity::Person& personToEdit)
+{
+    AuthorDialog* authorDialog = new AuthorDialog(personToEdit, this);
+    QObject::connect(authorDialog, &AuthorDialog::accepted,
+        [this](const BookManager::Entity::Person& person){
+            generalManager->getDatabaseManager()->updatePerson(person);
+            personPage->updateList(person);
+        });
+    authorDialog->exec();
+}
+
 void MainWindow::initSearchToolBar()
 {
     searchToolbar = addToolBar("Search");
@@ -134,13 +160,16 @@ void MainWindow::initCentralZone()
 {
     BookPage* bookPage = new BookPage();
     categoryPage = new CategoryPage(generalManager->getDatabaseManager());
-    PersonPage* personPage = new PersonPage(generalManager->getDatabaseManager());
+    personPage = new PersonPage(generalManager->getDatabaseManager());
     tabWidget = new QTabWidget();
     tabWidget->addTab(bookPage, "Book");
     tabWidget->addTab(categoryPage, "Category");
     QObject::connect(categoryPage, &CategoryPage::addCategory, this, qOverload<>(&MainWindow::openCategoryDialog));
     QObject::connect(categoryPage, &CategoryPage::editCategory, this, qOverload<const BookManager::Category::Category&>(&MainWindow::openCategoryDialog));
     tabWidget->addTab(personPage, "Author");
+    QObject::connect(personPage, &PersonPage::addPerson, this, qOverload<>(&MainWindow::openAuthorDialog));
+    QObject::connect(personPage, &PersonPage::editPerson, this, qOverload<const BookManager::Entity::Person&>(&MainWindow::openAuthorDialog));
+
 
     tabWidget->setTabPosition(QTabWidget::TabPosition::West);
     this->setCentralWidget(tabWidget);

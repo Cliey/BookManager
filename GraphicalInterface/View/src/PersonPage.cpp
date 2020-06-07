@@ -54,6 +54,7 @@ void PersonPage::initPersonList()
     personTableView->setSortingEnabled(true);
     personTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     QObject::connect(personTableView, &QTableView::customContextMenuRequested, this, &PersonPage::openMenu);
+    QObject::connect(personTableView, &QTableView::doubleClicked, this,  qOverload<QModelIndex>(&PersonPage::editPersonSelected));
 }
 
 QHBoxLayout* PersonPage::initLeftPaneHeader()
@@ -154,6 +155,9 @@ void PersonPage::openMenu(const QPoint& pos)
     // Idea of the contextMenu
     QMenu menuItem;
     QAction* actionAdd = menuItem.addAction(tr("Add Author/Illustrator", "Add an author or an illustrator"));
+    QObject::connect(actionAdd, &QAction::triggered, [this](){ emit addPerson(); });
+    QAction* actionEdit = menuItem.addAction(tr("Edit Author/Illustrator", "Edit an author or and illustrator"));
+    QObject::connect(actionEdit, &QAction::triggered, this,  qOverload<>(&editPersonSelected));
     QAction* actionSearchBook = menuItem.addAction(tr("Search books", "Search book written by the author selected"));
     QAction* actionCopyAuthorName = menuItem.addAction(tr("Copy Full Name", "Copy author/illustrator full name"));
 
@@ -164,8 +168,45 @@ void PersonPage::openMenu(const QPoint& pos)
         selectedAction = menuItem.exec(QCursor::pos());
         return;
     }
+    actionEdit->setEnabled(false);
     actionSearchBook->setEnabled(false);
     actionCopyAuthorName->setEnabled(false);
     selectedAction = menuItem.exec(QCursor::pos());
     return;
+}
+
+void PersonPage::editPersonSelected()
+{
+
+    QItemSelectionModel *selection = personTableView->selectionModel();
+    QModelIndex index = selection->currentIndex();
+    editPersonSelected(index);
+}
+
+void PersonPage::editPersonSelected(QModelIndex index)
+{
+    auto person = personModel->data(index, PersonModel::PersonRole::PersonObject).value<BookManager::Entity::Person>();
+    emit editPerson(person);
+}
+
+void PersonPage::insertPerson(const BookManager::Entity::Person& personToAdd)
+{
+    int nbRowModel = personModel->rowCount();
+    if(personModel->insertRow(nbRowModel))
+    {
+        QModelIndex index = personModel->index(nbRowModel, 0);
+        //nbRowModel = previous one, so if insert is OK it's new index to add
+        personModel->setData(index, QVariant::fromValue(personToAdd));
+        personModel->sort(0);
+    }
+}
+
+void PersonPage::updateList(const BookManager::Entity::Person& person)
+{
+    auto personList = personModel->getList();
+    if(auto found = std::find(personList.begin(), personList.end(), person.getId()); found != personList.end())
+        *found = person;
+
+    personModel->resetList(personList);
+    personModel->sort(0);
 }

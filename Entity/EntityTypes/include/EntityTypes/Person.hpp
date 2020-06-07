@@ -27,6 +27,16 @@ namespace BookManager
 				role = role_;
 			}
 
+			Person& operator=(const Person& person)
+			{
+				this->id = person.id;
+				this->firstName = person.firstName;
+				this->lastName = person.lastName;
+				this->role = person.role;
+				return *this;
+			}
+
+
 			const int getId() const { return this->id; }
 			const std::string getFirstName() const { return this->firstName; }
 			const std::string getLastName() const { return this->lastName; }
@@ -49,6 +59,11 @@ namespace BookManager
 				if ((this->getFullName()).compare(rhs.getFullName()) == 0)
 					return true;
 				return false;
+			}
+
+			bool operator==(const int& rhs)
+			{
+				return (this->id == rhs);
 			}
 
 			const std::string getFullName() const

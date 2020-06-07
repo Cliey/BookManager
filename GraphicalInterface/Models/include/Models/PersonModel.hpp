@@ -39,6 +39,8 @@ public:
     void sort(int column,  Qt::SortOrder order = Qt::AscendingOrder) override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
+    QList<BookManager::Entity::Person> getList();
+
 public slots:
     void resetList(QList<BookManager::Entity::Person> newPersonList);
 
