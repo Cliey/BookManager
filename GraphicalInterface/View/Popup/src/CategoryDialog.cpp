@@ -9,11 +9,13 @@
 
 CategoryDialog::CategoryDialog(QWidget* parent) : QDialog(parent)
 {
+    setWindowTitle("Add a Category");
     initWindow();
 }
 
 CategoryDialog::CategoryDialog(BookManager::Category::Category categoryToEdit, QWidget* parent) : QDialog(parent)
 {
+    setWindowTitle("Modify a Category");
     initWindow();
     categoryName->setText(QString::fromStdString(categoryToEdit.getName()));
     idCategoryEdited = categoryToEdit.getId();
@@ -58,6 +60,7 @@ QColor CategoryDialog::getColorBase()
         return QColor(categoryColor->text());
     return QColor("#ffffff");
 }
+
 void CategoryDialog::openColorDialog()
 {
     auto colorBase = getColorBase();

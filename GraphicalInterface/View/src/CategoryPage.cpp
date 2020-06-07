@@ -142,7 +142,7 @@ void CategoryPage::insertCategory(const BookManager::Category::Category& categor
     {
         QModelIndex index = categoryModel->index(nbRowModel, 0);
         //nbRowModel = previous one, so if insert is OK it's new index to add
-        categoryModel->setData(index, QVariant::fromValue(category));  // Not OK
+        categoryModel->setData(index, QVariant::fromValue(category));
         categoryModel->sort(CategoryModel::CategoryColumn::Name);
     }
 }
