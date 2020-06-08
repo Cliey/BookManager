@@ -4,6 +4,7 @@ set(LIB_NAME graphical_interface_models)
 project(${LIB_NAME}_UT CXX)
 
 set(SRCS
+	BookSeriesModelUT.cpp
 	CategoryModelUT.cpp
 	PersonModelUT.cpp
     )

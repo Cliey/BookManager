@@ -8,6 +8,8 @@ namespace BookManager
 		class BookSeries
 		{
 		public:
+			BookSeries() = default;
+
 			BookSeries(int id_, std::string name_){
 				id = id_;
 				name = Utils::StringUtils::lowerCaseExceptFirstLetter(name_);
