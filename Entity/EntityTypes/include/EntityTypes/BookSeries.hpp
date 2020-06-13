@@ -18,6 +18,7 @@ namespace BookManager
 			std::string const getName() const { return this->name; }
 			int const getId() const { return this->id; }
 
+			void setId(int id) { this->id = id; }
 			void setName(std::string name) { this->name = Utils::StringUtils::lowerCaseExceptFirstLetter(name); }
 
 			bool operator<(const BookSeries& rhs)
@@ -33,6 +34,12 @@ namespace BookManager
 					return true;
 				return false;
 			}
+
+			bool operator==(const int& rhs)
+			{
+				return this->id == rhs;
+			}
+
 		private:
 			int id;
 			std::string name;

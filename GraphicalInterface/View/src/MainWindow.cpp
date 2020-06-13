@@ -1,8 +1,10 @@
 #include "View/MainWindow.hpp"
 #include "View/BookPage.hpp"
+#include "View/BookSeriesPage.hpp"
 #include "View/CategoryPage.hpp"
 #include "View/PersonPage.hpp"
 #include "Popup/AuthorDialog.hpp"
+#include "Popup/BookSeriesDialog.hpp"
 #include "Popup/CategoryDialog.hpp"
 #include "Popup/SettingsDialog.hpp"
 #include <QToolButton>
@@ -62,7 +64,8 @@ QToolButton* MainWindow::initAddMenu()
 {
     QMenu* menuAdd = new QMenu(tr("Add"));
     QAction* actionAddBook = new QAction(tr("Add &Book"), this);
-    QAction* actionAddBookSeries = new QAction(tr("Add Book &Serie"), this);
+    QAction* actionAddBookSeries = new QAction(tr("Add Book &Series"), this);
+    QObject::connect(actionAddBookSeries, &QAction::triggered, this, qOverload<>(&MainWindow::openBookSeriesDialog));
     QAction* actionAddAuthor = new QAction(tr("Add &Author"), this);
     QObject::connect(actionAddAuthor, &QAction::triggered, this, qOverload<>(&MainWindow::openAuthorDialog));
     QAction* actionAddCategory = new QAction(tr("Add &Category"), this);
@@ -136,6 +139,32 @@ void MainWindow::openAuthorDialog(const BookManager::Entity::Person& personToEdi
     authorDialog->exec();
 }
 
+void MainWindow::openBookSeriesDialog()
+{
+    std::cout << "MainWindow::openBookSeriesDialog" << std::endl;
+    BookSeriesDialog* bookSeriesDialog = new BookSeriesDialog(this);
+    QObject::connect(bookSeriesDialog, &BookSeriesDialog::accepted,
+        [this](const BookManager::Entity::BookSeries& bookSeries){
+            auto [addSuccess, newId] = generalManager->getDatabaseManager()->insertBookSeries(bookSeries);
+            BookManager::Entity::BookSeries bookSeriesWithNewId = bookSeries;
+            bookSeriesWithNewId.setId(newId);
+            bookSeriesPage->insertBookSeries(bookSeriesWithNewId);
+        });
+    bookSeriesDialog->exec();
+}
+
+void MainWindow::openBookSeriesDialog(const BookManager::Entity::BookSeries& bookSeriesToEdit)
+{
+    std::cout << "MainWindow::openBookSeriesDialog(const BookManager::Entity::BookSeries& bookSeriesToEdit)" << std::endl;
+    BookSeriesDialog* bookSeriesDialog = new BookSeriesDialog(bookSeriesToEdit, this);
+    QObject::connect(bookSeriesDialog, &BookSeriesDialog::accepted,
+        [this](const BookManager::Entity::BookSeries& bookSeries){
+            generalManager->getDatabaseManager()->updateBookSeries(bookSeries);
+            bookSeriesPage->updateList(bookSeries);
+        });
+    bookSeriesDialog->exec();
+}
+
 void MainWindow::initSearchToolBar()
 {
     searchToolbar = addToolBar("Search");
@@ -159,6 +188,7 @@ void MainWindow::initSearchToolBar()
 void MainWindow::initCentralZone()
 {
     BookPage* bookPage = new BookPage();
+    bookSeriesPage = new BookSeriesPage(generalManager->getDatabaseManager());
     categoryPage = new CategoryPage(generalManager->getDatabaseManager());
     personPage = new PersonPage(generalManager->getDatabaseManager());
     tabWidget = new QTabWidget();
@@ -169,7 +199,9 @@ void MainWindow::initCentralZone()
     tabWidget->addTab(personPage, "Author");
     QObject::connect(personPage, &PersonPage::addPerson, this, qOverload<>(&MainWindow::openAuthorDialog));
     QObject::connect(personPage, &PersonPage::editPerson, this, qOverload<const BookManager::Entity::Person&>(&MainWindow::openAuthorDialog));
-
+    tabWidget->addTab(bookSeriesPage, "Book Series");
+    QObject::connect(bookSeriesPage, &BookSeriesPage::addBookSeries, this, qOverload<>(&MainWindow::openBookSeriesDialog));
+    QObject::connect(bookSeriesPage, &BookSeriesPage::editBookSeries, this, qOverload<const BookManager::Entity::BookSeries&>(&MainWindow::openBookSeriesDialog));
 
     tabWidget->setTabPosition(QTabWidget::TabPosition::West);
     this->setCentralWidget(tabWidget);

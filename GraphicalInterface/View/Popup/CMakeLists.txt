@@ -10,12 +10,14 @@ project(${LIB_NAME} CXX)
 
 set(SRCS
 	src/AuthorDialog.cpp
+	src/BookSeriesDialog.cpp
 	src/CategoryDialog.cpp
 	src/SettingsDialog.cpp
     )
 
 set(HEADERS
     include/Popup/AuthorDialog.hpp
+    include/Popup/BookSeriesDialog.hpp
     include/Popup/CategoryDialog.hpp
     include/Popup/SettingsDialog.hpp
     )

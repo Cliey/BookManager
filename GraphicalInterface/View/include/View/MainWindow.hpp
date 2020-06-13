@@ -1,6 +1,7 @@
 #pragma once
 #include "../../../../Category.hpp"
 #include "EntityTypes/Person.hpp"
+#include "EntityTypes/BookSeries.hpp"
 #include <QApplication>
 #include <QMainWindow>
 #include <QToolBar>
@@ -10,6 +11,7 @@
 #include "Managers/GeneralManager.hpp"
 #include <memory>
 
+class BookSeriesPage;
 class CategoryPage;
 class PersonPage;
 
@@ -26,6 +28,8 @@ private slots:
     void openCategoryDialog(const BookManager::Category::Category& categoryToEdit);
     void openAuthorDialog();
     void openAuthorDialog(const BookManager::Entity::Person& personToEdit);
+    void openBookSeriesDialog();
+    void openBookSeriesDialog(const BookManager::Entity::BookSeries& personToEdit);
 
 private:
     void initToolBars();
@@ -39,6 +43,7 @@ private:
     QToolBar *generalToolbar;
 
     QTabWidget *tabWidget;
+    BookSeriesPage* bookSeriesPage;
     CategoryPage* categoryPage;
     PersonPage* personPage;
 

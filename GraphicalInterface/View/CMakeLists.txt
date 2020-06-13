@@ -11,6 +11,7 @@ project(${LIB_NAME} CXX)
 set(SRCS
 	src/MainWindow.cpp
 	src/BookPage.cpp
+	src/BookSeriesPage.cpp
 	src/CategoryPage.cpp
 	src/PersonPage.cpp
     )
@@ -18,6 +19,7 @@ set(SRCS
 set(HEADERS
     include/View/MainWindow.hpp
     include/View/BookPage.hpp
+    include/View/BookSeriesPage.hpp
     include/View/CategoryPage.hpp
     include/View/PersonPage.hpp)
 
