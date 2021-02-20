@@ -15,7 +15,9 @@ set(SRCS
 	src/Utils/TableDelete.cpp
 	src/Utils/TableInsert.cpp
 	src/Utils/TableModifier.cpp
+	src/Utils/QueryBuilder.cpp
 	src/Utils/TableUpdater.cpp
+	src/Utils/SqlOperator/WhereOperator.cpp
     )
 
 set(HEADERS
@@ -29,6 +31,7 @@ set(HEADERS
 	include/Manager/Utils/TableDelete.hpp
 	include/Manager/Utils/TableInsert.hpp
 	include/Manager/Utils/TableModifier.hpp
+	include/Manager/Utils/QueryBuilder.hpp
 	include/Manager/Utils/TableUpdater.hpp
     )
 

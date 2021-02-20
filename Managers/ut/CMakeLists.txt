@@ -10,7 +10,9 @@ set(SRCS
 	TableDeserializersBookUT.cpp
 	TableDeleteUT.cpp
 	TableInsertUT.cpp
+	QueryBuilderUT.cpp
 	TableUpdaterUT.cpp
+	SqlOperatorUT.cpp
     )
 
 add_executable(${LIB_NAME}_UT ${SRCS})
