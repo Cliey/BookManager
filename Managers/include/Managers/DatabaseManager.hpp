@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 #include <SQLiteCpp/SQLiteCpp.h>
+#include "Managers/Utils/QueryBuilder.hpp"
+#include <iostream>
 namespace BookManager
 {
     namespace Entity
@@ -33,6 +35,16 @@ namespace BookManager
         class DatabaseManager
         {
         public:
+            struct SearchOption
+            {
+                std::string tableName;
+                std::string where;
+                int limit;
+                int offset;
+                std::string orderBy;
+                QueryBuilder::Order order = QueryBuilder::Order::ASCENDANT;
+            };
+
             DatabaseManager(std::string databaseName);
             ~DatabaseManager();
 
@@ -64,6 +76,16 @@ namespace BookManager
             // PersonDatabaseGetter getPerson(); // DatabaseGetter.byName(string)
             // Person getPersonById(); // DatabaseGetter.byId(int)
 
+            // template<class T>
+            // std::vector<T> search(int object, int limit, int offset);
+            // template<class T>
+            // void search(std::vector<T> returnValue, int object, int limit, int offset);
+
+            std::vector<BookManager::Entity::Person> searchPerson(const SearchOption&);
+            std::vector<BookManager::Entity::Publisher> searchPublisher(const SearchOption&);
+            std::vector<BookManager::Category::Category> searchCategory(const SearchOption&);
+            std::vector<BookManager::Entity::BookSeries> searchBookSeries(const SearchOption&);
+            std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> searchBook(const SearchOption&);
 
         private:
             void loadDatabase(SQLite::Database& database);
@@ -77,12 +99,76 @@ namespace BookManager
             std::unique_ptr<TableUpdater> createTableUpdater(std::shared_ptr<SQLite::Database>);
             std::unique_ptr<TableDelete> createTableDelete(std::shared_ptr<SQLite::Database>);
 
+            SQLite::Statement buildQuery(const SearchOption&);
+
             std::unique_ptr<TableDeserializers> tableDeserializer;
             std::unique_ptr<TableDelete> tableDelete;
             std::unique_ptr<TableInsert> tableInsert;
             std::unique_ptr<TableUpdater> tableUpdater;
             std::shared_ptr<SQLite::Database> database;
         };
+
+        // template<class T>
+        // std::vector<T> DatabaseManager::search(int object, int limit, int offset)
+        // {
+        //     QueryBuilder queryBuilder;
+        //     std::string queryStr;
+        //     std::vector<T> returnValue;
+        //     switch(object)
+        //     {
+        //         case 0:
+        //             {
+        //                 queryBuilder.reset();
+        //                 queryStr = queryBuilder.selectFrom("Persons").limit(limit).offset(offset).getQuery();
+        //                 std::cout << "query str = " << queryStr << std::endl;
+        //                 SQLite::Statement queryPerson(*database, queryStr);
+        //                 return executePersonQuery(queryPerson);
+        //             }
+        //             break;
+        //         case 1:
+        //             {
+        //                 queryBuilder.reset();
+        //                 queryStr = queryBuilder.selectFrom("Persons").limit(limit).offset(offset).getQuery();
+        //                 SQLite::Statement queryPublisher(*database, queryStr);
+        //                 return std::vector<T>();
+        //             }
+        //             break;
+
+        //         default:
+        //             return std::vector<T>();
+        //     }
+        // }
+
+        // template<class T>
+        // void DatabaseManager::search(std::vector<T> returnValue, int object, int limit, int offset)
+        // {
+        //     QueryBuilder queryBuilder;
+        //     std::string queryStr;
+        //     switch(object)
+        //     {
+        //         case 0:
+        //             {
+        //                 queryBuilder.reset();
+        //                 queryStr = queryBuilder.selectFrom("Persons").limit(limit).offset(offset).getQuery();
+        //                 std::cout << "query str = " << queryStr << std::endl;
+        //                 SQLite::Statement queryPerson(*database, queryStr);
+        //                 returnValue = executePersonQuery(queryPerson);
+        //             }
+        //             break;
+        //         case 1:
+        //             {
+        //                 queryBuilder.reset();
+        //                 queryStr = queryBuilder.selectFrom("Persons").limit(limit).offset(offset).getQuery();
+        //                 SQLite::Statement queryPublisher(*database, queryStr);
+        //                 returnValue = executePublisherQuery(queryPublisher);
+        //             }
+        //             break;
+
+        //         default:
+        //             returnValue = std::vector<T>();
+        //     }
+        // }
+
 
     } // namespace Manager
 } // namespace BookManager

@@ -158,6 +158,47 @@ namespace BookManager
             return tableDelete->deleteInBooksTable(bookId);
         }
 
+        SQLite::Statement DatabaseManager::buildQuery(const SearchOption& searchOption)
+        {
+            QueryBuilder queryBuilder;
+            std::string queryStr =
+                queryBuilder.selectFrom(searchOption.tableName).orderBy(searchOption.orderBy, searchOption.order).
+                limit(searchOption.limit).offset(searchOption.offset).getQuery();
+            std::cout << "queryStr = " << queryStr << std::endl;
+            SQLite::Statement query(*database, queryStr);
+            return query;
+        }
+
+        std::vector<BookManager::Entity::Person> DatabaseManager::searchPerson(const SearchOption& searchOption)
+        {
+            SQLite::Statement query = buildQuery(searchOption);
+            return tableDeserializer->executePersonTableQuery(query);
+        }
+
+        std::vector<BookManager::Entity::Publisher> DatabaseManager::searchPublisher(const SearchOption& searchOption)
+        {
+            SQLite::Statement query = buildQuery(searchOption);
+            return tableDeserializer->executePublisherTableQuery(query);
+        }
+
+        std::vector<BookManager::Category::Category> DatabaseManager::searchCategory(const SearchOption& searchOption)
+        {
+            SQLite::Statement query = buildQuery(searchOption);
+            return tableDeserializer->executeCategoryTableQuery(query);
+        }
+
+        std::vector<BookManager::Entity::BookSeries> DatabaseManager::searchBookSeries(const SearchOption& searchOption)
+        {
+            SQLite::Statement query = buildQuery(searchOption);
+            return tableDeserializer->executeBookSeriesTableQuery(query);
+        }
+
+        std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> DatabaseManager::searchBook(const SearchOption& searchOption)
+        {
+            SQLite::Statement query = buildQuery(searchOption);
+            return tableDeserializer->executeBookTableQuery(query);
+        }
+
         void DatabaseManager::createDatabase()
         {
             LOG_INFO("Creating Database...");
