@@ -51,11 +51,15 @@ namespace BookManager
 
         std::vector<BookManager::Entity::Publisher> TableDeserializers::deserializePublisherTable(int limit, int offset)
         {
-            std::vector<BookManager::Entity::Publisher> publisherVector;
             SQLite::Statement query(*database, "SELECT * FROM Publishers LIMIT :limit OFFSET :offset");
             query.bind(":limit", limit);
             query.bind(":offset", offset);
+            return executePublisherTableQuery(query);
+        }
 
+        std::vector<BookManager::Entity::Publisher> TableDeserializers::executePublisherTableQuery(SQLite::Statement& query)
+        {
+            std::vector<BookManager::Entity::Publisher> publisherVector;
             while(query.executeStep())
             {
                 publisherVector.emplace_back(deserializeOneElementSimpleTableIdAndName<BookManager::Entity::Publisher>(query));
@@ -70,11 +74,15 @@ namespace BookManager
 
         std::vector<BookManager::Category::Category> TableDeserializers::deserializeCategoryTable(int limit, int offset)
         {
-            std::vector<BookManager::Category::Category> categoryVector;
             SQLite::Statement query(*database, "SELECT * FROM Categories LIMIT :limit OFFSET :offset");
             query.bind(":limit", limit);
             query.bind(":offset", offset);
+            return executeCategoryTableQuery(query);
+        }
 
+        std::vector<BookManager::Category::Category> TableDeserializers::executeCategoryTableQuery(SQLite::Statement& query)
+        {
+            std::vector<BookManager::Category::Category> categoryVector;
             while(query.executeStep())
             {
                 categoryVector.emplace_back(deserializeOneElementSimpleTableIdAndName<BookManager::Category::Category>(query));
@@ -89,11 +97,15 @@ namespace BookManager
 
         std::vector<BookManager::Entity::BookSeries> TableDeserializers::deserializeBookSeriesTable(int limit, int offset)
         {
-            std::vector<BookManager::Entity::BookSeries> bookSeriesVector;
             SQLite::Statement query(*database, "SELECT * FROM BookSeries LIMIT :limit OFFSET :offset");
             query.bind(":limit", limit);
             query.bind(":offset", offset);
+            return executeBookSeriesTableQuery(query);
+        }
 
+        std::vector<BookManager::Entity::BookSeries> TableDeserializers::executeBookSeriesTableQuery(SQLite::Statement& query)
+        {
+            std::vector<BookManager::Entity::BookSeries> bookSeriesVector;
             while(query.executeStep())
             {
                 bookSeriesVector.emplace_back(deserializeOneElementSimpleTableIdAndName<BookManager::Entity::BookSeries>(query));
@@ -239,11 +251,15 @@ namespace BookManager
 
         std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> TableDeserializers::deserializeBookTable(int limit, int offset)
         {
-            std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> bookVector;
             SQLite::Statement query(*database, "SELECT * FROM Books LIMIT :limit OFFSET :offset");
             query.bind(":limit", limit);
             query.bind(":offset", offset);
+            return executeBookTableQuery(query);
+        }
 
+        std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> TableDeserializers::executeBookTableQuery(SQLite::Statement& query)
+        {
+            std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> bookVector;
             while(query.executeStep())
             {
                 BookManager::Book::BookType type = getType(query.getColumn("type"));

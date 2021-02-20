@@ -48,8 +48,13 @@ namespace BookManager
 
                 BookManager::Entity::Person deserializeOnePerson(SQLite::Statement&);
 
-            private:
                 std::vector<BookManager::Entity::Person> executePersonTableQuery(SQLite::Statement& query);
+                std::vector<BookManager::Entity::Publisher> executePublisherTableQuery(SQLite::Statement& query);
+                std::vector<BookManager::Category::Category> executeCategoryTableQuery(SQLite::Statement& query);
+                std::vector<BookManager::Entity::BookSeries> executeBookSeriesTableQuery(SQLite::Statement& query);
+                std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> executeBookTableQuery(SQLite::Statement& query);
+
+            private:
                 BookManager::Book::BookType getType(int type);
                 BookManager::Book::BookStatus getBookStatus(int status);
                 std::time_t convertDate(std::string);
