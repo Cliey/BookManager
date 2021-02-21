@@ -42,7 +42,7 @@ namespace BookManager
 
                 QueryBuilder() = default;
                 QueryBuilder selectFrom(std::string tableName);
-                QueryBuilder where(std::shared_ptr<SqlOperator::InterfaceOperator> op);
+                QueryBuilder where(const std::shared_ptr<SqlOperator::InterfaceOperator>& op);
                 /*
                     QueryBuilder where(std::string field, IComparable comparable);
                     where(AND("field", value, "field", value), OR(AND("field", value, "field", value)))

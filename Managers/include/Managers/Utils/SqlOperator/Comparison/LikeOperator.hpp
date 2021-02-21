@@ -23,7 +23,7 @@ namespace BookManager
 
                 std::string get() const override
                 {
-                    std::string str = fmt::format("{} LIKE {}", this->field, this->value);
+                    std::string str = fmt::format("{} LIKE '{}'", this->field, this->value);
                     return str;
                 }
             };

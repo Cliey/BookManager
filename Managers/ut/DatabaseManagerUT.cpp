@@ -4,6 +4,9 @@
 #include "Utils/TableDeserializerUtils.hpp"
 #include "Utils/TestUtils.hpp"
 
+#include "Managers/Utils/SqlOperator/InterfaceOperator.hpp"
+#include "Managers/Utils/SqlOperator/MacroSqlOperator.hpp"
+
 #include "MaillonCreation/BookCreationResponsibility.hpp"
 #include "MaillonCreation/MaillonCreationBookArtBook.hpp"
 #include "MaillonCreation/MaillonCreationBookNovel.hpp"
@@ -75,7 +78,32 @@ TEST_F(DatabaseManagerTest, testSearchPerson)
         {1, "Jacques", "Edouard", BookManager::Entity::Role::Author},
         {3, "Peter", "Jackson", BookManager::Entity::Role::Author},
         {4, "Richard", "Bordo", BookManager::Entity::Role::Illustrator}};
-    DatabaseManager::SearchOption searchOption = {"Persons", "", 10, 0, "first_name"};
+    DatabaseManager::SearchOption searchOption = {"Persons", nullptr, 10, 0, "first_name"};
+    std::vector<BookManager::Entity::Person> deserializedTable = sut->searchPerson(searchOption);
+
+    expectPersonTable(deserializedTable, expectedDeserializedTable);
+}
+
+TEST_F(DatabaseManagerTest, testSearchPersonWhere_FirstNameOR)
+{
+    std::vector<BookManager::Entity::Person> expectedDeserializedTable{
+        {1, "Jacques", "Edouard", BookManager::Entity::Role::Author},
+        {3, "Peter", "Jackson", BookManager::Entity::Role::Author}};
+
+    std::shared_ptr<SqlOperator::InterfaceOperator> whereStatement = OR(IS("first_name", std::string("Peter")), IS("first_name", "Jacques"));
+    DatabaseManager::SearchOption searchOption = {"Persons", whereStatement, 10, 0, "first_name"};
+    std::vector<BookManager::Entity::Person> deserializedTable = sut->searchPerson(searchOption);
+
+    expectPersonTable(deserializedTable, expectedDeserializedTable);
+}
+
+TEST_F(DatabaseManagerTest, testSearchPersonWhere_Role)
+{
+    std::vector<BookManager::Entity::Person> expectedDeserializedTable{
+        {4, "Richard", "Bordo", BookManager::Entity::Role::Illustrator},
+        {2, "Charles", "Henry", BookManager::Entity::Role::Illustrator}};
+
+    DatabaseManager::SearchOption searchOption = {"Persons", IS("role", 2), 10, 0, "last_name"};
     std::vector<BookManager::Entity::Person> deserializedTable = sut->searchPerson(searchOption);
 
     expectPersonTable(deserializedTable, expectedDeserializedTable);
@@ -89,7 +117,7 @@ TEST_F(DatabaseManagerTest, testSearchPublisher)
         {1, "12-25"}
     };
 
-    DatabaseManager::SearchOption searchOption = {"Publishers", "", 10, 0, "name", QueryBuilder::Order::DESCENDANT};
+    DatabaseManager::SearchOption searchOption = {"Publishers", nullptr, 10, 0, "name", QueryBuilder::Order::DESCENDANT};
     std::vector<BookManager::Entity::Publisher> deserializedTable = sut->searchPublisher(searchOption);
 
     expectIdAndName<BookManager::Entity::Publisher>(deserializedTable, expectedDeserializedTable);
@@ -103,7 +131,7 @@ TEST_F(DatabaseManagerTest, testSearchCategory)
         {2, "Sci-Fi"},
         {1, "Thriller"},
         {4, "Young Adult"}};
-    DatabaseManager::SearchOption searchOption = {"Categories", "", 10, 0, "name", QueryBuilder::Order::ASCENDANT};
+    DatabaseManager::SearchOption searchOption = {"Categories", nullptr, 10, 0, "name", QueryBuilder::Order::ASCENDANT};
     std::vector<BookManager::Category::Category> deserializedTable = sut->searchCategory(searchOption);
 
     expectIdAndName<BookManager::Category::Category>(deserializedTable, expectedDeserializedTable);
@@ -116,7 +144,7 @@ TEST_F(DatabaseManagerTest, testSearchBookSeries)
         {4, "Hunger Games"},
         {2, "Seigneur des Anneaux"},
         {3, "Star Wars"}};
-    DatabaseManager::SearchOption searchOption = {"BookSeries", "", 10, 0, "name", QueryBuilder::Order::ASCENDANT};
+    DatabaseManager::SearchOption searchOption = {"BookSeries", nullptr, 10, 0, "name", QueryBuilder::Order::ASCENDANT};
     std::vector<BookManager::Entity::BookSeries> deserializedTable = sut->searchBookSeries(searchOption);
 
     expectIdAndName<BookManager::Entity::BookSeries>(deserializedTable, expectedDeserializedTable);
@@ -139,7 +167,24 @@ TEST_F(DatabaseManagerTest, testSearchBook)
     std::shared_ptr<BookManager::Book::Abstraction::Book> book_testBook = DatabaseManagerTestCommon::initBookTestAllOptionalField();
     expectedDeserializedTable.push_back(book_testBook);
 
-    DatabaseManager::SearchOption searchOption = {"Books", "", 10, 0, "title", QueryBuilder::Order::ASCENDANT};
+    DatabaseManager::SearchOption searchOption = {"Books", nullptr, 10, 0, "title", QueryBuilder::Order::ASCENDANT};
+    std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable = sut->searchBook(searchOption);
+
+    expectBookTable(deserializedTable, expectedDeserializedTable);
+}
+
+TEST_F(DatabaseManagerTest, testSearchBookWhereLike_Artbook)
+{
+    initBookFactoryMaillon();
+    std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> expectedDeserializedTable{};
+
+    std::shared_ptr<BookManager::Book::Abstraction::Book> book_ArtBookToyStory1 = DatabaseManagerTestCommon::initBookTestNoOptionalField();
+    expectedDeserializedTable.push_back(book_ArtBookToyStory1);
+
+    std::shared_ptr<BookManager::Book::Abstraction::Book> book_ArtBookToyStory2 = DatabaseManagerTestCommon::initBookTestWithBookSeries();
+    expectedDeserializedTable.push_back(book_ArtBookToyStory2);
+
+    DatabaseManager::SearchOption searchOption = {"Books", LIKE("title", "ArtBook%"), 10, 0, "title", QueryBuilder::Order::ASCENDANT};
     std::vector<std::shared_ptr<BookManager::Book::Abstraction::Book>> deserializedTable = sut->searchBook(searchOption);
 
     expectBookTable(deserializedTable, expectedDeserializedTable);

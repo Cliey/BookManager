@@ -16,12 +16,12 @@ namespace BookManager
             return *this;
         }
 
-        QueryBuilder QueryBuilder::where(std::shared_ptr<SqlOperator::InterfaceOperator> op)
+        QueryBuilder QueryBuilder::where(const std::shared_ptr<SqlOperator::InterfaceOperator>& op)
         {
-            if(whereStatementSet)
+            if(whereStatementSet || op == nullptr)
                 return *this;
 
-            queryStr += fmt::format(" WHERE {}", op->get());
+            queryStr += fmt::format(" WHERE ({})", op->get());
             whereStatementSet = true;
             return *this;
         }

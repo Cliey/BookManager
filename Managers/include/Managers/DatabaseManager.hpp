@@ -27,6 +27,10 @@ namespace BookManager
 
     namespace Manager
     {
+        namespace SqlOperator
+        {
+            class InterfaceOperator;
+        }
 
         class TableDeserializers;
         class TableDelete;
@@ -38,7 +42,7 @@ namespace BookManager
             struct SearchOption
             {
                 std::string tableName;
-                std::string where;
+                std::shared_ptr<SqlOperator::InterfaceOperator> where;
                 int limit;
                 int offset;
                 std::string orderBy;
@@ -100,6 +104,7 @@ namespace BookManager
             std::unique_ptr<TableDelete> createTableDelete(std::shared_ptr<SQLite::Database>);
 
             SQLite::Statement buildQuery(const SearchOption&);
+            SQLite::Statement buildQuery(const std::string&, const SearchOption&);
 
             std::unique_ptr<TableDeserializers> tableDeserializer;
             std::unique_ptr<TableDelete> tableDelete;

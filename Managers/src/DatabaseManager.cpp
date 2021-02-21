@@ -162,9 +162,20 @@ namespace BookManager
         {
             QueryBuilder queryBuilder;
             std::string queryStr =
-                queryBuilder.selectFrom(searchOption.tableName).orderBy(searchOption.orderBy, searchOption.order).
+                queryBuilder.selectFrom(searchOption.tableName).where(searchOption.where).orderBy(searchOption.orderBy, searchOption.order).
                 limit(searchOption.limit).offset(searchOption.offset).getQuery();
-            std::cout << "queryStr = " << queryStr << std::endl;
+            LOG_INFO("Query: {}", queryStr);
+            SQLite::Statement query(*database, queryStr);
+            return query;
+        }
+
+        SQLite::Statement DatabaseManager::buildQuery(const std::string& taleName, const SearchOption& searchOption)
+        {
+            QueryBuilder queryBuilder;
+            std::string queryStr =
+                queryBuilder.selectFrom(taleName).where(searchOption.where).orderBy(searchOption.orderBy, searchOption.order).
+                limit(searchOption.limit).offset(searchOption.offset).getQuery();
+            LOG_INFO("Query: {}", queryStr);
             SQLite::Statement query(*database, queryStr);
             return query;
         }
